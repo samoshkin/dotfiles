@@ -1,0 +1,80 @@
+# GNU nano’s rcfile
+# see http://www.nano-editor.org/dist/v2.2/nanorc.5.html
+# see http://www.nano-editor.org/dist/v2.2/nano.html
+
+# ---------------------
+# General settings
+# ---------------------
+
+# use auto-indentation
+# set autoindent
+
+# constantly display the cursor position in the status bar
+set const
+
+# Enable mouse support, if available for your system. 
+# When enabled, mouse clicks can be used to place the cursor, set the mark (with a double click), and execute shortcuts. 
+# The mouse will work in the X Window System, and on the console when gpm is running
+# set mouse
+
+# Disable ${DOTFILESDIR}_history, because it gets stored in dotfiles nano folder, instead of home
+unset historylog
+
+# do extended regular expression searches by default
+set regexp
+
+# make the Home key smarter. 
+# when Home is pressed anywhere but at the very beginning of non-whitespace characters on a line, the cursor will jump to 
+# that beginning (either forwards or backwards). 
+# If the cursor is already at that position, it will jump to the true beginning of the line.
+set smarthome
+
+# use smooth scrolling by default
+set smooth
+
+# enable soft line wrapping for easier viewing of very long lones
+# disable softwrap because nano inserts newline in place of wrap
+set nowrap
+set softwrap
+
+# use a tab size of n columns. The value of n must be greater than 0. The default value is 8
+set tabsize "2"
+
+# convert typed tabs to spaces
+# set tabstospaces
+
+# detect word boundaries more accurately by treating punctuation characters as parts of words
+set wordbounds
+
+# allow inserting files into their own buffers
+set multibuffer
+
+# Do not create backups in "filename~"
+unset backup
+
+# Hide help from the bottom
+set nohelp
+
+# ---------------------
+# Key bindings
+# ---------------------
+
+# rebind key for copy and paste text
+unbind M-^ main
+bind ^C copytext main
+bind ^V uncut main
+bind ^Z undo main
+
+# rebind keys to move words back and forth
+unbind M-F main
+unbind M-B main
+bind M-F nextword main
+bind M-B prevword main
+
+# -------------------------
+# Syntax highlight rules
+# -------------------------
+
+# placeholder syntax from https://github.com/scopatz/nanorc
+# for syntax highlighting rules see  http://how-to.wikia.com/wiki/How_to_use_syntax_highlighting_with_the_GNU_nano_text_editor 
+# actual include statements are added by install script

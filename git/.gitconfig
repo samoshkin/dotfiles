@@ -12,6 +12,9 @@
 #	editor = XYZ
 	trustctime = false
 
+[status]
+	submodulesummary = 1
+
 [apply]
 	whitespace = fix
 
@@ -37,9 +40,6 @@
 
 [push]
 	default = upstream
-
-[pull]
-	rebase = true
 
 [diff]
 	tool = external

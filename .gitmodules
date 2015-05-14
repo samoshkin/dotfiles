@@ -1,0 +1,3 @@
+[submodule "vendor/nanorc"]
+	path = vendor/nanorc
+	url = https://github.com/samoshkin/nanorc.git

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# install packages
+# TODO: later move/duplicate in bootstrap.sh
+brew install git gibo tig
+
 # TODO: later backup if taret is already exist
 cp --remove-destination ${DOTFILESDIR}/git/.gitconfig ~/.gitconfig
 
@@ -13,5 +17,8 @@ gibo OSX JetBrains SublimeText > ~/.gitignore
 # symlink external merge and diff tool scripts to "~/bin", so they are in PATH
 ln --symbolic --force ${DOTFILESDIR}/git/external_difftool_diffmerge.sh ~/bin/external_difftool.sh
 ln --symbolic --force ${DOTFILESDIR}/git/external_mergetool_diffmerge.sh ~/bin/external_mergetool.sh
+
+# symlink .tigrc file
+ln --symbolic --force ${DOTFILESDIR}/git/.tigrc ~
 
 

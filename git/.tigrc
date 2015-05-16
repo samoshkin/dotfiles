@@ -1,0 +1,27 @@
+# variables
+set reference-format = (branch) (remote) [tag]
+set horizontal-scroll = 25%
+set tab-size = 2
+set editor-line-number = true
+
+# views
+set main-view = line-number:no date:local author:email-user commit-title:graph=v2,refs=yes	
+set tree-view = mode:yes author:email-user file-size:units date:local file-name:auto
+set blame-view = date:local author:email-user file-name:auto id:yes line-number:yes,interval=5 text
+set blob-view = line-number:yes,interval=5 text
+set refs-view = date:local author:email-user id:yes ref:yes commit-title
+set stash-view = date:local author:email-user commit-title
+
+# command bindings
+
+# amend the last commit
+bind status + !git commit --amend --reuse-message HEAD
+
+# be able to stash changes in status view
+bind status S ?git stash save --include-untracked
+
+# reset all changes in status view
+bind status <Esc>! ?git reset --hard HEAD
+
+# create new branch from the selected commit
+bind main B ?git checkout -b "%(prompt Enter new branch name: )" %(commit)

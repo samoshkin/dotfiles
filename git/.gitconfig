@@ -9,7 +9,7 @@
 	excludesfiles = ~/.gitignore
 	attributesfile = ~/.gitattributes
 	autocrlf = input
-#	editor = XYZ
+	editor = nano
 	trustctime = false
 
 [status]

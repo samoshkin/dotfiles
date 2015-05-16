@@ -1,0 +1,4 @@
+project-manager
+seti-syntax
+seti-ui
+

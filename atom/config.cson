@@ -1,0 +1,30 @@
+"*":
+  "exception-reporting":
+    userId: "c7458fb7-0174-7f62-8882-56e7a6d0a548"
+  welcome:
+    showOnStartup: false
+  core:
+    themes: [
+      "seti-ui"
+      "seti-syntax"
+    ]
+    excludeVcsIgnoredPaths: true
+    disabledPackages: [
+      "fonts"
+    ]
+  editor:
+    fontFamily: "\"Source Code Pro\", \"Droid Sans Mono\", \"Inconsolata-dz\", \"FreeMono\", \"InputMono-Light\", \"Courier New\", \"Consolas\", monospace"
+    lineHeight: 1.25
+    invisibles:
+      eol: false
+      cr: false
+    zoomFontWhenCtrlScrolling: true
+    softWrap: true
+    softTabs: false
+    showInvisibles: true
+    tabLength: 2
+    fontSize: 14
+  whitespace:
+    ensureSingleTrailingNewline: true
+  "spell-check":
+    {}

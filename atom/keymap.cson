@@ -26,3 +26,9 @@
 
 'atom-text-editor:not([mini])':
   'shift-cmd-delete': 'editor:delete-line'
+
+'atom-text-editor':
+  'shift-cmd-U': 'unset!'
+  'alt-shift-cmd-U': 'unset!'
+  'shift-cmd-H': 'unset!'
+  'alt-shift-cmd-H': 'unset!'

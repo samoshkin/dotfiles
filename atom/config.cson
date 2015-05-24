@@ -5,15 +5,15 @@
     showOnStartup: false
   core:
     themes: [
-      "seti-ui"
-      "seti-syntax"
+      "atom-dark-ui"
+      "monokai"
     ]
     excludeVcsIgnoredPaths: true
     disabledPackages: [
       "fonts"
     ]
   editor:
-    fontFamily: "\"Source Code Pro\", \"Droid Sans Mono\", \"Inconsolata-dz\", \"FreeMono\", \"InputMono-Light\", \"Courier New\", \"Consolas\", monospace"
+    fontFamily: "\"Inconsolata-dz\", \"InputMono-Light\", \"Consolas\", \"Source Code Pro\", \"Droid Sans Mono\", \"Inconsolata-dz\", \"FreeMono, \"Courier New\", monospace"
     lineHeight: 1.25
     invisibles:
       eol: false
@@ -23,8 +23,32 @@
     softTabs: false
     showInvisibles: true
     tabLength: 2
-    fontSize: 14
   whitespace:
     ensureSingleTrailingNewline: true
   "spell-check":
+    {}
+  "linter-shellcheck":
+    shellcheckExecutablePath: "/usr/local/bin/shellcheck"
+  linter:
+    showErrorInline: false
+    statusBar: "Show error of the selected line"
+    subtleLinterErrors: [
+      "shellcheck"
+    ]
+  emmet:
+    {}
+  "linter-jshint":
+    disableWhenNoJshintrcFileInPath: true
+  "atom-beautify":
+    analytics: false
+    beautifyEntireFileOnSave: false
+    js_indent_with_tabs: false
+    css_preserve_newlines: true
+  "file-icons":
+    coloured: false
+  pigments:
+    {}
+  "highlight-line":
+    hideHighlightOnSelect: true
+  "todo-show":
     {}

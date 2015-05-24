@@ -1,4 +1,24 @@
+atom-beautify
+atom-monokai
+atom-solarized-dark-ui
+autocomplete-paths
+color-picker
+editorconfig
+emmet
+file-icons
+highlight-line
+linter
+linter-jshint
+linter-shellcheck
+monokai
+pigments
 project-manager
+save-session
+script
+seti-monokai
 seti-syntax
 seti-ui
+solarized-dark-ui
+tabs-to-spaces
+todo-show
 

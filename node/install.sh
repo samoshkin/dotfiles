@@ -1,7 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# TODO: later move/duplicate in bootstrap.sh
-brew install node
+log "Installing node"
+brew install node || true
+
+log "Configure npm to store packages and cache in ~/.npm, so you don't need sudo to 'npm install -g'"
 
 mkdir -p ~/.npm
 
@@ -9,3 +11,6 @@ mkdir -p ~/.npm
 # keep global npm packages in HOME/.npm dir
 npm config set cache ~/.npm/cache
 npm config set prefix ~/.npm
+
+log "Installing commonly used global packages: gulp, bower"
+npm install -g gulp bower

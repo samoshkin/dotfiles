@@ -1,14 +1,15 @@
-SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+#!/usr/bin/env bash
 
-brew cask install atom
+log "Installing atom"
 
-# print installed packages without @version
-# apm list --installed --bare | sed 's/@.*//'
+brew cask install atom || true
+
+log "Installing atom packages"
 
 # install all packages
 # echo ${SCRIPT_DIR}/packages.txt
-apm install --packages-file ${SCRIPT_DIR}/packages.txt
+apm install --packages-file "${DOTFILES}/atom/packages.txt"
 
+log "Copy configuration to ~/.atom"
 # symlink config files to ~/.atom
-ln --symbolic --force -t ~/.atom ${SCRIPT_DIR}/{init.coffee,keymap.cson,snippets.cson,styles.less,config.cson}
-
+_ln -t ~/.atom ${DOTFILES}/atom/{init.coffee,keymap.cson,snippets.cson,styles.less,config.cson}

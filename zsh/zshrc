@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+# override styles before running antigen
+zstyle ':prezto:module:git:log:oneline' format '%C(green)%h%C(reset) %C(red)%d%C(reset) %s %C(cyan)<%an>%C(reset) %C(blue)(%cD)%C(reset)'
+
+# antigen setup
+source "${HOME}/.antigen/antigen.zsh"
+
+antigen use oh-my-zsh
+antigen use prezto
+
+antigen bundles <<EOBUNDLES
+  zsh-users/zsh-completions src
+  zsh-users/zsh-syntax-highlighting
+  zsh-users/zsh-history-substring-search
+  sorin-ionescu/prezto modules/git
+  brew
+  osx
+  sudo
+	# colored-man
+  walesmd/caniuse.plugin.zsh
+  supercrabtree/k
+  Tarrasch/zsh-bd
+EOBUNDLES
+
+antigen theme pure
+
+antigen apply
+
+# fast man page access with <esc-h>
+autoload run-help
+
+source ${DOTFILES}/zsh/config.zsh
+source ${DOTFILES}/zsh/aliases.zsh
+for file in $(find ${DOTFILES}/functions -iname "*.zsh" -o -iname "*.sh"); do
+	source $file
+done

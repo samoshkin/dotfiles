@@ -1,24 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# install packages
-# TODO: later move/duplicate in bootstrap.sh
-brew install git gibo tig
+log "Installing git, tig, gibo"
 
-# TODO: later backup if taret is already exist
-cp --remove-destination ${DOTFILESDIR}/git/.gitconfig ~/.gitconfig
+brew install git gibo tig || true
 
-# TODO: consider email to be a  sensitive data, should come from config
-git config --global user.email ${GIT_USER_EMAIL}
+log "Congifure git with global ~/.gitconfig"
+_cp "${DOTFILES}/git/.gitconfig" ~/.gitconfig
 
-# create .gitignore file
-# uses https://github.com/simonwhitaker/gibo to build from gitignore boilerplates gibo OSX JetBrains SublimeText > ~/.gitignore
-gibo OSX JetBrains SublimeText > ~/.gitignore
+git config --global user.email "${GIT_USER_EMAIL}"
+git config --global user.name "${GIT_USER_NAME}"
+git config --global github.user "${GIT_GITHUB_USER}"
 
+log "Prepare global ~/.gitignore"
+_backup ~/.gitignore
+gibo OSX > ~/.gitignore
+
+log "Configure diffmerge to be external merge and diff tool"
 # symlink external merge and diff tool scripts to "~/bin", so they are in PATH
-ln --symbolic --force ${DOTFILESDIR}/git/external_difftool_diffmerge.sh ~/bin/external_difftool.sh
-ln --symbolic --force ${DOTFILESDIR}/git/external_mergetool_diffmerge.sh ~/bin/external_mergetool.sh
+_ln "${DOTFILES}/git/external_difftool_diffmerge.sh" ~/bin/external_difftool.sh
+_ln "${DOTFILES}/git/external_mergetool_diffmerge.sh" ~/bin/external_mergetool.sh
 
+log "Configure tig with ~/.tigrc"
 # symlink .tigrc file
-ln --symbolic --force ${DOTFILESDIR}/git/.tigrc ~
-
-
+_ln -t ~ "${DOTFILES}/git/.tigrc"

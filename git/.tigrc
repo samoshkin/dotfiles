@@ -5,7 +5,7 @@ set tab-size = 2
 set editor-line-number = true
 
 # views
-set main-view = line-number:no date:local author:email-user commit-title:graph=v2,refs=yes	
+set main-view = line-number:no date:local author:email-user commit-title:graph=v2,refs=yes
 set tree-view = mode:yes author:email-user file-size:units date:local file-name:auto
 set blame-view = date:local author:email-user file-name:auto id:yes line-number:yes,interval=5 text
 set blob-view = line-number:yes,interval=5 text
@@ -22,6 +22,9 @@ bind status S ?git stash save --include-untracked
 
 # reset all changes in status view
 bind status <Esc>! ?git reset --hard HEAD
+
+bind status <Esc>d @git difftool %(file)
+bind status <Esc>D @git difftool
 
 # create new branch from the selected commit
 bind main B ?git checkout -b "%(prompt Enter new branch name: )" %(commit)

@@ -1,0 +1,2 @@
+
+# setup osx defaults

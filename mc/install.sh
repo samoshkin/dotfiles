@@ -1,8 +1,11 @@
-SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+#!/usr/bin/env bash
 
-brew install mc
+log "Installing midnight commander"
+brew install mc || true
+
+log "Link configs to ~/.config/mc"
 
 mkdir -p ~/.config/mc
 
 # symlink config files to ~/.config/mc
-ln --symbolic --force -t ~/.config/mc ${SCRIPT_DIR}/{ini} 
+_ln -t ~/.config/mc "${DOTFILES}/mc/ini"

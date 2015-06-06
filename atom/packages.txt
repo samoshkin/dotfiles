@@ -21,4 +21,3 @@ seti-ui
 solarized-dark-ui
 tabs-to-spaces
 todo-show
-

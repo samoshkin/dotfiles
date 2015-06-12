@@ -78,10 +78,10 @@ install(){
 
 actions () {
   # keep update the last one
-  local actions="atom git mc nano node system zsh update"
+  local known_actions="atom git mc nano node system zsh update"
 
-  if [ "$1" == "print" ]; then
-    for action in $actions; do
+  if [ "$1" == "--print" ]; then
+    for action in $known_actions; do
       case "$action" in
         system ) echo -e "\t[$action] setup osx and install system-wide packages";;
         zsh ) echo -e "\t[$action] install zsh and change to be a default shell";;
@@ -93,27 +93,32 @@ actions () {
         update ) echo -e "\t[$action] update all brew formulas";;
       esac
     done
-    echo -e "\t[all] all the above"
-  fi
 
-  if [ "$1" == "do" ] && [ "$2" == "all" ]; then
-    for action in $actions; do
-      actions "do" $action
-    done
+    echo -e "\t[all] all the above"
     return 0
   fi
 
-  # TODO: check if action is defined
+  for action in "$@"; do
+    echo
 
-  if [ "$1" == "do" ]; then
+    if ! (echo "$known_actions" | tr ' ' '\n' | grep -E "^$action$" &> /dev/null); then
+      echo "Unknown action: $action" >&2
+      continue;
+    fi
+
     case "$action" in
+      all )
+        actions $known_actions
+      ;;
       update )
         log "Update brew. Update all packages. Clean up outdated packages from cache"
         brew update && brew upgrade && brew cleanup
         ;;
       * ) install $action;;
     esac
-  fi
+  done
+
+  return 0
 }
 
 # change to repo root and save path in variable
@@ -134,15 +139,14 @@ source "system/private.variables.sh"
 while true; do
   echo
   log "What should I do next?"
-  actions print
-  read action
-  echo
+  actions --print
+  read -e answer
 
-  if [ -z $action ]; then
-      log "Do nothing"
-      break
+  if [ -z "$answer" ]; then
+     break
   fi
-  actions "do" "$action"
+
+  actions $answer
 done
 
 log "Bye."

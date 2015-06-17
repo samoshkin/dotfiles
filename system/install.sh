@@ -25,3 +25,6 @@ brew cask install \
 	slack \
 	utorrent \
 	vlc || true
+
+log "Setup osx defaults"
+source "${DOTFILES}/system/osx.sh"

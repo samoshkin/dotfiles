@@ -4,6 +4,9 @@ log "Installing git, tig, gibo"
 
 brew install git gibo tig || true
 
+log "Installing diffmerge and kdiff3"
+brew cask install diffmerge kdiff3 || true
+
 log "Congifure git with global ~/.gitconfig"
 _cp "${DOTFILES}/git/.gitconfig" ~/.gitconfig
 

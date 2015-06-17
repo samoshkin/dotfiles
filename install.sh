@@ -78,7 +78,7 @@ install(){
 
 actions () {
   # keep update the last one
-  local known_actions="atom git mc nano node system zsh update"
+  local known_actions="atom git mc nano node iterm system zsh update"
 
   if [ "$1" == "--print" ]; then
     for action in $known_actions; do
@@ -90,6 +90,7 @@ actions () {
         mc ) echo -e "\t[$action] install & configure midnight commander";;
         node ) echo -e "\t[$action] install nodejs and tools";;
         atom ) echo -e "\t[$action] install atom and atom packages";;
+        iterm ) echo -e "\t[$action] install iterm2 as a replacement to default Terminal.app";;
         update ) echo -e "\t[$action] update all brew formulas";;
       esac
     done

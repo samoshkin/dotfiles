@@ -13,7 +13,7 @@
       "fonts"
     ]
   editor:
-    fontFamily: "\"Inconsolata-dz\", \"InputMono-Light\", \"Consolas\", \"Source Code Pro\", \"Droid Sans Mono\", \"Inconsolata-dz\", \"FreeMono, \"Courier New\", monospace"
+    fontFamily: "\"Inconsolata-dz\", \"Consolas\", \"Source Code Pro\", \"Droid Sans Mono\", \"Courier New\", monospace"
     lineHeight: 1.25
     invisibles:
       eol: false
@@ -25,8 +25,7 @@
     tabLength: 2
   whitespace:
     ensureSingleTrailingNewline: true
-  "spell-check":
-    {}
+  "spell-check": {}
   "linter-shellcheck":
     shellcheckExecutablePath: "/usr/local/bin/shellcheck"
   linter:
@@ -35,8 +34,7 @@
     subtleLinterErrors: [
       "shellcheck"
     ]
-  emmet:
-    {}
+  emmet: {}
   "linter-jshint":
     disableWhenNoJshintrcFileInPath: true
   "atom-beautify":
@@ -46,9 +44,9 @@
     css_preserve_newlines: true
   "file-icons":
     coloured: false
-  pigments:
-    {}
+  pigments: {}
   "highlight-line":
     hideHighlightOnSelect: true
-  "todo-show":
-    {}
+  "todo-show": {}
+  "save-session":
+    dataSaveFolder: "/Users/asamoshkin/.atom/packages/save-session/projects"

@@ -5,11 +5,13 @@ autocomplete-paths
 color-picker
 editorconfig
 emmet
+enhanced-tabs
 file-icons
 highlight-line
 linter
 linter-jshint
 linter-shellcheck
+markdown-scroll-sync
 monokai
 pigments
 project-manager
@@ -21,3 +23,4 @@ seti-ui
 solarized-dark-ui
 tabs-to-spaces
 todo-show
+zentabs

@@ -11,6 +11,7 @@
     excludeVcsIgnoredPaths: true
     disabledPackages: [
       "fonts"
+      "emmet"
     ]
   editor:
     fontFamily: "\"Inconsolata-dz\", \"Consolas\", \"Source Code Pro\", \"Droid Sans Mono\", \"Courier New\", monospace"
@@ -50,3 +51,7 @@
   "todo-show": {}
   "save-session":
     dataSaveFolder: "/Users/asamoshkin/.atom/packages/save-session/projects"
+  zentabs:
+    maximumOpenedTabs: 8
+    neverCloseUnsaved: true
+  "markdown-preview": {}

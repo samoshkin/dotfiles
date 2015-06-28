@@ -27,6 +27,7 @@ brew cask install \
   slate \
   vlc || true
 
+# TODO: need to enable Slate in "System Preferences" -> "Security & Privacy" -> "Accessibility"
 log "Configuring slate"
 _ln -t ~ "${DOTFILES}/system/.slate.js"
 

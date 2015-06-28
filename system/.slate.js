@@ -1,5 +1,11 @@
 S.log('[SLATE]: loading config');
 
+// reference .slate files
+// https://github.com/dmac/dotfiles/blob/master/.slate
+// https://github.com/jigish/dotfiles/blob/master/slate.js
+
+// TODO: add multiple monitors support
+
 // global configs
 S.cfga({
   'defaultToCurrentScreen': true,
@@ -14,7 +20,7 @@ S.cfga({
   'windowHintsSpread': true,
   'windowHintsIgnoreHiddenWindows' : false,
   'windowHintsShowIcons': true,
-  'windowHintsSpreadPadding': 50,
+  'windowHintsSpreadPadding': 20,
   'repeatOnHoldOps': true,
   'secondsBeforeRepeat': 0.1
 });
@@ -37,31 +43,16 @@ function detectScreens(){
 
 detectScreens();
 
+
 // NOTE: maybe we don't need it
 // S.on('screenConfigurationChanged', function(){
 //   detectScreens();
 // });
 
-var getNextScreen = function(){
+// iterate through screens
+function getNextScreen(){
   return (S.window().screen().id() + 1) % S.screenCount();
 };
-
-
-// operation protos
-var cornerOp = S.op('corner', { 'width' : 'screenSizeX/2', 'height': 'screenSizeY/2', direction: 'top-left' });
-var pushOp = S.op('push', { style: 'bar', direction: 'left' });
-var fullScreenOp = S.op('move', {
-  'x' : 'screenOriginX',
-  'y' : 'screenOriginY',
-  'width' : 'screenSizeX',
-  'height' : 'screenSizeY'
-});
-var centerScreenOp = S.op('move', {
-  x: 'screenSizeX/6',
-  y: 'screenSizeY/6',
-  width: '2*screenSizeX/3',
-  height: '2*screenSizeY/3'
-})
 
 // toggle fullscreen and be able to revert back to original position
 function getToggleFullscreenAction(){
@@ -79,7 +70,7 @@ function getToggleFullscreenAction(){
     // store location and toggle fullscreen
     else {
       appPosition[appName] = win.rect();
-      win.doOperation(fullScreenOp);
+      win.doOperation(fullScreen);
     }
   }
 }
@@ -141,37 +132,130 @@ function getToggleAction(){
   return function(win){
     if (!lastHiddenApp) {
       lastHiddenApp = win.app().name();
-      win.doOperation(S.op('hide', {
-        app: 'current'
-      }));
+      S.op('hide', { app: 'current' }).run();
     }
     else {
-      win.doOperation(S.op('sequence', {
-        operations: [
-          S.op('show', { app: lastHiddenApp }),
-          S.op('focus', { app: lastHiddenApp }),
-        ]
-      }));
+      showAndFocus(lastHiddenApp);
       lastHiddenApp = null;
     }
   }
 }
 
+function isAppOpened(appName){
+  var result = false;
+
+  S.eachApp(function(app){
+    if(app.name() === appName){
+      result = true;
+    }
+  });
+
+  return result;
+}
+
+function showAndFocusApp(appName){
+  S.op('sequence', {
+    operations: [
+      S.op('show', { app: appName }),
+      S.op('focus', { app: appName })
+    ]
+  }).run();
+}
+
+// open iTerm if not opened
+// focus iTerm, if already opened
+// if Iterm is current window, hide it
+function getOpenOrFocusITermAction() {
+
+  return function(win) {
+    var appName = win.app().name();
+
+    if (appName === 'iTerm') {
+      S.op('hide', { app: 'current' }).run();
+    }
+    else {
+      if (isAppOpened('iTerm')) {
+        showAndFocusApp('iTerm')
+      }
+      else{
+        S.op('shell', {
+          command: '/usr/bin/open /Applications/iTerm.app'
+        }).run();
+      }
+    }
+  }
+}
+
+// get screen layout for current screen configuration
+function getCurrentScreenLayoutName(){
+
+  // assumes only per screen count configuration, and only two monitors
+  return S.screenCount() === 1 ? 'oneMonitor' : 'twoMonitor';
+}
+
+// common operations
+var topLeftCorner = S.op('corner', { 'width' : 'screenSizeX/2', 'height': 'screenSizeY/2', direction: 'top-left' });
+var topRightCorner = topLeftCorner.dup({ direction: 'top-right' });
+var bottomRightCorner = topLeftCorner.dup({ direction: 'bottom-right' });
+var bottomLeftCorner = topLeftCorner.dup({ direction: 'bottom-left' });
+
+// NOTE: is there any difference between using push or move operations?
+// var leftHalf = S.op('push', { style: 'bar', direction: 'left', style: 'bar-resize:screenSizeX/2' });
+// var topHalf = S.op('push', { style: 'bar', direction: 'top', style: 'bar-resize:screenSizeY/2' });
+// var rightHalf = S.op('push', { style: 'bar', direction: 'right', style: 'bar-resize:screenSizeX/2' });
+// var bottomHalf = S.op('push', { style: 'bar', direction: 'bottom', style: 'bar-resize:screenSizeY/2' });
+
+var leftHalf = S.op('move', {
+  x: 'screenOriginX',
+  y: 'screenOriginY',
+  width: 'screenSizeX/2',
+  height: 'screenSizeY'
+});
+var rightHalf = leftHalf.dup({
+  x: 'screenOriginX+screenSizeX/2',
+});
+var topHalf = leftHalf.dup({
+  width: 'screenSizeX',
+  height: 'screenSizeY/2'
+});
+var bottomHalf = topHalf.dup({
+  y: 'screenOriginY+screenSizeY/2'
+});
+
+var centerScreen = S.op('move', {
+  x: 'screenOriginX+screenSizeX/6',
+  y: 'screenOriginY+screenSizeY/6',
+  width: '2*screenSizeX/3',
+  height: '2*screenSizeY/3'
+});
+
+var fullScreen = S.op('move', {
+  'x' : 'screenOriginX',
+  'y' : 'screenOriginY',
+  'width' : 'screenSizeX',
+  'height' : 'screenSizeY'
+});
+
 // key bindings
 S.bnda({
 
-  // dock to sides, corners, center
-  '1:cmd,f4' : cornerOp.dup({ direction: 'bottom-left' }),
-  '2:cmd,f4' : S.op('push', { direction: 'bottom', style: 'bar-resize:screenSizeY/2' }),
-  '3:cmd,f4' : cornerOp.dup({ direction: 'bottom-right' }),
+  // basic layout ops
+  '1:cmd,f4' : bottomLeftCorner,
+  '2:cmd,f4' : bottomHalf,
+  '3:cmd,f4' : bottomRightCorner,
 
-  '4:cmd,f4' : S.op('push', { direction: 'left', style: 'bar-resize:screenSizeX/2' }),
-  '5:cmd,f4' : centerScreenOp,
-  '6:cmd,f4' : S.op('push', { direction: 'right', style: 'bar-resize:screenSizeX/2' }),
+  '4:cmd,f4' : leftHalf,
+  '5:cmd,f4' : centerScreen,
+  '6:cmd,f4' : rightHalf,
 
-  '7:cmd,f4' : cornerOp.dup({ direction: 'top-left' }),
-  '8:cmd,f4' : S.op('push', { direction: 'top', style: 'bar-resize:screenSizeY/2' }),
-  '9:cmd,f4' : cornerOp.dup({ direction: 'top-right' }),
+  '7:cmd,f4' : topLeftCorner,
+  '8:cmd,f4' : topHalf,
+  '9:cmd,f4' : topRightCorner,
+
+  // universal predefined layout
+  'f3:cmd,f3' : function(){
+    S.op('layout', { name: getCurrentScreenLayoutName() }).run();
+  },
 
   // toggle fullscreen
   'return:ctrl': getToggleFullscreenAction(),
@@ -222,17 +306,71 @@ S.bnda({
     }
   }),
 
+  // not clear why this switcher is better
+  // 'e:cmd': S.op('switch'),
+
   // Window Hints
   'esc:cmd' : S.op('hint', {
 		"characters" : '1234567890QWERTYUIOP'
-	})
+	}),
+
+  // global shortcut to open/focus iTerm
+  // NOTE: make sure to disable global hotkey setting in iTerm
+  // in this way ctrl,` can also open iTerm if not opened yet
+  '`:ctrl': getOpenOrFocusITermAction()
 });
 
-// TODO: define layouts and default layout for different screen configurations
-// TODO: open iterm when ctrl,~ is fired, or detect when iterm is opened, and move at predefined position
+// layouts
+var layouts = {
+  'oneMonitor': {
+    'iTerm' : {
+      operations: [leftHalf],
+      repeat: true,
+      'ignore-fail': true
+    },
+    'Google Chrome': {
+      operations: [fullScreen],
+      repeat: true,
+      'ignore-fail': true
+    },
+    'Atom': {
+      operations: [rightHalf, leftHalf],
+      repeat: true,
+      'ingore-fail': true
+    },
+    'MacPass': {
+      operations: [bottomLeftCorner]
+    },
+    'Skype': {
+      operations: [leftHalf]
+    },
+    'Slack': {
+      operations: [leftHalf]
+    },
+    'uTorrent': {
+      operations: [topHalf]
+    }
+  },
+  'twoMonitor': {
+    // TODO: define
+  }
+};
 
-// reference .slate files
-// https://github.com/dmac/dotfiles/blob/master/.slate
-// https://github.com/jigish/dotfiles/blob/master/slate.js
+S.layout('oneMonitor', layouts['oneMonitor']);
+S.layout('twoMonitor', layouts['twoMonitor']);
+
+// default layouts for different monitor configuration
+S.default(1, 'oneMonitor');
+S.default(2, 'twoMonitor');
+
+// when application is launched for the first time,
+// move it to default position according to current screen layout
+S.on('appOpened', function(event, app) {
+  var appName = app.name();
+  var layout = layouts[getCurrentScreenLayoutName()];
+  if(layout[appName]){
+    app.mainWindow().doOperation(layout[appName].operations[0]);
+  }
+});
 
 S.log('[SLATE]: done loading config');

@@ -30,6 +30,7 @@ antigen apply
 # fast man page access with <esc-h>
 autoload run-help
 
+# TODO: split between zshenv and zshrc, or move to zshenv completely
 source ${DOTFILES}/zsh/config.zsh
 source ${DOTFILES}/zsh/aliases.zsh
 for file in $(find ${DOTFILES}/functions -iname "*.zsh" -o -iname "*.sh"); do

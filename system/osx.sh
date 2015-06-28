@@ -82,3 +82,14 @@ defaults write com.apple.finder FXInfoPanesExpanded -dict \
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screencapture type -string "png"
+
+# configure Dock
+defaults write com.apple.dock tilesize -int 30
+defaults write com.apple.dock orientation -string "right"
+defaults write com.apple.dock "show-process-indicators" -int 1
+defaults write com.apple.dock "trash-full" -int 1
+defaults write com.apple.dock autohide -int 1
+defaults write com.apple.dock "dashboard-in-overlay" -int 0
+defaults write com.apple.dock magnification -int 1
+defaults write com.apple.dock "minimize-to-application" -int 1
+defaults write com.apple.dock largesize -string "62.88889"

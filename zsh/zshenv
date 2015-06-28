@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+# override to match your dotfiles dir location
 export DOTFILES="${HOME}/.dotfiles"
 
 source "${DOTFILES}/system/variables.sh"

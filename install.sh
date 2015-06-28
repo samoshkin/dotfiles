@@ -122,19 +122,18 @@ actions () {
   return 0
 }
 
-# change to repo root and save path in variable
 cd "$(dirname $0)"
 export DOTFILES=$(pwd)
+
+# evaluate variables
+source "system/variables.sh"
+source "system/private.variables.sh"
 
 install_homebrew
 
 log "Installing coreutils and git"
 brew install coreutils git || true
 brew tap homebrew/dupes
-
-# evaluate variables
-source "system/variables.sh"
-source "system/private.variables.sh"
 
 # choose what to do next
 while true; do

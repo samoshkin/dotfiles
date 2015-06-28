@@ -92,4 +92,4 @@ defaults write com.apple.dock autohide -int 1
 defaults write com.apple.dock "dashboard-in-overlay" -int 0
 defaults write com.apple.dock magnification -int 1
 defaults write com.apple.dock "minimize-to-application" -int 1
-defaults write com.apple.dock largesize -string "62.88889"
+defaults write com.apple.dock largesize -int 62

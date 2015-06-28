@@ -34,6 +34,10 @@ _ln -t ~ "${DOTFILES}/system/.slate.js"
 # let Slate automatically check for updates
 defaults write com.slate.Slate SUEnableAutomaticChecks -int 1
 
+# this is to make Slate happy w/o spaces in path
+ln -s "/Applications/Google Chrome.app" "/Applications/Google_Chrome.app"
+
+
 
 log "Setup osx defaults"
 source "${DOTFILES}/system/osx.sh"

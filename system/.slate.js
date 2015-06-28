@@ -139,18 +139,22 @@ function getToggleAction(){
       S.op('hide', { app: 'current' }).run();
     }
     else {
-      showAndFocus(lastHiddenApp);
+      showAndFocusApp(lastHiddenApp);
       lastHiddenApp = null;
     }
   }
 }
 
 function isAppOpened(appName){
-  var result = false;
+  return !!getApp(appName);
+}
+
+function getApp(appName){
+  var result = null;
 
   S.eachApp(function(app){
     if(app.name() === appName){
-      result = true;
+      result = app;
     }
   });
 
@@ -182,7 +186,7 @@ function getOpenOrFocusITermAction() {
         showAndFocusApp('iTerm')
       }
       else{
-        S.sh('/usr/bin/open /Applications/iTerm.app', true);
+        S.op('layout', { name: 'terminal' }).run();
       }
     }
   }
@@ -221,7 +225,6 @@ S.layoutWithFocus = function(name, description, appToFocus){
 
       function nextFocus(){
         window.setTimeout(function(){
-          S.log('run focus op' + i);
           focusOps[i++].run();
           if(i < focusOps.length) nextFocus();
         }, 0);
@@ -233,6 +236,20 @@ S.layoutWithFocus = function(name, description, appToFocus){
 
   return S.layout(name, description);
 };
+
+function openAppOp(appPath){
+  return S.op('shell', {
+    command: '/usr/bin/open ' + appPath + '',
+    wait: true
+  });
+}
+
+function delayOp(delay){
+  return S.op('shell', {
+    command: '/bin/sleep ' + delay,
+    wait: true
+  });
+}
 
 // common operations
 var topLeftCorner = S.op('corner', { 'width' : 'screenSizeX/2', 'height': 'screenSizeY/2', direction: 'top-left' });
@@ -324,6 +341,14 @@ S.layout('twoMonitor', {
 
 // NOTE: for now assume these layouts are for 1 monitor only
 S.layoutWithFocus('browsing', {
+  '_before_': {
+    operations: [
+
+      // NOTE: slate does not support shell commands with spaces in paths
+      // so I symlinked "Google Chrome.app"
+      openAppOp('/Applications/Google_Chrome.app')
+    ]
+  },
   'Google Chrome': {
     operations: [fullScreen],
     repeat: true,
@@ -332,8 +357,13 @@ S.layoutWithFocus('browsing', {
 }, 'Google Chrome');
 
 S.layoutWithFocus('chat', {
+  '_before_': {
+    operations: [
+      openAppOp('/Applications/Skype.app'),
+      openAppOp('/Applications/Slack.app')
+    ]
+  },
   'Slack': {
-
     // Slack cannot be resized smaller than 768px
     // so make this constraint explicit here
     operations: [leftHalf.dup({ width: 768 })],
@@ -348,6 +378,12 @@ S.layoutWithFocus('chat', {
 }, 'Slack');
 
 S.layoutWithFocus('dev', {
+  '_before_': {
+    operations: [
+      openAppOp('/Applications/iTerm.app'),
+      openAppOp('/Applications/Atom.app')
+    ]
+  },
   'iTerm': {
     // Slack cannot be resized smaller than 768px
     // so make this constraint explicit here
@@ -361,6 +397,20 @@ S.layoutWithFocus('dev', {
     'ignore-fail': true
   }
 }, 'iTerm');
+
+S.layoutWithFocus('terminal', {
+  '_before_': {
+    operations: [
+      openAppOp('/Applications/iTerm.app'),
+      delayOp(0.2)
+    ]
+  },
+  'iTerm': {
+    operations: [leftHalf],
+    repeat: true,
+    'ignore-fail': true
+  }
+});
 
 
 // default layouts for different monitor configuration
@@ -456,14 +506,6 @@ S.bnda({
   // NOTE: make sure to disable global hotkey setting in iTerm
   // in this way ctrl,` can also open iTerm if not opened yet
   '`:ctrl': getOpenOrFocusITermAction()
-});
-
-// move iterm to lefthalf by default
-// NOTE: slate might crash when trying to apply operation for just opened app
-S.on('appOpened', function(event, app) {
-  if(app.name() === 'iTerm'){
-    app.mainWindow().doOperation(leftHalf);
-  }
 });
 
 S.log('[SLATE]: done loading config');

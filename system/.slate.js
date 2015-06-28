@@ -178,9 +178,7 @@ function getOpenOrFocusITermAction() {
         showAndFocusApp('iTerm')
       }
       else{
-        S.op('shell', {
-          command: '/usr/bin/open /Applications/iTerm.app'
-        }).run();
+        S.sh('/usr/bin/open /Applications/iTerm.app', true);
       }
     }
   }
@@ -321,58 +319,49 @@ S.bnda({
 });
 
 // layouts
-var layouts = {
-  'oneMonitor': {
-    'iTerm' : {
-      operations: [leftHalf],
-      repeat: true,
-      'ignore-fail': true
-    },
-    'Google Chrome': {
-      operations: [fullScreen],
-      repeat: true,
-      'ignore-fail': true
-    },
-    'Atom': {
-      operations: [rightHalf, leftHalf],
-      repeat: true,
-      'ingore-fail': true
-    },
-    'MacPass': {
-      operations: [bottomLeftCorner]
-    },
-    'Skype': {
-      operations: [leftHalf]
-    },
-    'Slack': {
-      operations: [leftHalf]
-    },
-    'uTorrent': {
-      operations: [topHalf]
-    }
+S.layout('oneMonitor', {
+  'iTerm' : {
+    operations: [leftHalf],
+    repeat: true,
+    'ignore-fail': true
   },
-  'twoMonitor': {
-    // TODO: define
+  'Google Chrome': {
+    operations: [fullScreen],
+    repeat: true,
+    'ignore-fail': true
+  },
+  'Atom': {
+    operations: [rightHalf, leftHalf],
+    repeat: true,
+    'ingore-fail': true
+  },
+  'MacPass': {
+    operations: [bottomLeftCorner]
+  },
+  'Skype': {
+    operations: [leftHalf]
+  },
+  'Slack': {
+    operations: [leftHalf]
+  },
+  'uTorrent': {
+    operations: [topHalf]
   }
-};
+});
 
-S.layout('oneMonitor', layouts['oneMonitor']);
-S.layout('twoMonitor', layouts['twoMonitor']);
+S.layout('twoMonitor', {
+  // TODO: define
+});
 
 // default layouts for different monitor configuration
 S.default(1, 'oneMonitor');
 S.default(2, 'twoMonitor');
 
-// TODO: maybe keep track of current layout
-// when application is launched for the first time,
-// move it to default position according to current screen layout
+// move iterm to lefthalf by default
+// NOTE: slate might crash when trying to apply operation for just opened app
 S.on('appOpened', function(event, app) {
-  var appName = app.name();
-  var layout = layouts[getCurrentScreenLayoutName()];
-
-  // for some reasons, opening Skype crashes Slate completely
-  if(layout[appName] && appName !== 'Skype'){
-    app.mainWindow().doOperation(layout[appName].operations[0]);
+  if(app.name() === 'iTerm'){
+    app.mainWindow().doOperation(leftHalf);
   }
 });
 

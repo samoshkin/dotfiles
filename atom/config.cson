@@ -24,6 +24,7 @@
     softTabs: false
     showInvisibles: true
     tabLength: 2
+    fontSize: 15
   whitespace:
     ensureSingleTrailingNewline: true
   "spell-check": {}

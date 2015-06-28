@@ -13,7 +13,7 @@ S.cfga({
   'checkDefaultsOnLoad': true,
   'focusCheckWidthMax': 3000,
   'orderScreensLeftToRight': true,
-	'modalEscapeKey': 'esc',
+  'modalEscapeKey': 'esc',
   'windowHintsFontSize': 60,
   'windowHintsShowIcons': false,
   'windowHintsDuration': 5,
@@ -23,6 +23,10 @@ S.cfga({
   'windowHintsSpreadPadding': 20,
   'repeatOnHoldOps': true,
   'secondsBeforeRepeat': 0.1
+
+  // NOTE: this is buggy, some apps are focused, while other are skipped
+  // see layoutWithFocus() below as a workaround
+  // 'layoutFocusOnActivate': true
 });
 var resizeDelta = '5%';
 var moveDelta = '5%';
@@ -191,17 +195,50 @@ function getCurrentScreenLayoutName(){
   return S.screenCount() === 1 ? 'oneMonitor' : 'twoMonitor';
 }
 
+// S.layout() decorator, which focus all apps in description
+// appToFocus is focused the last one
+// this is workaround to buggy 'layoutFocusOnActivate' global config settings
+// anyway, I would like for some layouts to focus apps
+// while for other just to settle app position, w/o changing focus
+// this function makes it possible as opposite to 'layoutFocusOnActivate' settings, which is applied globally
+S.layoutWithFocus = function(name, description, appToFocus){
+  var apps = Object.keys(description);
+
+  // prepare ordered list of focus ops
+  var focusOps = [];
+  for(var i = 0; i < apps.length; i++){
+    if(apps[i] === appToFocus) continue;
+    focusOps.push(S.op('focus', { app: apps[i] }));
+  }
+  if(appToFocus) focusOps.push(S.op('focus', { app: appToFocus }));
+
+  // run each focus op on next event loop
+  // NOTE: runnig focus ops in the same loop leads to unpredictable results
+  // some apps are focused, while other are skipped
+  description['_after_'] = {
+    operations: [ function(){
+      var i = 0;
+
+      function nextFocus(){
+        window.setTimeout(function(){
+          S.log('run focus op' + i);
+          focusOps[i++].run();
+          if(i < focusOps.length) nextFocus();
+        }, 0);
+      }
+
+      nextFocus();
+    }]
+  };
+
+  return S.layout(name, description);
+};
+
 // common operations
 var topLeftCorner = S.op('corner', { 'width' : 'screenSizeX/2', 'height': 'screenSizeY/2', direction: 'top-left' });
 var topRightCorner = topLeftCorner.dup({ direction: 'top-right' });
 var bottomRightCorner = topLeftCorner.dup({ direction: 'bottom-right' });
 var bottomLeftCorner = topLeftCorner.dup({ direction: 'bottom-left' });
-
-// NOTE: is there any difference between using push or move operations?
-// var leftHalf = S.op('push', { style: 'bar', direction: 'left', style: 'bar-resize:screenSizeX/2' });
-// var topHalf = S.op('push', { style: 'bar', direction: 'top', style: 'bar-resize:screenSizeY/2' });
-// var rightHalf = S.op('push', { style: 'bar', direction: 'right', style: 'bar-resize:screenSizeX/2' });
-// var bottomHalf = S.op('push', { style: 'bar', direction: 'bottom', style: 'bar-resize:screenSizeY/2' });
 
 var leftHalf = S.op('move', {
   x: 'screenOriginX',
@@ -220,19 +257,115 @@ var bottomHalf = topHalf.dup({
   y: 'screenOriginY+screenSizeY/2'
 });
 
+var leftThird = leftHalf.dup({
+  width: 'screenSizeX/3'
+});
+var centerThird = leftHalf.dup({
+  x: 'screenOriginX+screenSizeX/3',
+  width: 'screenSizeX/3'
+});
+var rightThird = leftHalf.dup({
+  x: 'screenOriginX+2*screenSizeX/3',
+  width: 'screenSizeX/3'
+});
+var rightTwoThirds = leftHalf.dup({
+  x: 'screenOriginX+screenSizeX/3',
+  width: '2*screenSizeX/3'
+});
+
 var centerScreen = S.op('move', {
   x: 'screenOriginX+screenSizeX/6',
   y: 'screenOriginY+screenSizeY/6',
   width: '2*screenSizeX/3',
   height: '2*screenSizeY/3'
 });
-
 var fullScreen = S.op('move', {
   'x' : 'screenOriginX',
   'y' : 'screenOriginY',
   'width' : 'screenSizeX',
   'height' : 'screenSizeY'
 });
+
+// layouts
+S.layout('oneMonitor', {
+  'iTerm' : {
+    operations: [leftHalf],
+    repeat: true,
+    'ignore-fail': true
+  },
+  'Google Chrome': {
+    operations: [fullScreen],
+    repeat: true,
+    'ignore-fail': true
+  },
+  'Atom': {
+    operations: [rightHalf, leftHalf],
+    repeat: true,
+    'ingore-fail': true
+  },
+  'MacPass': {
+    operations: [bottomLeftCorner]
+  },
+  'Skype': {
+    operations: [leftHalf]
+  },
+  'Slack': {
+    operations: [leftHalf]
+  },
+  'uTorrent': {
+    operations: [topHalf]
+  }
+});
+
+S.layout('twoMonitor', {
+  // TODO: define configurations for 2 monitors
+});
+
+
+// NOTE: for now assume these layouts are for 1 monitor only
+S.layoutWithFocus('browsing', {
+  'Google Chrome': {
+    operations: [fullScreen],
+    repeat: true,
+    'ignore-fail': true
+  }
+}, 'Google Chrome');
+
+S.layoutWithFocus('chat', {
+  'Slack': {
+
+    // Slack cannot be resized smaller than 768px
+    // so make this constraint explicit here
+    operations: [leftHalf.dup({ width: 768 })],
+    repeat: true,
+    'ignore-fail': true
+  },
+  'Skype': {
+    operations: [rightHalf.dup({ x: 768, width: 'screenSizeX-768' })],
+    repeat: true,
+    'ignore-fail': true
+  }
+}, 'Slack');
+
+S.layoutWithFocus('dev', {
+  'iTerm': {
+    // Slack cannot be resized smaller than 768px
+    // so make this constraint explicit here
+    operations: [leftThird],
+    repeat: true,
+    'ignore-fail': true
+  },
+  'Atom': {
+    operations: [rightTwoThirds],
+    repeat: true,
+    'ignore-fail': true
+  }
+}, 'iTerm');
+
+
+// default layouts for different monitor configuration
+S.default(1, 'oneMonitor');
+S.default(2, 'twoMonitor');
 
 // key bindings
 S.bnda({
@@ -250,10 +383,17 @@ S.bnda({
   '8:cmd,f4' : topHalf,
   '9:cmd,f4' : topRightCorner,
 
-  // universal predefined layout
+  // predefined layouts
+
+  // universal layout, detects current screen count
   'f3:cmd,f3' : function(){
     S.op('layout', { name: getCurrentScreenLayoutName() }).run();
   },
+
+  // task-based layouts, aka workspaces
+  '1:cmd,f3': S.op('layout', { name: 'browsing' }),
+  '2:cmd,f3': S.op('layout', { name: 'chat' }),
+  '3:cmd,f3': S.op('layout', { name: 'dev' }),
 
   // toggle fullscreen
   'return:ctrl': getToggleFullscreenAction(),
@@ -317,45 +457,6 @@ S.bnda({
   // in this way ctrl,` can also open iTerm if not opened yet
   '`:ctrl': getOpenOrFocusITermAction()
 });
-
-// layouts
-S.layout('oneMonitor', {
-  'iTerm' : {
-    operations: [leftHalf],
-    repeat: true,
-    'ignore-fail': true
-  },
-  'Google Chrome': {
-    operations: [fullScreen],
-    repeat: true,
-    'ignore-fail': true
-  },
-  'Atom': {
-    operations: [rightHalf, leftHalf],
-    repeat: true,
-    'ingore-fail': true
-  },
-  'MacPass': {
-    operations: [bottomLeftCorner]
-  },
-  'Skype': {
-    operations: [leftHalf]
-  },
-  'Slack': {
-    operations: [leftHalf]
-  },
-  'uTorrent': {
-    operations: [topHalf]
-  }
-});
-
-S.layout('twoMonitor', {
-  // TODO: define
-});
-
-// default layouts for different monitor configuration
-S.default(1, 'oneMonitor');
-S.default(2, 'twoMonitor');
 
 // move iterm to lefthalf by default
 // NOTE: slate might crash when trying to apply operation for just opened app

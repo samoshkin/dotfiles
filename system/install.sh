@@ -24,7 +24,7 @@ brew cask install \
   skype \
   slack \
   utorrent \
-  slate \
+  mattr-slate \
   vlc || true
 
 # TODO: need to enable Slate in "System Preferences" -> "Security & Privacy" -> "Accessibility"

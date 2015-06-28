@@ -363,12 +363,15 @@ S.layout('twoMonitor', layouts['twoMonitor']);
 S.default(1, 'oneMonitor');
 S.default(2, 'twoMonitor');
 
+// TODO: maybe keep track of current layout
 // when application is launched for the first time,
 // move it to default position according to current screen layout
 S.on('appOpened', function(event, app) {
   var appName = app.name();
   var layout = layouts[getCurrentScreenLayoutName()];
-  if(layout[appName]){
+
+  // for some reasons, opening Skype crashes Slate completely
+  if(layout[appName] && appName !== 'Skype'){
     app.mainWindow().doOperation(layout[appName].operations[0]);
   }
 });

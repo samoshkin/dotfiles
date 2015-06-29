@@ -37,3 +37,13 @@
 # in case of conflicting bindings across several packages
 '.platform-darwin atom-workspace atom-text-editor':
   'ctrl-shift-M': 'markdown-preview:toggle'
+
+'atom-text-editor':
+  'ctrl-alt-cmd-/': 'unset!'
+  'ctrl-?': 'unset!'
+
+'atom-text-editor':
+  'cmd-shift-/': 'block-comment:toggle'
+
+'.platform-darwin':
+  'cmd-s': 'window:save-all'

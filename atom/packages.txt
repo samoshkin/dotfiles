@@ -2,6 +2,7 @@ atom-beautify
 atom-monokai
 atom-solarized-dark-ui
 autocomplete-paths
+block-comment
 color-picker
 editorconfig
 emmet
@@ -24,3 +25,4 @@ solarized-dark-ui
 tabs-to-spaces
 todo-show
 zentabs
+

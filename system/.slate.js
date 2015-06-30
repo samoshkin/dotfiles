@@ -4,15 +4,17 @@ S.log('[SLATE]: loading config');
 // https://github.com/dmac/dotfiles/blob/master/.slate
 // https://github.com/jigish/dotfiles/blob/master/slate.js
 
-// TODO: add multiple monitors support
 
-// global configs
+// ==================
+// Global config
+// ==================
+
 S.cfga({
   'defaultToCurrentScreen': true,
   'secondsBetweenRepeat': 0.1,
   'checkDefaultsOnLoad': true,
   'focusCheckWidthMax': 3000,
-  'orderScreensLeftToRight': true,
+  'orderScreensLeftToRight': false,
   'modalEscapeKey': 'esc',
   'windowHintsFontSize': 60,
   'windowHintsShowIcons': false,
@@ -22,41 +24,69 @@ S.cfga({
   'windowHintsShowIcons': true,
   'windowHintsSpreadPadding': 20,
   'repeatOnHoldOps': true,
-  'secondsBeforeRepeat': 0.1
+  'secondsBeforeRepeat': 0.1,
 
   // NOTE: this is buggy, some apps are focused, while other are skipped
   // see layoutWithFocus() below as a workaround
-  // 'layoutFocusOnActivate': true
+  'layoutFocusOnActivate': false
 });
 var resizeDelta = '5%';
 var moveDelta = '5%';
-var screens = [];
-var thisScreenConf = '0';
+var currentScreenConf = null;
 
-// detect monitors
-function detectScreens(){
-  var laptop = S.screenr(thisScreenConf);
-  screens = [laptop];
+// mbp 15 retina
+var thisLaptopScreenRes = {
+  width: 1440,
+  height: 900
+};
 
-  S.escreen(function(screen){
-    if(screen.id() !== laptop.id()){
-      screens.push(screen);
-    }
-  });
+// ==================
+// Functions
+// ==================
+
+
+// screen configuration declaration, used for crafting different layouts
+// assumes at most 2 monitors
+function ScreenConf(name){
+  this.name = name;
+
+  // assumes orderScreensLeftToRight = false
+  // laptop - 0
+  // external mon - 1
+  this.mainScreen = '0';
+  this.secondaryScreen = '1';
+
+  this.isLaptopOnly = function() {
+    return this.name === 'laptop';
+  }
+
+  this.getScreenCount = function() {
+    return this.name === 'laptop' || this.name === 'monitor' ? 1 : 2;
+  }
 }
 
-detectScreens();
+ScreenConf.laptopOnly = function() {
+  return new ScreenConf('laptop');
+};
 
+ScreenConf.laptopAndMonitor = function() {
+  return new ScreenConf('laptop+monitor');
+};
 
-// NOTE: maybe we don't need it
-// S.on('screenConfigurationChanged', function(){
-//   detectScreens();
-// });
+ScreenConf.monitorOnly = function() {
+  return new ScreenConf('monitor');
+};
+
+ScreenConf.twoMonitors = function() {
+  return new ScreenConf('monitorx2');
+};
 
 // iterate through screens
-function getNextScreen(){
+/*function getNextScreen(){
   return (S.window().screen().id() + 1) % S.screenCount();
 };
+*/
+
 
 // toggle fullscreen and be able to revert back to original position
 function getToggleFullscreenAction(){
@@ -192,29 +222,20 @@ function getOpenOrFocusITermAction() {
   }
 }
 
-// get screen layout for current screen configuration
-function getCurrentScreenLayoutName(){
-
-  // assumes only per screen count configuration, and only two monitors
-  return S.screenCount() === 1 ? 'oneMonitor' : 'twoMonitor';
-}
-
-// S.layout() decorator, which focus all apps in description
-// appToFocus is focused the last one
+// S.layout() decorator, which focus all apps in description in order, optionally skipping some of them
 // this is workaround to buggy 'layoutFocusOnActivate' global config settings
 // anyway, I would like for some layouts to focus apps
 // while for other just to settle app position, w/o changing focus
 // this function makes it possible as opposite to 'layoutFocusOnActivate' settings, which is applied globally
-S.layoutWithFocus = function(name, description, appToFocus){
+S.layoutWithFocus = function(name, description){
   var apps = Object.keys(description);
 
   // prepare ordered list of focus ops
   var focusOps = [];
   for(var i = 0; i < apps.length; i++){
-    if(apps[i] === appToFocus) continue;
+    if(description[apps[i]].skipFocus || apps[i] === '_before_' || apps[i] === '_after_') continue;
     focusOps.push(S.op('focus', { app: apps[i] }));
   }
-  if(appToFocus) focusOps.push(S.op('focus', { app: appToFocus }));
 
   // run each focus op on next event loop
   // NOTE: runnig focus ops in the same loop leads to unpredictable results
@@ -237,21 +258,44 @@ S.layoutWithFocus = function(name, description, appToFocus){
   return S.layout(name, description);
 };
 
-function openAppOp(appPath){
+function openAppOp(appPath) {
   return S.op('shell', {
     command: '/usr/bin/open ' + appPath + '',
     wait: true
   });
 }
 
-function delayOp(delay){
+function ensureOpenedApps() {
+  var ops = [];
+  for(var i = 0; i < arguments.length; i++) {
+    ops.push(openAppOp(arguments[i]));
+  }
+  return { operations: ops };
+}
+
+function delayOp(delay) {
   return S.op('shell', {
     command: '/bin/sleep ' + delay,
     wait: true
   });
 }
 
-// common operations
+function workspaceOp(name) {
+  return function(){
+    S.log('activate layout' + name + '@' + currentScreenConf.name);
+    S.op('layout', { name: name + '@' + currentScreenConf.name }).run();
+  }
+}
+
+function hasLaptopNow() {
+  var rect = S.screenForRef(thisLaptopScreenRes.width + 'x' + thisLaptopScreenRes.height).rect();
+  return rect.width === thisLaptopScreenRes.width && rect.height === thisLaptopScreenRes.height;
+}
+
+// ==================
+// Common operations
+// ==================
+
 var topLeftCorner = S.op('corner', { 'width' : 'screenSizeX/2', 'height': 'screenSizeY/2', direction: 'top-left' });
 var topRightCorner = topLeftCorner.dup({ direction: 'top-right' });
 var bottomRightCorner = topLeftCorner.dup({ direction: 'bottom-right' });
@@ -303,100 +347,102 @@ var fullScreen = S.op('move', {
   'height' : 'screenSizeY'
 });
 
-// layouts
-S.layout('oneMonitor', {
-  'iTerm' : {
-    operations: [leftHalf],
-    repeat: true,
-    'ignore-fail': true
-  },
-  'Google Chrome': {
-    operations: [fullScreen],
-    repeat: true,
-    'ignore-fail': true
-  },
-  'Atom': {
-    operations: [rightHalf, leftHalf],
-    repeat: true,
-    'ingore-fail': true
-  },
-  'MacPass': {
-    operations: [bottomLeftCorner]
-  },
-  'Skype': {
-    operations: [leftHalf]
-  },
-  'Slack': {
-    operations: [leftHalf]
-  },
-  'uTorrent': {
-    operations: [topHalf]
+
+// ==================
+// Layouts
+// ==================
+
+function createBrowsingLayout(screenConf) {
+
+  return S.layoutWithFocus('browsing@' + screenConf.name, {
+    '_before_': ensureOpenedApps(
+      '/Applications/Google_Chrome.app'),
+
+    'Google Chrome': {
+
+      operations: [fullScreen.dup({ screen: screenConf.mainScreen })],
+      repeat: true,
+      'ignore-fail': true
+    }
+  });
+}
+
+function createChatLayout(screenConf){
+
+  return S.layoutWithFocus('chat@' + screenConf.name, {
+    '_before_': ensureOpenedApps(
+      '/Applications/Skype.app',
+      '/Applications/Slack.app'),
+
+    'Slack': {
+
+      // Slack cannot be resized smaller than 768px
+      // 768px < 1400px/2, so make this constraint explicit here
+      operations: [screenConf.isLaptopOnly()
+        ? leftHalf.dup({ width: 768, screen: screenConf.secondaryScreen })
+        : leftHalf.dup({ screen: screenConf.secondaryScreen })],
+      repeat: true,
+      'ignore-fail': true
+    },
+    'Skype': {
+      operations: [screenConf.isLaptopOnly()
+        ? rightHalf.dup({ x: 768, width: 'screenSizeX-768', screen: screenConf.secondaryScreen })
+        : rightHalf.dup({ screen : screenConf.secondaryScreen })],
+      repeat: true,
+      'ignore-fail': true
+    }
+  });
+}
+function createDevLayout(screenConf){
+
+  if(screenConf.getScreenCount() === 1) {
+    return S.layoutWithFocus('dev@' + screenConf.name, {
+      '_before_': ensureOpenedApps(
+        '/Applications/iTerm.app',
+        '/Applications/Atom.app'),
+
+      'iTerm': {
+        operations: [
+          leftHalf.dup({ screen: screenConf.mainScreen }),
+          rightHalf.dup({ screen: screenConf.mainScreen })],
+        repeat: true,
+        'ignore-fail': true,
+        skipFocus: true
+      },
+      'Atom': {
+        operations: [fullScreen.dup({ screen: screenConf.mainScreen })],
+        repeat: true,
+        'ignore-fail': true
+      }
+    });
+  } else {
+    return S.layoutWithFocus('dev@' + screenConf.name, {
+      '_before_': ensureOpenedApps(
+        '/Applications/iTerm.app',
+        '/Applications/Atom.app',
+        '/Applications/Google_Chrome.app'),
+
+      'iTerm': {
+        operations: [
+          leftHalf.dup({ screen: screenConf.mainScreen }),
+          rightHalf.dup({ screen: screenConf.mainScreen })],
+        repeat: true,
+        'ignore-fail': true,
+        skipFocus: true,
+      },
+      'Atom': {
+        operations: [fullScreen.dup({ screen : screenConf.mainScreen })],
+        repeat: true,
+        'ignore-fail': true
+      },
+      'Google Chrome': {
+        operations: [fullScreen.dup({ screen: screenConf.secondaryScreen })],
+        repeat: true,
+        'ignore-fail': true
+      }
+    });
   }
-});
-
-S.layout('twoMonitor', {
-  // TODO: define configurations for 2 monitors
-});
-
-
-// NOTE: for now assume these layouts are for 1 monitor only
-S.layoutWithFocus('browsing', {
-  '_before_': {
-    operations: [
-
-      // NOTE: slate does not support shell commands with spaces in paths
-      // so I symlinked "Google Chrome.app"
-      openAppOp('/Applications/Google_Chrome.app')
-    ]
-  },
-  'Google Chrome': {
-    operations: [fullScreen],
-    repeat: true,
-    'ignore-fail': true
-  }
-}, 'Google Chrome');
-
-S.layoutWithFocus('chat', {
-  '_before_': {
-    operations: [
-      openAppOp('/Applications/Skype.app'),
-      openAppOp('/Applications/Slack.app')
-    ]
-  },
-  'Slack': {
-    // Slack cannot be resized smaller than 768px
-    // so make this constraint explicit here
-    operations: [leftHalf.dup({ width: 768 })],
-    repeat: true,
-    'ignore-fail': true
-  },
-  'Skype': {
-    operations: [rightHalf.dup({ x: 768, width: 'screenSizeX-768' })],
-    repeat: true,
-    'ignore-fail': true
-  }
-}, 'Slack');
-
-S.layoutWithFocus('dev', {
-  '_before_': {
-    operations: [
-      openAppOp('/Applications/iTerm.app'),
-      openAppOp('/Applications/Atom.app')
-    ]
-  },
-  'iTerm': {
-    // Slack cannot be resized smaller than 768px
-    // so make this constraint explicit here
-    operations: [leftThird],
-    repeat: true,
-    'ignore-fail': true
-  },
-  'Atom': {
-    operations: [rightTwoThirds],
-    repeat: true,
-    'ignore-fail': true
-  }
-}, 'iTerm');
+}
 
 S.layoutWithFocus('terminal', {
   '_before_': {
@@ -406,18 +452,48 @@ S.layoutWithFocus('terminal', {
     ]
   },
   'iTerm': {
-    operations: [leftHalf],
+    operations: [leftHalf, rightHalf],
     repeat: true,
     'ignore-fail': true
   }
 });
 
+// create predefined layouts for each screen conf
+createBrowsingLayout(ScreenConf.laptopOnly());
+createBrowsingLayout(ScreenConf.laptopAndMonitor());
+createBrowsingLayout(ScreenConf.monitorOnly());
+createBrowsingLayout(ScreenConf.twoMonitors());
 
-// default layouts for different monitor configuration
-S.default(1, 'oneMonitor');
-S.default(2, 'twoMonitor');
+createChatLayout(ScreenConf.laptopOnly());
+createChatLayout(ScreenConf.laptopAndMonitor());
+createChatLayout(ScreenConf.monitorOnly());
+createChatLayout(ScreenConf.twoMonitors());
 
-// key bindings
+createDevLayout(ScreenConf.laptopOnly());
+createDevLayout(ScreenConf.laptopAndMonitor());
+createDevLayout(ScreenConf.monitorOnly());
+createDevLayout(ScreenConf.twoMonitors());
+
+// detect current screen conf
+S.default(1, function() {
+  currentScreenConf = hasLaptopNow()
+    ? ScreenConf.laptopOnly()
+    : ScreenConf.monitorOnly();
+
+  S.log('detected screen configuration: ' + currentScreenConf.name);
+});
+S.default(2, function() {
+  currentScreenConf = hasLaptopNow()
+    ? ScreenConf.laptopAndMonitor()
+    : ScreenConf.twoMonitors();
+
+  S.log('detected screen configuration: ' + currentScreenConf.name);
+});
+
+// ==================
+// Keystroke bindings
+// ==================
+
 S.bnda({
 
   // basic layout ops
@@ -433,17 +509,24 @@ S.bnda({
   '8:cmd,f4' : topHalf,
   '9:cmd,f4' : topRightCorner,
 
-  // predefined layouts
+  // show grid
+  // TODO: define grid size for external monitor
+  'f4:cmd,f4' : S.op('grid', {
+    'grids' : {
 
-  // universal layout, detects current screen count
-  'f3:cmd,f3' : function(){
-    S.op('layout', { name: getCurrentScreenLayoutName() }).run();
-  },
+      // macbook pro 15' retina 16:10 aspect ratio
+      // TODO: switch to resolution-based criteria
+      '0' : {
+        "width" : 16,
+        "height" : 10
+      }
+    }
+  }),
 
   // task-based layouts, aka workspaces
-  '1:cmd,f3': S.op('layout', { name: 'browsing' }),
-  '2:cmd,f3': S.op('layout', { name: 'chat' }),
-  '3:cmd,f3': S.op('layout', { name: 'dev' }),
+  '1:cmd,f3': workspaceOp('browsing'),
+  '2:cmd,f3': workspaceOp('chat'),
+  '3:cmd,f3': workspaceOp('dev'),
 
   // toggle fullscreen
   'return:ctrl': getToggleFullscreenAction(),
@@ -481,19 +564,6 @@ S.bnda({
   // TODO: check on external monitor later
   // 'f4:cmd,alt':  S.op('throw', { 'screen' : getNextScreen(), 'width': 'screenSizeX', 'height': 'screenSizeY' }),
 
-  // show grid
-  // TODO: define grid size for external monitor
-  'f4:cmd,f4' : S.op('grid', {
-    'grids' : {
-
-      // macbook pro 15' retina 16:10 aspect ratio
-      '0' : {
-        "width" : 16,
-        "height" : 10
-      }
-    }
-  }),
-
   // not clear why this switcher is better
   // 'e:cmd': S.op('switch'),
 
@@ -504,7 +574,7 @@ S.bnda({
 
   // global shortcut to open/focus iTerm
   // NOTE: make sure to disable global hotkey setting in iTerm
-  // in this way ctrl,` can also open iTerm if not opened yet
+  // in this way "ctrl,`" can also open iTerm if not opened yet
   '`:ctrl': getOpenOrFocusITermAction()
 });
 

@@ -9,6 +9,7 @@ emmet
 enhanced-tabs
 file-icons
 highlight-line
+last-cursor-position
 linter
 linter-jshint
 linter-shellcheck
@@ -25,4 +26,3 @@ solarized-dark-ui
 tabs-to-spaces
 todo-show
 zentabs
-

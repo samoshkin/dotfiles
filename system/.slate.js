@@ -82,11 +82,16 @@ ScreenConf.twoMonitors = function() {
 };
 
 // iterate through screens
-/*function getNextScreen(){
-  return (S.window().screen().id() + 1) % S.screenCount();
-};
-*/
+function getNextScreen(win){
+  // FIXME: screen().id() does not regard "orderScreensLeftToRight: false"
+  // and returns ids according to left to right ordering
+  // according to OSX ordering, laptop - 0, monitor - 1
+  // according to left-to-right order: laptop - 1, monitor - 0 (specific to my workdesk)
 
+  // this workaround will work as soon as secondary monitor is the leftmost
+  // yes, this is very ugly
+  return S.screenForRef(S.window().screen().id());
+};
 
 // toggle fullscreen and be able to revert back to original position
 function getToggleFullscreenAction(){
@@ -374,6 +379,13 @@ function createChatLayout(screenConf){
       '/Applications/Skype.app',
       '/Applications/Slack.app'),
 
+    'Skype': {
+      operations: [screenConf.isLaptopOnly()
+        ? rightHalf.dup({ x: 768, width: 'screenSizeX-768', screen: screenConf.secondaryScreen })
+        : rightHalf.dup({ screen : screenConf.secondaryScreen })],
+      repeat: true,
+      'ignore-fail': true
+    },
     'Slack': {
 
       // Slack cannot be resized smaller than 768px
@@ -381,13 +393,6 @@ function createChatLayout(screenConf){
       operations: [screenConf.isLaptopOnly()
         ? leftHalf.dup({ width: 768, screen: screenConf.secondaryScreen })
         : leftHalf.dup({ screen: screenConf.secondaryScreen })],
-      repeat: true,
-      'ignore-fail': true
-    },
-    'Skype': {
-      operations: [screenConf.isLaptopOnly()
-        ? rightHalf.dup({ x: 768, width: 'screenSizeX-768', screen: screenConf.secondaryScreen })
-        : rightHalf.dup({ screen : screenConf.secondaryScreen })],
       repeat: true,
       'ignore-fail': true
     }
@@ -430,13 +435,13 @@ function createDevLayout(screenConf){
         'ignore-fail': true,
         skipFocus: true,
       },
-      'Atom': {
-        operations: [fullScreen.dup({ screen : screenConf.mainScreen })],
+      'Google Chrome': {
+        operations: [fullScreen.dup({ screen: screenConf.secondaryScreen })],
         repeat: true,
         'ignore-fail': true
       },
-      'Google Chrome': {
-        operations: [fullScreen.dup({ screen: screenConf.secondaryScreen })],
+      'Atom': {
+        operations: [fullScreen.dup({ screen : screenConf.mainScreen })],
         repeat: true,
         'ignore-fail': true
       }
@@ -510,13 +515,16 @@ S.bnda({
   '9:cmd,f4' : topRightCorner,
 
   // show grid
-  // TODO: define grid size for external monitor
   'f4:cmd,f4' : S.op('grid', {
     'grids' : {
 
-      // macbook pro 15' retina 16:10 aspect ratio
-      // TODO: switch to resolution-based criteria
-      '0' : {
+      // macbook pro 15' retina, 16:10 aspect ratio
+      '1440x900' : {
+        "width" : 16,
+        "height" : 10
+      },
+      // dell u2412, 16:10
+      '1920x1200' : {
         "width" : 16,
         "height" : 10
       }
@@ -560,9 +568,7 @@ S.bnda({
 
   'h:cmd,shift' : getToggleAction(),
 
-  // throw to next screen
-  // TODO: check on external monitor later
-  // 'f4:cmd,alt':  S.op('throw', { 'screen' : getNextScreen(), 'width': 'screenSizeX', 'height': 'screenSizeY' }),
+  'f3:cmd,f3': S.op('throw', { 'screen' : getNextScreen }),
 
   // not clear why this switcher is better
   // 'e:cmd': S.op('switch'),

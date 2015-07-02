@@ -408,14 +408,13 @@ function createDevLayout(screenConf){
 
       'iTerm': {
         operations: [
-          leftHalf.dup({ screen: screenConf.mainScreen }),
-          rightHalf.dup({ screen: screenConf.mainScreen })],
+          leftThird.dup({ screen: screenConf.mainScreen })
+        ],
         repeat: true,
-        'ignore-fail': true,
-        skipFocus: true
+        'ignore-fail': true
       },
       'Atom': {
-        operations: [fullScreen.dup({ screen: screenConf.mainScreen })],
+        operations: [rightTwoThirds.dup({ screen: screenConf.mainScreen })],
         repeat: true,
         'ignore-fail': true
       }
@@ -429,11 +428,10 @@ function createDevLayout(screenConf){
 
       'iTerm': {
         operations: [
-          leftHalf.dup({ screen: screenConf.mainScreen }),
-          rightHalf.dup({ screen: screenConf.mainScreen })],
+          leftThird.dup({ screen: screenConf.mainScreen })
+        ],
         repeat: true,
-        'ignore-fail': true,
-        skipFocus: true,
+        'ignore-fail': true
       },
       'Google Chrome': {
         operations: [fullScreen.dup({ screen: screenConf.secondaryScreen })],
@@ -441,7 +439,7 @@ function createDevLayout(screenConf){
         'ignore-fail': true
       },
       'Atom': {
-        operations: [fullScreen.dup({ screen : screenConf.mainScreen })],
+        operations: [rightTwoThirds.dup({ screen : screenConf.mainScreen })],
         repeat: true,
         'ignore-fail': true
       }
@@ -575,8 +573,8 @@ S.bnda({
 
   // Window Hints
   'esc:cmd' : S.op('hint', {
-		"characters" : '1234567890QWERTYUIOP'
-	}),
+    "characters" : '1234567890QWERTYUIOP'
+  }),
 
   // global shortcut to open/focus iTerm
   // NOTE: make sure to disable global hotkey setting in iTerm

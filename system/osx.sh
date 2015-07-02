@@ -93,3 +93,16 @@ defaults write com.apple.dock "dashboard-in-overlay" -int 0
 defaults write com.apple.dock magnification -int 1
 defaults write com.apple.dock "minimize-to-application" -int 1
 defaults write com.apple.dock largesize -int 62
+
+# Increase window resize speed for Cocoa applications
+defaults write -g NSWindowResizeTime -float 0.001
+
+# Expand save panel by default
+defaults write -g NSNavPanelExpandedStateForSaveMode -bool true
+defaults write -g NSNavPanelExpandedStateForSaveMode2 -bool true
+
+# Disable automatic termination of inactive apps
+defaults write -g NSDisableAutomaticTermination -bool true
+
+# check updates once a week
+defaults write /Library/Preferences/com.apple.SoftwareUpdate ScheduleFrequency 7

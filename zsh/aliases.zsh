@@ -1,5 +1,13 @@
-alias ls='ls -FAh --color=auto'
-alias ll='ls -lAh'
+# safe rm by default
+alias rm="rm -i"
+
+alias l='ls -lAFh'
+alias la='ls -lahF'
+alias ld='l | grep --color=never "^d"'
+
+# easier navigation
+alias ..="cd .."
+
 alias k='k -Ah'
 
 alias todo='todo.sh -A'
@@ -11,7 +19,6 @@ alias mc='. /usr/local/Cellar/midnight-commander/*/libexec/mc/mc-wrapper.sh'
 unalias history
 
 # additional git aliases
-alias gdt='git difftool'
 
 # colored man command output
 # or use oh-my-zsh/colored-man
@@ -27,3 +34,9 @@ man() {
 		LESS_TERMCAP_us=$(printf "\e[1;4;36m") \
 		man "$@"
 }
+
+
+# git aliases
+# git root
+alias gr='[ ! -z $(git rev-parse --show-cdup) ] && cd $(git rev-parse --show-cdup || pwd)'
+alias gwdt='git difftool'

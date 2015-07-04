@@ -26,6 +26,7 @@ brew cask install \
   utorrent \
   mattr-slate \
   secrets \
+  dash \
   vlc || true
 
 log "Changing OSX system defaults and behavior"

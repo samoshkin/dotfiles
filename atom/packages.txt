@@ -4,6 +4,7 @@ atom-solarized-dark-ui
 autocomplete-paths
 block-comment
 color-picker
+dash
 editorconfig
 emmet
 enhanced-tabs

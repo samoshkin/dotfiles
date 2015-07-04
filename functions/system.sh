@@ -98,6 +98,13 @@ extract() {
   fi
 }
 
+# tre is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the '.git' directory, listing directories first. The output gets piped into
+# 'less' with options to preserve color, unless the output is small enough for one screen.
+function tre() {
+	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRX;
+}
+
 edit-hosts(){
 	sudo "$EDITOR" /etc/hosts
 }
@@ -113,4 +120,8 @@ localip(){
 
 ips(){
   ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'
+}
+
+battery-status(){
+  pmset -g batt
 }

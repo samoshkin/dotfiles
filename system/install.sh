@@ -25,7 +25,12 @@ brew cask install \
   slack \
   utorrent \
   mattr-slate \
+  secrets \
   vlc || true
+
+log "Changing OSX system defaults and behavior"
+source "${DOTFILES}/system/osx.sh"
+
 
 # TODO: need to enable Slate in "System Preferences" -> "Security & Privacy" -> "Accessibility"
 log "Configuring slate"
@@ -35,9 +40,7 @@ _ln -t ~ "${DOTFILES}/system/.slate.js"
 defaults write com.slate.Slate SUEnableAutomaticChecks -int 1
 
 # this is to make Slate happy w/o spaces in path
-ln -s "/Applications/Google Chrome.app" "/Applications/Google_Chrome.app"
+ln -sf "/Applications/Google Chrome.app" "/Applications/Google_Chrome.app"
 
 
-
-log "Setup osx defaults"
-source "${DOTFILES}/system/osx.sh"
+log "Done. Please logout/restart to have all changes applied for sure"

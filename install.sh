@@ -42,6 +42,13 @@ confirm () {
   done
 }
 
+_ensure_tmp_dir(){
+  if [ -d "${DOTFILES}" ]; then
+    rm -rf "${DOTFILES}/tmp"
+    mkdir "${DOTFILES}/tmp"
+  fi
+}
+
 _ln() {
   # always symbolic links and with backups
   ln --symbolic -b "$@"
@@ -128,6 +135,8 @@ export DOTFILES=$(pwd)
 # evaluate variables
 source "system/variables.sh"
 source "system/private.variables.sh"
+
+_ensure_tmp_dir
 
 install_homebrew
 

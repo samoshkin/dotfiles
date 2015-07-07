@@ -125,3 +125,34 @@ ips(){
 battery-status(){
   pmset -g batt
 }
+
+create-github-key(){
+
+  # TODO: ask for arguments interactively
+  # TODO: args: email, host alias(github.com), username(from email), keyname (user_at_github)
+  # TODO: make separate function to generate keys for any ssh connection, but w/o changing ssh-config
+  #
+  local keyname="${1:-$GIT_GITHUB_USER}"
+  local email="${2:-$GIT_USER_EMAIL}"
+  local keyfile="${HOME}/.ssh/${keyname}.key"
+
+  echo "Create key ${keyname} for user ${email} and store to ${keyfile}"
+
+  mkdir -p "${HOME}/.ssh"
+
+  ssh-keygen -f "$keyfile" -t rsa -b 4096 -C "$email"
+
+  cat >> "${HOME}/.ssh/config" << EOF
+
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile $keyfile
+  IdentitiesOnly yes
+EOF
+
+  echo "Public key is copied to clipboard. Now add public key to Github: Account -> Settings -> SSH Keys"
+
+  pbcopy < "${keyfile}.pub"
+  open 'https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account'
+}

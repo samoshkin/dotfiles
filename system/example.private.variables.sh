@@ -3,6 +3,7 @@
 # once done, rename example.private.variables.sh -> private.variables.sh
 # when file starts withs "private." prefix it's ignored by git
 # so personal data will not be publicly shared
+# TODO: copy to private.variables.sh for the first time, and propose to fill
 
 export GIT_USER_EMAIL=<YOUR EMAIL>
 export GIT_USER_NAME=<YOUR NAME>

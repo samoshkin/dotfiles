@@ -42,13 +42,6 @@ confirm () {
   done
 }
 
-_ensure_tmp_dir(){
-  if [ -d "${DOTFILES}" ]; then
-    rm -rf "${DOTFILES}/tmp"
-    mkdir "${DOTFILES}/tmp"
-  fi
-}
-
 _ln() {
   # always symbolic links and with backups
   ln --symbolic -b "$@"
@@ -136,12 +129,17 @@ actions () {
 cd "$(dirname $0)"
 export DOTFILES=$(pwd)
 
-_ensure_tmp_dir
+# ensure some dirs
+mkdir -p "${DOTFILES}/tmp"
 mkdir -p "${HOME}/bin"
+
+# if tmp exists, remove all contents
+[ -d "${DOTFILES}" ] && rm -rf "${DOTFILES}/tmp/*"
 
 install_homebrew
 
 # evaluate variables
+# do this after installing homebrew, because we add brew coreutils dir to path
 source "system/variables.sh"
 source "system/private.variables.sh"
 

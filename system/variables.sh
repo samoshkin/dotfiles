@@ -1,11 +1,7 @@
 #!/bin/sh
 
 # paths
-if brew --prefix coreutils > /dev/null; then
-  COREUTILS_PATH="$(brew --prefix coreutils)/libexec/gnubin"
-fi
-
-export PATH="${HOME}/bin:${HOME}/.npm/bin:${COREUTILS_PATH}:/usr/local/bin:$PATH"
+export PATH="${HOME}/bin:${HOME}/.npm/bin:$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${HOME}/.npm/share/man:$MANPATH"
 export NODE_PATH="${HOME}/.npm/lib/node_modules:$NODE_PATH"
 

@@ -15,6 +15,15 @@ defaults write -g NSNavPanelExpandedStateForSaveMode2 -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 
+# show scrollbars automatically when scrolling
+defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling"
+
+# 24 hour format
+defaults write NSGlobalDomain AppleICUForce12HourTime -bool false
+
+# smooth scrolling
+defaults write NSGlobalDomain AppleScrollAnimationEnabled -bool false
+
 # Set sidebar icon size to medium
 defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
 

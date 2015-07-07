@@ -60,7 +60,9 @@ _cp() {
 }
 
 _backup() {
-  cp -f "$1" "$1~"
+  if [ -f "$1" ]; then
+    cp -f "$1" "$1~"
+  fi
 }
 
 install_homebrew(){
@@ -69,6 +71,8 @@ install_homebrew(){
 	  echo "Homebrew is not found. Installing one..."
 	  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	fi
+
+	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 	# install brew cask
 	log "Installing brew-cask"
@@ -132,13 +136,14 @@ actions () {
 cd "$(dirname $0)"
 export DOTFILES=$(pwd)
 
+_ensure_tmp_dir
+mkdir -p "${HOME}/bin"
+
+install_homebrew
+
 # evaluate variables
 source "system/variables.sh"
 source "system/private.variables.sh"
-
-_ensure_tmp_dir
-
-install_homebrew
 
 log "Installing coreutils and git"
 brew install coreutils git || true

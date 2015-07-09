@@ -47,3 +47,6 @@
 
 '.platform-darwin':
   'cmd-s': 'window:save-all'
+
+'.tree-view':
+  'r': 'tree-view:rename'

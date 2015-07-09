@@ -40,3 +40,6 @@ man() {
 # git root
 alias gr='[ ! -z $(git rev-parse --show-cdup) ] && cd $(git rev-parse --show-cdup || pwd)'
 alias gwdt='git difftool'
+
+alias karabiner="/Applications/Karabiner.app/Contents/Library/bin/karabiner"
+alias seil="/Applications/Seil.app/Contents/Library/bin/seil"

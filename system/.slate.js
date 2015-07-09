@@ -543,12 +543,13 @@ S.bnda({
   'left:cmd,f3:toggle': S.op('nudge', { x: '-' + moveDelta, y: '+0' }),
   'right:cmd,f3:toggle': S.op('nudge', { x: '+' + moveDelta, y: '+0' }),
 
+  // TODO: think on better key mappings
   // focus
-  'right:ctrl' : S.op('focus', { 'direction' : 'right' }),
-  'left:ctrl' : S.op('focus', { 'direction' : 'left' }),
-  'up:ctrl' : S.op('focus', { 'direction' : 'up' }),
-  'down:ctrl' : S.op('focus', { 'direction' : 'down' }),
-  'down:ctrl,shift' : S.op('focus', { 'direction' : 'behind' }),
+  // 'right:ctrl' : S.op('focus', { 'direction' : 'right' }),
+  // 'left:ctrl' : S.op('focus', { 'direction' : 'left' }),
+  // 'up:ctrl' : S.op('focus', { 'direction' : 'up' }),
+  // 'down:ctrl' : S.op('focus', { 'direction' : 'down' }),
+  // 'down:ctrl,shift' : S.op('focus', { 'direction' : 'behind' }),
 
   // resize bigger
   'left:cmd,alt,=:toggle' : S.op('resize', { 'width' : '+' + resizeDelta, 'height' : '+0', anchor : 'bottom-right' }),

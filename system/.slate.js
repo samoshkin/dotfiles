@@ -497,6 +497,7 @@ S.default(2, function() {
 // Keystroke bindings
 // ==================
 
+// macbook keyboard without numpad
 S.bnda({
 
   // basic layout ops
@@ -529,6 +530,12 @@ S.bnda({
     }
   }),
 
+  // move around
+  'up:cmd,f4:toggle': S.op('nudge', { x: '+0', y: '-' + moveDelta }),
+  'down:cmd,f4:toggle': S.op('nudge', { x: '+0', y: '+' + moveDelta }),
+  'left:cmd,f4:toggle': S.op('nudge', { x: '-' + moveDelta, y: '+0' }),
+  'right:cmd,f4:toggle': S.op('nudge', { x: '+' + moveDelta, y: '+0' }),
+
   // task-based layouts, aka workspaces
   '1:cmd,f3': workspaceOp('browsing'),
   '2:cmd,f3': workspaceOp('chat'),
@@ -536,12 +543,6 @@ S.bnda({
 
   // toggle fullscreen
   'return:ctrl': getToggleFullscreenAction(),
-
-  // move around
-  'up:cmd,f3:toggle': S.op('nudge', { x: '+0', y: '-' + moveDelta }),
-  'down:cmd,f3:toggle': S.op('nudge', { x: '+0', y: '+' + moveDelta }),
-  'left:cmd,f3:toggle': S.op('nudge', { x: '-' + moveDelta, y: '+0' }),
-  'right:cmd,f3:toggle': S.op('nudge', { x: '+' + moveDelta, y: '+0' }),
 
   // TODO: think on better key mappings
   // focus
@@ -570,7 +571,7 @@ S.bnda({
   'f3:cmd,f3': S.op('throw', { 'screen' : getNextScreen }),
 
   // not clear why this switcher is better
-  // 'e:cmd': S.op('switch'),
+    // 'e:cmd': S.op('switch'),
 
   // Window Hints
   'esc:cmd' : S.op('hint', {
@@ -581,6 +582,53 @@ S.bnda({
   // NOTE: make sure to disable global hotkey setting in iTerm
   // in this way "ctrl,`" can also open iTerm if not opened yet
   '`:ctrl': getOpenOrFocusITermAction()
+});
+
+// add some bindings for PC keyboard with numpad
+S.bnda({
+
+  // basic layout ops
+  'pad1:cmd,padClear' : bottomLeftCorner,
+  'pad2:cmd,padClear' : bottomHalf,
+  'pad3:cmd,padClear' : bottomRightCorner,
+
+  'pad4:cmd,padClear' : leftHalf,
+  'pad5:cmd,padClear' : centerScreen,
+  'pad6:cmd,padClear' : rightHalf,
+
+  'pad7:cmd,padClear' : topLeftCorner,
+  'pad8:cmd,padClear' : topHalf,
+  'pad9:cmd,padClear' : topRightCorner,
+
+  // show grid
+  'padClear:cmd,padClear' : S.op('grid', {
+    'grids' : {
+
+      // macbook pro 15' retina, 16:10 aspect ratio
+      '1440x900' : {
+        "width" : 16,
+        "height" : 10
+      },
+      // dell u2412, 16:10
+      '1920x1200' : {
+        "width" : 16,
+        "height" : 10
+      }
+    }
+  }),
+
+  // task-based layouts, aka workspaces
+  '1:cmd,`': workspaceOp('browsing'),
+  '2:cmd,`': workspaceOp('chat'),
+  '3:cmd,`': workspaceOp('dev'),
+
+  // move around
+  'up:cmd,padClear:toggle': S.op('nudge', { x: '+0', y: '-' + moveDelta }),
+  'down:cmd,padClear:toggle': S.op('nudge', { x: '+0', y: '+' + moveDelta }),
+  'left:cmd,padClear:toggle': S.op('nudge', { x: '-' + moveDelta, y: '+0' }),
+  'right:cmd,padClear:toggle': S.op('nudge', { x: '+' + moveDelta, y: '+0' }),
+
+  '`:cmd,`': S.op('throw', { 'screen' : getNextScreen })
 });
 
 S.log('[SLATE]: done loading config');

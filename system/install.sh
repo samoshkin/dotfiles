@@ -101,7 +101,10 @@ brew cask install \
   font-source-code-pro || true
 
 log "Installing packages"
-brew install shellcheck todo-txt || true
+brew install \
+  shellcheck \
+  tree \
+  todo-txt || true
 
 log "Installing applications"
 brew cask install \

@@ -92,6 +92,8 @@ defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 defaults write com.apple.systemuiserver menuExtras -array-add \
   "/System/Library/CoreServices/Menu Extras/Volume.menu"
 
+# show hidden files everywhere
+defaults write -g AppleShowAllFiles -bool true
 
 
 # ===========================

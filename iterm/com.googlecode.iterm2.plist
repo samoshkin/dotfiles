@@ -256,7 +256,7 @@
 	<key>EnableRendezvous</key>
 	<false/>
 	<key>FocusFollowsMouse</key>
-	<true/>
+	<false/>
 	<key>FsTabDelay</key>
 	<real>10</real>
 	<key>HiddenAFRStrokeThickness</key>
@@ -340,9 +340,9 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>118 161 444 270 0 0 1440 878 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>0 393 924 485 0 0 1440 878 </string>
+	<string>0 572 924 485 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 4 714 874 0 0 1440 878 </string>
+	<string>0 7 634 1050 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>386 372 1050 506 0 0 1440 878 </string>
 	<key>New Bookmarks</key>
@@ -1116,7 +1116,7 @@
 	<key>NoSyncTimeOfLastPromo</key>
 	<real>455234635.47351801</real>
 	<key>NoSyncTimeOfLastPromoDownload</key>
-	<real>457127422.10068399</real>
+	<real>458302385.57430398</real>
 	<key>OnlyWhenMoreTabs</key>
 	<false/>
 	<key>OpenArrangementAtStartup</key>
@@ -1181,7 +1181,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-06-27T19:44:15Z</date>
+	<date>2015-07-11T10:12:58Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -1195,7 +1195,7 @@
 	<key>SmartPlacement</key>
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
-	<real>0.34745842218399048</real>
+	<real>0.18929286301136017</real>
 	<key>SwitchTabModifier</key>
 	<integer>4</integer>
 	<key>SwitchWindowModifier</key>

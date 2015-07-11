@@ -23,6 +23,7 @@ defaults write NSGlobalDomain AppleICUForce12HourTime -bool false
 
 # smooth scrolling
 defaults write NSGlobalDomain AppleScrollAnimationEnabled -bool false
+defaults write NSGlobalDomain NSScrollAnimationEnabled -bool false
 
 # Set sidebar icon size to medium
 defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
@@ -52,9 +53,6 @@ defaults write -g AppleEnableMenuBarTransparency -bool true
 # in the login window
 sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
-# Add a context menu item for showing the Web Inspector in web views"
-defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
-
 # Restart automatically if the computer freezes
 sudo systemsetup -setrestartfreeze on
 
@@ -69,6 +67,31 @@ defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
 # Disable smart dashes as they’re annoying when typing code
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+
+# Disable opening and closing window animations
+defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
+
+# Avoid creating .DS_Store files on network volumes
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+# Automatically open a new Finder window when a volume is mounted
+defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
+defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
+defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
+
+# defaults on MacMini
+# menuExtras =     (
+#   "/System/Library/CoreServices/Menu Extras/Volume.menu",
+#   "/System/Library/CoreServices/Menu Extras/AirPort.menu",
+#   "/System/Library/CoreServices/Menu Extras/TextInput.menu",
+#   "/System/Library/CoreServices/Menu Extras/Eject.menu",
+#   "/System/Library/CoreServices/Menu Extras/Clock.menu"
+# );
+
+# show volume in menu bar
+defaults write com.apple.systemuiserver menuExtras -array-add \
+  "/System/Library/CoreServices/Menu Extras/Volume.menu"
+
 
 
 # ===========================
@@ -131,8 +154,15 @@ defaults write -g com.apple.keyboard.fnState -bool true
 # see http://hints.macworld.com/article.php?story=20131123074223584
 # see http://osxnotes.net/keybindings.html for valid key chords
 defaults write -g NSUserKeyEquivalents '{
-	"System Preferences..."="@$,";
+  "System Preferences..."="@$,";
 }'
+
+# TODO: test on macbook
+# Automatically illuminate built-in MacBook keyboard in low light
+# defaults write com.apple.BezelServices kDim -bool true
+#
+# Turn off keyboard illumination when computer is not used for 5 minutes
+# defaults write com.apple.BezelServices kDimTime -int 300
 
 
 # ===========================
@@ -180,6 +210,7 @@ defaults write com.apple.dock largesize -int 62
 defaults write com.apple.dock no-glass -int 1
 defaults write com.apple.dock mineffect -string "scale"
 defaults write com.apple.dock launchanim -bool false
+defaults write com.apple.dock "autohide-time-modifier" -float 0
 
 # Disable Dashboard
 defaults write com.apple.dashboard mcx-disabled -bool true
@@ -262,9 +293,9 @@ chflags nohidden ~/Library
 # Expand the following File Info panes:
 # “General”, “Open with”, and “Sharing & Permissions”
 defaults write com.apple.finder FXInfoPanesExpanded -dict \
-	General -bool true \
-	OpenWith -bool true \
-	Privileges -bool true
+  General -bool true \
+  OpenWith -bool true \
+  Privileges -bool true
 
 # show path bar, but do not show status bar
 defaults write com.apple.finder ShowPathbar -bool true
@@ -299,6 +330,21 @@ defaults write com.apple.terminal StringEncodings -array 4
 
 # disable swipe right/left with two fingers to navigate history back/forward in Chrome
 defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool false
+
+# ===========================
+# Safari & Webkit
+# ===========================
+
+# Enable the Develop menu and the Web Inspector in Safari
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+
+# Add a context menu item for showing the Web Inspector in web views"
+defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+# Enable the WebKit Developer Tools in the Mac App Store
+defaults write com.apple.appstore WebKitDeveloperExtras -bool true
 
 
 # ===========================

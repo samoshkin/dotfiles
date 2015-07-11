@@ -136,7 +136,7 @@ ask-question(){
   local __resultVar="__answer"
 
   # split choices with ;
-  local OIFS=$IFS
+  local OIFS="$IFS"
   IFS=';'
 
   # parse arguments
@@ -196,45 +196,58 @@ ask-question(){
   IFS=$OIFS
 }
 
-generate-ssh-key(){
-  # TODO: ask for arguments interactively
-  # TODO: args: email, host alias(github.com), username(from email), keyname (user_at_github)
-  # TODO: make separate function to generate keys for any ssh connection, but w/o changing ssh-config
-  #
-  local keyname="${1:-$GIT_GITHUB_USER}"
-  local email="${2:-$GIT_USER_EMAIL}"
-  local keyfile="${HOME}/.ssh/${keyname}.key"
+generate-ssh-keys(){
+  local email
+  local keyname
+  local keyfile
 
-  echo "Create key ${keyname} for user ${email} and store to ${keyfile}"
-}
+  # parse arguments
+  while [ "$1" != "" ]; do
+    case $1 in
+      --email ) shift; email=$1;;
+      --keyname ) shift; keyname=$1;;
+    esac
+    shift
+  done
 
-create-github-key(){
+  if [ -z "$keyname" ]; then
+    ask-question --question "Name of key" keyname
+  fi
+  if [ -z "$email" ]; then
+    ask-question --question "Email" email
+  fi
+  keyfile="${HOME}/.ssh/${keyname}"
 
-  # TODO: ask for arguments interactively
-  # TODO: args: email, host alias(github.com), username(from email), keyname (user_at_github)
-  # TODO: make separate function to generate keys for any ssh connection, but w/o changing ssh-config
-  #
-  local keyname="${1:-$GIT_GITHUB_USER}"
-  local email="${2:-$GIT_USER_EMAIL}"
-  local keyfile="${HOME}/.ssh/${keyname}.key"
-
-  echo "Create key ${keyname} for user ${email} and store to ${keyfile}"
+  printf "Create key %s for user %s and store to %s\n" "$keyname" "$email" "$keyfile"
 
   mkdir -p "${HOME}/.ssh"
-
   ssh-keygen -f "$keyfile" -t rsa -b 4096 -C "$email"
+}
+
+# NOTE: use this when you need to generate keys for Github account on new machine,
+# if you already have Github keys, but just need arbitrary ssh keys,
+# see generate-ssh-keys function
+generate-ssh-github-keys(){
+
+  local keyname
+  local email
+
+  ask-question --question "Key name" --default "${GIT_GITHUB_USER}_at_github.key" keyname
+  ask-question --question "Email" --default "$GIT_USER_EMAIL" email
+
+  generate-ssh-keys --keyname "$keyname" --email "$email"
 
   cat >> "${HOME}/.ssh/config" << EOF
 
 Host github.com
   HostName github.com
   User git
-  IdentityFile $keyfile
+  IdentityFile ~/.ssh/$keyname
   IdentitiesOnly yes
 EOF
 
   echo "Public key is copied to clipboard. Now add public key to Github: Account -> Settings -> SSH Keys"
 
-  pbcopy < "${keyfile}.pub"
+  pbcopy < "${HOME}/.ssh/${keyname}.pub"
   open 'https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account'
 }

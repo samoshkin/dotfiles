@@ -30,6 +30,9 @@ antigen apply
 # fast man page access with <esc-h>
 autoload run-help
 
+# compatibility with bash
+setopt shwordsplit
+
 # TODO: split between zshenv and zshrc, or move to zshenv completely
 source ${DOTFILES}/zsh/config.zsh
 source ${DOTFILES}/zsh/aliases.zsh

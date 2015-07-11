@@ -79,6 +79,18 @@ configure-osx-defaults(){
   source "${DOTFILES}/system/osx.sh"
 }
 
+configure-macpass(){
+  defaults write com.hicknhacksoftware.MacPass ShowInspector -bool false
+  defaults write com.hicknhacksoftware.MacPass EnableGlobalAutotype -bool true
+
+  # see http://hints.macworld.com/article.php?story=20131123074223584
+  # see http://osxnotes.net/keybindings.html for valid key chords
+  defaults write com.hicknhacksoftware.MacPass NSUserKeyEquivalents '{
+  "Copy Password"="@c";
+  "\033File\033Lock"="@l";
+}'
+}
+
 
 log "Installing fonts"
 brew tap caskroom/fonts

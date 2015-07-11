@@ -128,9 +128,15 @@ defaults write -g com.apple.keyboard.fnState -bool true
 # InitialKeyRepeat is 35 now
 # defaults write NSGlobalDomain InitialKeyRepeat -int 12
 
+# see http://hints.macworld.com/article.php?story=20131123074223584
+# see http://osxnotes.net/keybindings.html for valid key chords
+defaults write -g NSUserKeyEquivalents '{
+	"System Preferences..."="@$,";
+}'
+
 
 # ===========================
-# TrackPad
+# TrackPad & Mouse
 # ===========================
 
 # Trackpad: enable tap to click for this user and for the login screen
@@ -150,6 +156,11 @@ defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
 # drag with three fingers
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -int 1
+
+# TODO: check how these settings work on macbook
+# maybe set 0.875
+defaults write NSGlobalDomain com.apple.mouse.scaling -float 0.7
+defaults write NSGlobalDomain com.apple.scrollwheel.scaling -float 0.215
 
 
 # ===========================

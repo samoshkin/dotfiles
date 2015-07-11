@@ -9,6 +9,7 @@ editorconfig
 emmet
 enhanced-tabs
 file-icons
+git-blame
 highlight-line
 last-cursor-position
 linter
@@ -27,3 +28,4 @@ solarized-dark-ui
 tabs-to-spaces
 todo-show
 zentabs
+

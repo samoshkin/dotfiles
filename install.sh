@@ -23,6 +23,7 @@ log () {
     TEXT=$2
   fi
 
+  # TODO: switch to printf, for err redirect to stderr
   echo -e "${CYAN}dotfiles${RESET} ${CYAN}[$(date +"%T")]${RESET} ${COLOR}${TEXT}${RESET}"
 }
 
@@ -76,10 +77,6 @@ install_homebrew(){
 	# (brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup) || true
 }
 
-install(){
-	source "./$1/install.sh"
-}
-
 actions () {
   # keep update the last one
   local known_actions="atom git mc nano dev iterm system zsh update"
@@ -106,11 +103,6 @@ actions () {
   for action in "$@"; do
     echo
 
-    if ! (echo "$known_actions" | tr ' ' '\n' | grep -E "^$action$" &> /dev/null); then
-      echo "Unknown action: $action" >&2
-      continue;
-    fi
-
     case "$action" in
       all )
         actions $known_actions
@@ -119,7 +111,13 @@ actions () {
         log "Update brew. Update all packages. Clean up outdated packages from cache"
         brew update && brew upgrade && brew cleanup
         ;;
-      * ) install $action;;
+      * )
+        if [ -f "${DOTFILES}/$action/install.sh" ]; then
+          source "${DOTFILES}/$action/install.sh"
+        else
+          log --warn "Unknown action: $action"
+        fi
+        ;;
     esac
   done
 

@@ -20,4 +20,5 @@ log "Link zshenv and zshrc file to ~"
 _ln "${DOTFILES}/zsh/zshenv" ~/.zshenv
 _ln "${DOTFILES}/zsh/zshrc" ~/.zshrc
 
+# TODO: automate it a bit
 log --warn "Make sure to change your default shell to zsh"

@@ -38,7 +38,7 @@ configure-keyboard-remaps(){
     sh "$DOTFILES/system/seil-profile.sh"
 
     # TODO: show menu which profile to choose
-    log "Make sure to select profile in Karabiner preferences"
+    log "\nMake sure to select profile in Karabiner preferences"
   else
     echo "You already have Karabiner profiles installed. Skip configuring profiles"
   fi

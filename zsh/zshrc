@@ -32,6 +32,9 @@ autoload run-help
 
 # compatibility with bash
 setopt shwordsplit
+setopt nobeep
+
+# TODO: define bindkey configuration manually, not through iTerm
 
 # TODO: split between zshenv and zshrc, or move to zshenv completely
 source ${DOTFILES}/zsh/config.zsh

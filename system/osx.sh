@@ -159,9 +159,13 @@ defaults write -g NSUserKeyEquivalents '{
   "System Preferences..."="@$,";
 }'
 
-# TODO: test on macbook
 # Automatically illuminate built-in MacBook keyboard in low light
-# defaults write com.apple.BezelServices kDim -bool true
+# com.apple.BezelServices settings are outdated on Mavericks https://github.com/mathiasbynens/dotfiles/issues/327
+
+# FIXME: for some reasons, automatic keyboard light is not turned off when no ambient light
+# sudo defaults write /Library/Preferences/com.apple.iokit.AmbientLightSensor "Keyboard Dim Time" -int 300
+# sudo defaults write /Library/Preferences/com.apple.iokit.AmbientLightSensor "Automatic Keyboard Enabled" -bool true
+
 #
 # Turn off keyboard illumination when computer is not used for 5 minutes
 # defaults write com.apple.BezelServices kDimTime -int 300
@@ -177,7 +181,6 @@ defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
 # Trackpad: map bottom right corner to right-click
-# FIXME: both two finger tap and bottom right click does not work at the same time
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
 defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClickBehavior -int 1
@@ -189,9 +192,7 @@ defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 # drag with three fingers
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -int 1
 
-# TODO: check how these settings work on macbook
-# maybe set 0.875
-defaults write NSGlobalDomain com.apple.mouse.scaling -float 0.7
+defaults write NSGlobalDomain com.apple.mouse.scaling -float 0.875
 defaults write NSGlobalDomain com.apple.scrollwheel.scaling -float 0.215
 
 

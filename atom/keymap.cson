@@ -45,9 +45,11 @@
 
 'atom-text-editor':
   'cmd-shift-/': 'block-comment:toggle'
+  'alt-cmd-l': 'linter:toggle'
 
 '.platform-darwin':
-  'cmd-s': 'window:save-all'
+  'cmd-shift-s': 'window:save-all'
+  'cmd-alt-s': 'core:save-as'
 
 '.tree-view':
   'r': 'tree-view:rename'

@@ -15,6 +15,7 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 # TODO: check if /usr/libexec/java_home is available on fresh Mac
 # TODO: does it take to long or better to just set constant path
-export JAVA_HOME="$(time /usr/libexec/java_home 2> /dev/null)"
+# TODO: check if we need this at all
+export JAVA_HOME="$(/usr/libexec/java_home 2> /dev/null)"
 
 export ANDROID_HOME=/usr/local/opt/android-sdk

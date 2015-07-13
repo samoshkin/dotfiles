@@ -17,7 +17,6 @@ S.cfga({
   'orderScreensLeftToRight': false,
   'modalEscapeKey': 'esc',
   'windowHintsFontSize': 60,
-  'windowHintsShowIcons': false,
   'windowHintsDuration': 5,
   'windowHintsSpread': true,
   'windowHintsIgnoreHiddenWindows' : false,
@@ -27,7 +26,6 @@ S.cfga({
   'secondsBeforeRepeat': 0.1,
 
   // NOTE: this is buggy, some apps are focused, while other are skipped
-  // see layoutWithFocus() below as a workaround
   'layoutFocusOnActivate': false
 });
 var resizeDelta = '5%';
@@ -58,11 +56,11 @@ function ScreenConf(name){
 
   this.isLaptopOnly = function() {
     return this.name === 'laptop';
-  }
+  };
 
   this.getScreenCount = function() {
     return this.name === 'laptop' || this.name === 'monitor' ? 1 : 2;
-  }
+  };
 }
 
 ScreenConf.laptopOnly = function() {
@@ -91,7 +89,7 @@ function getNextScreen(win){
   // this workaround will work as soon as secondary monitor is the leftmost
   // yes, this is very ugly
   return S.screenForRef(S.window().screen().id());
-};
+}
 
 // toggle fullscreen and be able to revert back to original position
 function getToggleFullscreenAction(){
@@ -111,7 +109,7 @@ function getToggleFullscreenAction(){
       appPosition[appName] = win.rect();
       win.doOperation(fullScreen);
     }
-  }
+  };
 }
 
 // '5%' -> 5
@@ -121,7 +119,7 @@ function parseDeltaAsFloat(value){
   return {
     value: parseFloat(value.match(/\d+(\.\d+)?/)[0]),
     isRelativeUnits: /%$/.test(value)
-  }
+  };
 }
 
 // resize window evenly on all edges
@@ -160,7 +158,7 @@ function getResizeWindowAction(op){
         height: rect.height - heightDelta
       }));
     }
-  }
+  };
 }
 
 // toggle current
@@ -177,7 +175,7 @@ function getToggleAction(){
       showAndFocusApp(lastHiddenApp);
       lastHiddenApp = null;
     }
-  }
+  };
 }
 
 function isAppOpened(appName){
@@ -218,29 +216,24 @@ function getOpenOrFocusITermAction() {
     }
     else {
       if (isAppOpened('iTerm')) {
-        showAndFocusApp('iTerm')
+        showAndFocusApp('iTerm');
       }
       else{
         S.op('layout', { name: 'terminal' }).run();
       }
     }
-  }
+  };
 }
 
-// S.layout() decorator, which focus all apps in description in order, optionally skipping some of them
+// S.layout() decorator, which focus the last app at the end
 // this is workaround to buggy 'layoutFocusOnActivate' global config settings
-// anyway, I would like for some layouts to focus apps
-// while for other just to settle app position, w/o changing focus
-// this function makes it possible as opposite to 'layoutFocusOnActivate' settings, which is applied globally
 S.layoutWithFocus = function(name, description){
   var apps = Object.keys(description);
 
-  // prepare ordered list of focus ops
+  // focus the last app
+  // NOTE: this is temp solution, it depends on how engine manages key ordering, this might be fragile
   var focusOps = [];
-  for(var i = 0; i < apps.length; i++){
-    if(description[apps[i]].skipFocus || apps[i] === '_before_' || apps[i] === '_after_') continue;
-    focusOps.push(S.op('focus', { app: apps[i] }));
-  }
+  focusOps.push(S.op('focus', { app: apps[apps.length - 1] }));
 
   // run each focus op on next event loop
   // NOTE: runnig focus ops in the same loop leads to unpredictable results
@@ -270,6 +263,7 @@ function openAppOp(appPath) {
   });
 }
 
+// TODO: consider evaluateing all operations with setTimeout for proper focus ordering
 function ensureOpenedApps() {
   var ops = [];
   for(var i = 0; i < arguments.length; i++) {
@@ -289,7 +283,7 @@ function workspaceOp(name) {
   return function(){
     S.log('activate layout' + name + '@' + currentScreenConf.name);
     S.op('layout', { name: name + '@' + currentScreenConf.name }).run();
-  }
+  };
 }
 
 function hasLaptopNow() {
@@ -423,8 +417,8 @@ function createDevLayout(screenConf){
     return S.layoutWithFocus('dev@' + screenConf.name, {
       '_before_': ensureOpenedApps(
         '/Applications/iTerm.app',
-        '/Applications/Atom.app',
-        '/Applications/Google_Chrome.app'),
+        '/Applications/Google_Chrome.app',
+        '/Applications/Atom.app'),
 
       'iTerm': {
         operations: [

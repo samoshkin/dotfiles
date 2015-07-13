@@ -12,3 +12,9 @@ export LC_CTYPE=en_US.UTF-8
 
 # location for homebrew cask packages
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+# TODO: check if /usr/libexec/java_home is available on fresh Mac
+# TODO: does it take to long or better to just set constant path
+export JAVA_HOME="$(time /usr/libexec/java_home 2> /dev/null)"
+
+export ANDROID_HOME=/usr/local/opt/android-sdk

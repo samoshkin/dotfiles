@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-
 set -e
 
+# TODO: rename to more specific and move to functions/common.sh
 log () {
   local GREEN='\033[0;32m'
   local RED='\033[0;31m'
@@ -27,11 +27,7 @@ log () {
   echo -e "${CYAN}dotfiles${RESET} ${CYAN}[$(date +"%T")]${RESET} ${COLOR}${TEXT}${RESET}"
 }
 
-is_app_installed() {
-	type "$1" &>/dev/null
-}
-
-
+# TODO: rename to more specific and move to functions/common.sh
 confirm () {
   while true; do
     read -p "$1 [Yy/Nn] " yn
@@ -127,12 +123,17 @@ actions () {
 cd "$(dirname $0)"
 export DOTFILES=$(pwd)
 
+# include functions/common
+source "${DOTFILES}/functions/common.sh"
+
 # ensure some dirs
 mkdir -p "${DOTFILES}/tmp"
 mkdir -p "${HOME}/bin"
 
 # if tmp exists, remove all contents
-[ -d "${DOTFILES}" ] && rm -rf "${DOTFILES}/tmp/*"
+if [ -d "${DOTFILES}" ]; then
+  rm -rf ${DOTFILES}/tmp/*
+fi
 
 install_homebrew
 
@@ -146,6 +147,7 @@ brew install coreutils git || true
 brew tap homebrew/dupes
 
 # choose what to do next
+# TODO: use ask-question function
 while true; do
   echo
   log "What should I do next?"

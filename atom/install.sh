@@ -15,7 +15,7 @@ apm install --packages-file "${DOTFILES}/atom/packages.txt"
 
 log "Copy configuration to ~/.atom"
 # symlink config files to ~/.atom
-_ln -t ~/.atom ${DOTFILES}/atom/{init.coffee,keymap.cson,snippets.cson,styles.less,config.cson}
+_ln -t ~/.atom ${DOTFILES}/atom/{init.js,keymap.cson,snippets.cson,styles.less,config.cson}
 
 # Fonts evaluation for Atom
 #  \"SourceCodePro-Light\" [14-16] hard to focus, sharp but too thin

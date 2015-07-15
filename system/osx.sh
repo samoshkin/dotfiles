@@ -79,22 +79,17 @@ defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
 defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
 defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 
-# defaults on MacMini
-# menuExtras =     (
-#   "/System/Library/CoreServices/Menu Extras/Volume.menu",
-#   "/System/Library/CoreServices/Menu Extras/AirPort.menu",
-#   "/System/Library/CoreServices/Menu Extras/TextInput.menu",
-#   "/System/Library/CoreServices/Menu Extras/Eject.menu",
-#   "/System/Library/CoreServices/Menu Extras/Clock.menu"
-# );
-
-# show volume in menu bar
-defaults write com.apple.systemuiserver menuExtras -array-add \
-  "/System/Library/CoreServices/Menu Extras/Volume.menu"
+# defaults write com.apple.systemuiserver menuExtras -array \
+#   "/System/Library/CoreServices/Menu Extras/VPN.menu" \
+#   "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" \
+#   "/System/Library/CoreServices/Menu Extras/AirPort.menu" \
+#   "/System/Library/CoreServices/Menu Extras/TextInput.menu" \
+#   "/System/Library/CoreServices/Menu Extras/Clock.menu" \
+#   "/System/Library/CoreServices/Menu Extras/Battery.menu" \
+#   "/System/Library/CoreServices/Menu Extras/Volume.menu"
 
 # show hidden files everywhere
 defaults write -g AppleShowAllFiles -bool true
-
 
 # ===========================
 # Display
@@ -102,6 +97,8 @@ defaults write -g AppleShowAllFiles -bool true
 
 # Enable subpixel font rendering on non-Apple LCDs
 # FIXME: this is really pain, it's still looks ugly on my DELL U2412 monitor
+# on rMBP default setting equals to AppleFontSmoothing=3
+# on rMBP AppleFontSmoothing=2 a bit ligther than 3, but also enables smoothing on external monitor
 # defaults write NSGlobalDomain AppleFontSmoothing -int 2
 
 # Enable HiDPI display modes (requires restart)

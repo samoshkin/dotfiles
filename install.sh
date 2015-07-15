@@ -68,6 +68,10 @@ install_homebrew(){
 	log "Installing brew-cask"
 	brew install caskroom/cask/brew-cask || true
 
+  # add different brew taps
+  brew tap homebrew/dupes
+  brew tap caskroom/fonts
+
 	# update brew and brew cask
 	log "Update brew itself and brew-cask. Clean up caches and old versions of formulas"
 	# (brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup) || true
@@ -144,7 +148,6 @@ source "system/private.variables.sh"
 
 log "Installing coreutils and git"
 brew install coreutils git || true
-brew tap homebrew/dupes
 
 # choose what to do next
 # TODO: use ask-question function

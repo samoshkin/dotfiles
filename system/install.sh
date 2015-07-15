@@ -91,9 +91,7 @@ configure-macpass(){
 }'
 }
 
-
 log "Installing fonts"
-brew tap caskroom/fonts
 brew cask install \
   font-droid-sans-mono \
   font-dejavu-sans \

@@ -156,6 +156,42 @@ defaults write -g NSUserKeyEquivalents '{
   "System Preferences..."="@$,";
 }'
 
+# TODO: is it possible at all to script key bindings for
+# - Move focus to next window
+# - Take screenshots
+# - etc
+
+# Commmand + option + tab
+# defaults read ~/Library/Preferences/com.apple.symbolichotkeys
+# 27 =
+# {
+#     enabled = 1;
+#     value =             {
+#         parameters =                 (
+#             65535,
+#             48,
+#             1572864
+#         );
+#         type = standard;
+#     };
+# };
+
+# Commmand + `
+# defaults read ~/Library/Preferences/com.apple.symbolichotkeys
+# 27 =
+#   {
+#     enabled = 1;
+#     value =             {
+#         parameters =                 (
+#             96,
+#             50,
+#             1048576
+#         );
+#         type = standard;
+#     };
+# };
+
+
 # Automatically illuminate built-in MacBook keyboard in low light
 # com.apple.BezelServices settings are outdated on Mavericks https://github.com/mathiasbynens/dotfiles/issues/327
 

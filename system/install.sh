@@ -119,6 +119,7 @@ brew cask install \
   mattr-slate \
   secrets \
   dash \
+  fseventer \
   vlc || true
 
 configure-osx-defaults

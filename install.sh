@@ -77,51 +77,49 @@ install_homebrew(){
 	# (brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup) || true
 }
 
-actions () {
-  # keep update the last one
-  local known_actions="atom git mc nano dev iterm system zsh update"
-
-  if [ "$1" == "--print" ]; then
-    for action in $known_actions; do
-      case "$action" in
-        system ) echo -e "\t[$action] setup osx and install system-wide packages";;
-        zsh ) echo -e "\t[$action] install zsh and change to be a default shell";;
-        git ) echo -e "\t[$action] install & configure git";;
-        nano ) echo -e "\t[$action] install & configure nano";;
-        mc ) echo -e "\t[$action] install & configure midnight commander";;
-        dev ) echo -e "\t[$action] prepare development environment";;
-        atom ) echo -e "\t[$action] install atom and atom packages";;
-        iterm ) echo -e "\t[$action] install iterm2 as a replacement to default Terminal.app";;
-        update ) echo -e "\t[$action] update all brew formulas";;
-      esac
-    done
-
-    echo -e "\t[all] all the above"
-    return 0
+install-submodule(){
+  local submodule=$1
+  if [ -f "${DOTFILES}/$submodule/install.sh" ]; then
+    source "${DOTFILES}/$submodule/install.sh"
+  else
+    log --warn "Unknown module: $submodule"
   fi
+}
 
-  for action in "$@"; do
-    echo
+main-menu(){
+  local _atom="atom (Install atom and atom packages)"
+  local _system="system (Setup osx and install system-wide packages)"
+  local _zsh="zsh (Install zsh and change to be a default shell)"
+  local _git="git (Install & configure git)"
+  local _nano="nano (Install & configure nano)"
+  local _mc="mc (Install & configure midnight commander)"
+  local _dev="dev (Prepare development environments: JS, PhoneGap)"
+  local _iterm="iterm (Install iterm2 as a replacement to default Terminal.app)"
+  local _update="update (Update all brew formulas)"
+  local _quit="quit (Do nothing and exit)"
 
-    case "$action" in
-      all )
-        actions $known_actions
+  local allActions="$_git;$_system;$_iterm;$_zsh;$_nano;$_mc;$_atom;$_dev;$_update;$_quit"
+  local nextAction
+
+  printf '\n'
+  ask-question --question "What should I do next" --choice "$allActions" nextAction
+  case "$nextAction" in
+    git* ) install-submodule git;;
+    system* ) install-submodule system;;
+    iterm* ) install-submodule iterm;;
+    zsh* ) install-submodule zsh;;
+    nano* ) install-submodule nano;;
+    mc* ) install-submodule mc;;
+    atom* ) install-submodule atom;;
+    dev* ) install-submodule dev;;
+    update* )
+      log "Update brew. Update all packages. Clean up outdated packages from cache"
+      brew update && brew upgrade && brew cleanup
       ;;
-      update )
-        log "Update brew. Update all packages. Clean up outdated packages from cache"
-        brew update && brew upgrade && brew cleanup
-        ;;
-      * )
-        if [ -f "${DOTFILES}/$action/install.sh" ]; then
-          source "${DOTFILES}/$action/install.sh"
-        else
-          log --warn "Unknown action: $action"
-        fi
-        ;;
-    esac
-  done
-
-  return 0
+    quit* )
+      return 1
+      ;;
+  esac
 }
 
 cd "$(dirname $0)"
@@ -139,29 +137,22 @@ if [ -d "${DOTFILES}" ]; then
   rm -rf ${DOTFILES}/tmp/*
 fi
 
+# install homebrew
 install_homebrew
+
+log "Installing coreutils and git"
+brew install coreutils git || true
 
 # evaluate variables
 # do this after installing homebrew, because we add brew coreutils dir to path
 source "system/variables.sh"
 source "system/private.variables.sh"
 
-log "Installing coreutils and git"
-brew install coreutils git || true
-
-# choose what to do next
-# TODO: use ask-question function
+# open main menu
 while true; do
-  echo
-  log "What should I do next?"
-  actions --print
-  read -e answer
-
-  if [ -z "$answer" ]; then
-     break
+  if ! main-menu; then
+    break;
   fi
-
-  actions $answer
 done
 
 log "Bye."

@@ -19,7 +19,9 @@ defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling"
 
 # 24 hour format
-defaults write NSGlobalDomain AppleICUForce12HourTime -bool false
+# for 12 hour format use DateFormat = "MMM d  h:mm a";
+defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
+defaults write com.apple.menuextra.clock DateFormat -string "MMM d  HH:mm"
 
 # smooth scrolling
 defaults write NSGlobalDomain AppleScrollAnimationEnabled -bool false

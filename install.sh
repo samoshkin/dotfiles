@@ -2,7 +2,7 @@
 
 set -e
 
-# TODO: rename to more specific and move to functions/common.sh
+# TODO: deprecated, use _log() function from "functions/common.sh"
 log () {
   local GREEN='\033[0;32m'
   local RED='\033[0;31m'
@@ -102,7 +102,7 @@ main-menu(){
   local nextAction
 
   printf '\n'
-  ask-question --question "What should I do next" --choice "$allActions" nextAction
+  ask-question --question "What should I do next?" --choice "$allActions" nextAction
   case "$nextAction" in
     git* ) install-submodule git;;
     system* ) install-submodule system;;

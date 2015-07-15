@@ -1,5 +1,40 @@
 #!/usr/bin/env bash
 
+_log() {
+  local GREEN='\033[0;32m'
+  local RED='\033[0;31m'
+  local YELLOW='\033[0;33m'
+  local CYAN='\033[0;36m'
+  local RESET='\033[0m'
+
+  local message
+  local loglevel
+
+  case $1 in
+    --error ) loglevel="error"; message="$2";;
+    --warn ) loglevel="warn"; message="$2";;
+    --debug ) loglevel="debug"; message="$2";;
+    * ) loglevel="info"; message="$1";;
+  esac
+
+  if [ "$loglevel" == "info" ]; then
+    echo -e "${CYAN}dotfiles${RESET} ${CYAN}[$(date +"%T")]${RESET} ${GREEN}${message}${RESET}"
+  fi
+
+  if [ "$loglevel" == "warn" ]; then
+    echo -e "${CYAN}dotfiles${RESET} ${CYAN}[$(date +"%T")]${RESET} ${YELLOW}${message}${RESET}"
+  fi
+
+  if [ "$loglevel" == "error" ]; then
+    echo -e "${CYAN}dotfiles${RESET} ${CYAN}[$(date +"%T")]${RESET} ${RED}${message}${RESET}" 1>&2
+  fi
+
+  if [ "$loglevel" == "debug" ]; then
+    echo -e "${message}"
+  fi
+}
+
+
 is_app_installed() {
   type "$1" &>/dev/null
 }
@@ -28,14 +63,14 @@ ask-question(){
     shift
   done
 
-  prompt="$question: "
+  prompt="$question"
 
   # choice based question
   if [ -n "$choice" ]; then
     if [ -n "$defaultAnswer" ]; then
       prompt="$question [0=$defaultAnswer]: "
     fi
-    printf "%s\n" "$prompt"
+    _log "$prompt"
 
     select answer in $choice;
     do
@@ -55,7 +90,7 @@ ask-question(){
         prompt="$question [$defaultAnswer]: "
       fi
 
-      printf "%s" "$prompt"
+      _log "$prompt: "
       read answer
       answer=${answer:-$defaultAnswer}
 

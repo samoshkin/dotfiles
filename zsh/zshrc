@@ -34,6 +34,10 @@ autoload run-help
 setopt shwordsplit
 setopt nobeep
 
+# so equals test works [ "$1" == "value" ]
+# see http://www.zsh.org/mla/users/2011/msg00161.html
+unsetopt equals
+
 # TODO: define bindkey configuration manually, not through iTerm
 
 # TODO: split between zshenv and zshrc, or move to zshenv completely

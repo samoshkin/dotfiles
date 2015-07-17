@@ -57,7 +57,6 @@ configure-slate(){
   ln -sf "/Applications/Google Chrome.app" "/Applications/Google_Chrome.app"
 }
 
-# TODO: fix broken installation on OSX 10.10
 install-truecrypt(){
   # download dmg
   log "Installing truecrypt@7.1a"
@@ -67,8 +66,24 @@ install-truecrypt(){
   # mount and automatically accept EULA
   yes | hdiutil attach "$DOTFILES/tmp/truecrypt.dmg" > /dev/null
 
-  # install pgk
-  sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg" -target /
+  # TrueCrypt 7.1a incorrectly detect OSX verison, and thinks 10.10 < 10.4
+  # see Install TrueCrypt On Mac OS X Yosemite 10.10 — Lazy Mind -  https://lazymind.me/2014/10/install-truecrypt-on-mac-osx-yosemite-10-10/
+
+  # on Yosemite and upcoming versions: 10.11, 10.12
+  # install inner packages in correct order: OSXFUSECore.pkg, OSXFUSEMacFUSE.pkg, MacFUSE.pkg, TrueCrypt.pkg
+  if [[ "$(sw_vers -productVersion)" =~ "^10\.1" ]]; then
+    sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg/Contents/Packages/OSXFUSECore.pkg" -target /
+
+    sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg/Contents/Packages/OSXFUSEMacFUSE.pkg" -target /
+
+    sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg/Contents/Packages/MacFUSE.pkg" -target /
+
+    sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg/Contents/Packages/TrueCrypt.pkg" -target /
+
+  # on Mavericks and below, just run the installer for main pgg
+  else
+    sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg" -target /
+  fi
 
   # unmount dmg
   hdiutil detach "/Volumes/TrueCrypt 7.1a"
@@ -125,6 +140,6 @@ brew cask install \
 configure-osx-defaults
 configure-slate
 configure-keyboard-remaps
-# install-truecrypt
+install-truecrypt
 
 log "Done. Please logout/restart to have all changes applied for sure"

@@ -71,7 +71,7 @@ install-truecrypt(){
 
   # on Yosemite and upcoming versions: 10.11, 10.12
   # install inner packages in correct order: OSXFUSECore.pkg, OSXFUSEMacFUSE.pkg, MacFUSE.pkg, TrueCrypt.pkg
-  if [[ "$(sw_vers -productVersion)" =~ "^10\.1" ]]; then
+  if [[ "$(sw_vers -productVersion)" =~ ^10\.1 ]]; then
     sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg/Contents/Packages/OSXFUSECore.pkg" -target /
 
     sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg/Contents/Packages/OSXFUSEMacFUSE.pkg" -target /

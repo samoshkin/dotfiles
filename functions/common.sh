@@ -34,6 +34,13 @@ _log() {
   fi
 }
 
+get-app-path(){
+  osascript -e "tell application \"Finder\" to POSIX path of (get application file id \"$1\" as alias)"
+}
+
+get-app-id(){
+  osascript -e "id of app \"$1\""
+}
 
 is_app_installed() {
   type "$1" &>/dev/null

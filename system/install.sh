@@ -2,9 +2,9 @@
 
 configure-keyboard-remaps(){
 
-  log "Configuring keyboard remaps"
+  _log "Configuring keyboard remaps"
 
-  # TODO: log --debug to just echo without coloring
+  # TODO: _log --debug to just echo without coloring
 
   # need to open them to be able to configure
   open "/Applications/Karabiner.app" "/Applications/Seil.app"
@@ -38,7 +38,7 @@ configure-keyboard-remaps(){
     sh "$DOTFILES/system/seil-profile.sh"
 
     # TODO: show menu which profile to choose
-    log "\nMake sure to select profile in Karabiner preferences"
+    _log "\nMake sure to select profile in Karabiner preferences"
   else
     echo "You already have Karabiner profiles installed. Skip configuring profiles"
   fi
@@ -47,7 +47,7 @@ configure-keyboard-remaps(){
 configure-slate(){
 
   # TODO: need to enable Slate in "System Preferences" -> "Security & Privacy" -> "Accessibility"
-  log "Configuring slate"
+  _log "Configuring slate"
   _ln -t ~ "${DOTFILES}/system/.slate.js"
 
   # let Slate automatically check for updates
@@ -58,9 +58,15 @@ configure-slate(){
 }
 
 install-truecrypt(){
-  # download dmg
-  log "Installing truecrypt@7.1a"
+  _log "Installing truecrypt@7.1a"
 
+  # check if already installed
+  if get-app-path "org.TrueCryptFoundation.TrueCrypt" &>/dev/null; then
+    _log --debug "TrueCrypt is already installed. Do nothing"
+    return 0
+  fi
+
+  # download dmg
   curl -o "$DOTFILES/tmp/truecrypt.dmg" "https://www.grc.com/misc/truecrypt/TrueCrypt%207.1a%20Mac%20OS%20X.dmg"
 
   # mount and automatically accept EULA
@@ -90,7 +96,7 @@ install-truecrypt(){
 }
 
 configure-osx-defaults(){
-  log "Changing OSX system defaults and behavior"
+  _log "Changing OSX system defaults and behavior"
   source "${DOTFILES}/system/osx.sh"
 }
 
@@ -106,20 +112,26 @@ configure-macpass(){
 }'
 }
 
-log "Installing fonts"
+configure-default-apps(){
+  _log "Configuring default application associations"
+  duti "$DOTFILES/system/default-apps.duti"
+}
+
+_log "Installing fonts"
 brew cask install \
   font-droid-sans-mono \
   font-dejavu-sans \
   font-inconsolata-dz \
   font-source-code-pro || true
 
-log "Installing packages"
+_log "Installing packages"
 brew install \
   shellcheck \
   tree \
+  duti \
   todo-txt || true
 
-log "Installing applications"
+_log "Installing applications"
 brew cask install \
   diffmerge \
   google-chrome \
@@ -141,5 +153,6 @@ configure-osx-defaults
 configure-slate
 configure-keyboard-remaps
 install-truecrypt
+configure-default-apps
 
-log "Done. Please logout/restart to have all changes applied for sure"
+_log "Done. Please restart to have all changes applied for sure"

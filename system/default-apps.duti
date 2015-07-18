@@ -1,0 +1,12 @@
+# blank lines and lines beginning with a '#' are ignored
+# list of OSX system UTIs https://developer.apple.com/library/mac/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
+# bundle id   UTI/ext/MIME    role(all, viewer, editor, shell, none)
+
+org.videolan.vlc public.movie viewer
+org.videolan.vlc public.avi viewer
+org.videolan.vlc public.mpeg viewer
+org.videolan.vlc public.mpeg-4 viewer
+
+com.github.atom public.source-code all
+
+# bundle id    URL scheme

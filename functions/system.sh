@@ -5,10 +5,6 @@ installed-fonts() {
   fc-list : family |  grep -i "$familyName"  | uniq | sort
 }
 
-get-app-id(){
-  osascript -e "id of app \"$1\""
-}
-
 save-config-atom-packages() {
   local apmPackagesPath="${DOTFILES}/atom/packages.txt";
   apm list --installed --bare | sed 's/@.*//' > "$apmPackagesPath"

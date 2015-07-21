@@ -117,6 +117,13 @@ configure-default-apps(){
   duti "$DOTFILES/system/default-apps.duti"
 }
 
+configure-todotxt(){
+  _log "Configuring todotxt"
+
+  mkdir -p "$HOME/.todo"
+  _ln "${DOTFILES}/system/todo.config" "$HOME/.todo/config"
+}
+
 _log "Installing fonts"
 brew cask install \
   font-droid-sans-mono \
@@ -136,6 +143,7 @@ brew cask install \
   diffmerge \
   google-chrome \
   dropbox \
+  google-drive \
   karabiner \
   seil \
   key-codes \
@@ -149,10 +157,12 @@ brew cask install \
   fseventer \
   vlc || true
 
+install-truecrypt
+
 configure-osx-defaults
 configure-slate
 configure-keyboard-remaps
-install-truecrypt
 configure-default-apps
+configure-todotxt
 
 _log "Done. Please restart to have all changes applied for sure"

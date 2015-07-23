@@ -45,6 +45,7 @@
     js_indent_with_tabs: false
     css_preserve_newlines: true
   "file-icons":
+    onChanges: true
     coloured: false
   pigments: {}
   "highlight-line":
@@ -58,3 +59,18 @@
   "markdown-preview": {}
   "tree-view": {}
   "git-blame": {}
+  "git-history":
+    showDiff: false
+  "linter-jscs":
+    harmony: true
+    messageType: "warning"
+    onlyConfig: true
+    verbose: true
+  "linter-csslint": {}
+  "atom-html-preview":
+    triggerOnSave: true
+  "autoclose-html": {}
+  "atom-ternjs":
+    lint: false
+  "autocomplete-plus": {}
+  "merge-conflicts": {}

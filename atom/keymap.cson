@@ -33,6 +33,16 @@
   'alt-shift-cmd-U': 'unset!'
   'shift-cmd-H': 'unset!'
   'alt-shift-cmd-H': 'unset!'
+  'ctrl-alt-o': 'unset!'
+
+# remap atom-ternjs keybnidings to match symbols-view bindings
+'.platform-darwin atom-text-editor':
+  'ctrl-shift-r': 'unset!'
+  'cmd-shift-R': 'tern:references'
+  'ctrl-alt-d': 'unset!'
+  'cmd-alt-down': 'tern:definition'
+  'ctrl-alt-z': 'unset!'
+  'cmd-alt-up': 'tern:markerCheckpointBack'
 
 # NOTE: this is an ugly way to make sure specific command takes precedence
 # in case of conflicting bindings across several packages

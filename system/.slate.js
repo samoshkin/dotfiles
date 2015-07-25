@@ -538,14 +538,6 @@ S.bnda({
   // toggle fullscreen
   'return:ctrl': getToggleFullscreenAction(),
 
-  // TODO: think on better key mappings
-  // focus
-  // 'right:ctrl' : S.op('focus', { 'direction' : 'right' }),
-  // 'left:ctrl' : S.op('focus', { 'direction' : 'left' }),
-  // 'up:ctrl' : S.op('focus', { 'direction' : 'up' }),
-  // 'down:ctrl' : S.op('focus', { 'direction' : 'down' }),
-  // 'down:ctrl,shift' : S.op('focus', { 'direction' : 'behind' }),
-
   // resize bigger
   'left:cmd,alt,=:toggle' : S.op('resize', { 'width' : '+' + resizeDelta, 'height' : '+0', anchor : 'bottom-right' }),
   'right:cmd,alt,=:toggle' : S.op('resize', { 'width' : '+' + resizeDelta, 'height' : '+0' }),

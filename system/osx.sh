@@ -3,6 +3,32 @@
 # see http://secrets.blacktree.com/ for different settings
 # see https://github.com/mathiasbynens/dotfiles/blob/master/.osx
 
+# ==============================
+# Helper configuration functions
+# ==============================
+osxRemoveMenuItem(){
+  local idx=0
+  local systemuiserverPlist="$HOME/Library/Preferences/com.apple.systemuiserver.plist"
+  local value
+
+  while true; do
+    value=$(/usr/libexec/PlistBuddy -c "Print menuExtras:${idx}" "$systemuiserverPlist" 2>&1)
+    # echo "found: $value"
+
+    # reach end of the array
+    if [ $? -ne 0 ]; then
+      break;
+    fi
+
+    if [ "$value" == "$1" ]; then
+      /usr/libexec/PlistBuddy -c "Delete menuExtras:${idx}" "$systemuiserverPlist &>/dev/null"
+      continue;
+    fi
+
+    idx=$((idx + 1))
+  done
+}
+
 # ===========================
 # General settings
 # ===========================
@@ -81,6 +107,10 @@ defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
 defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
 defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 
+# TODO: check what to remove on MacMini
+osxRemoveMenuItem "/System/Library/CoreServices/Menu Extras/TimeMachine.menu"
+
+# MBP menu configuration
 # defaults write com.apple.systemuiserver menuExtras -array \
 #   "/System/Library/CoreServices/Menu Extras/VPN.menu" \
 #   "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" \

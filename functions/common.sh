@@ -34,6 +34,17 @@ _log() {
   fi
 }
 
+_confirm () {
+  while true; do
+    read -p "$1 [Yy/Nn] " yn
+      case "$yn" in
+        [Yy]* ) return 0;;
+        [Nn]* ) return 1;;
+        * ) log "Please answer yes or no.";;
+      esac
+  done
+}
+
 get-app-path(){
   osascript -e "tell application \"Finder\" to POSIX path of (get application file id \"$1\" as alias)"
 }

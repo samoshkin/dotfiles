@@ -21,7 +21,7 @@ save-config-iterm() {
 }
 
 # Create a new directory and enter it
-unalias md
+unalias md || true
 md() {
   mkdir -p "$@" && cd "$@"
 }
@@ -174,4 +174,35 @@ EOF
 
   pbcopy < "${HOME}/.ssh/${keyname}.pub"
   open 'https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account'
+}
+
+vpn() {
+	local cmd=$1
+	local service=$2
+
+	scutil --nc "$cmd" "$service"
+}
+
+update-brew(){
+  _log "Update list of brew packages"
+  brew update
+
+  _log --debug "Outdated packages"
+  brew outdated
+
+  if _confirm "Would you like to upgrade?"; then
+    _log "Upgrade brew packages. Clean download caches"
+    brew upgrade && brew cleanup
+    brew cask cleanup
+  fi
+}
+
+update-atom-packages(){
+  _log "Upgrade atom packages"
+  apm upgrade
+}
+
+update-all(){
+  update-brew
+  update-atom-packages
 }

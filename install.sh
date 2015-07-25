@@ -27,18 +27,6 @@ log () {
   echo -e "${CYAN}dotfiles${RESET} ${CYAN}[$(date +"%T")]${RESET} ${COLOR}${TEXT}${RESET}"
 }
 
-# TODO: rename to more specific and move to functions/common.sh
-confirm () {
-  while true; do
-    read -p "$1 [Yy/Nn] " yn
-      case "$yn" in
-        [Yy]* ) return 0;;
-        [Nn]* ) return 1;;
-        * ) log "Please answer yes or no.";;
-      esac
-  done
-}
-
 _ln() {
   # always symbolic links and with backups
   ln --symbolic -b "$@"
@@ -71,10 +59,6 @@ install_homebrew(){
   # add different brew taps
   brew tap homebrew/dupes
   brew tap caskroom/fonts
-
-	# update brew and brew cask
-	log "Update brew itself and brew-cask. Clean up caches and old versions of formulas"
-	# (brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup) || true
 }
 
 install-submodule(){
@@ -95,7 +79,7 @@ main-menu(){
   local _mc="mc (Install & configure midnight commander)"
   local _dev="dev (Prepare development environments: JS, PhoneGap)"
   local _iterm="iterm (Install iterm2 as a replacement to default Terminal.app)"
-  local _update="update (Update all brew formulas)"
+  local _update="update (Update various packages and software)"
   local _quit="quit (Do nothing and exit)"
 
   local allActions="$_git;$_system;$_iterm;$_zsh;$_nano;$_mc;$_atom;$_dev;$_update;$_quit"
@@ -112,10 +96,7 @@ main-menu(){
     mc* ) install-submodule mc;;
     atom* ) install-submodule atom;;
     dev* ) install-submodule dev;;
-    update* )
-      log "Update brew. Update all packages. Clean up outdated packages from cache"
-      brew update && brew upgrade && brew cleanup
-      ;;
+    update* ) update-all;;
     quit* )
       return 1
       ;;
@@ -127,6 +108,7 @@ export DOTFILES=$(pwd)
 
 # include functions/common
 source "${DOTFILES}/functions/common.sh"
+source "${DOTFILES}/functions/system.sh"
 
 # ensure some dirs
 mkdir -p "${DOTFILES}/tmp"
@@ -134,7 +116,7 @@ mkdir -p "${HOME}/bin"
 
 # if tmp exists, remove all contents
 if [ -d "${DOTFILES}" ]; then
-  rm -rf ${DOTFILES}/tmp/*
+  rm -rf "${DOTFILES}/tmp/*"
 fi
 
 # install homebrew

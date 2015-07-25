@@ -3,7 +3,7 @@
 install_android_devenv(){
   log "Setting up development environment for Cordova Android apps"
 
-  if confirm "Would you like me to install jdk@1.8.0_45 x64 for you?"; then
+  if _confirm "Would you like me to install jdk@1.8.0_45 x64 for you?"; then
 
     local jdk8DmgFile="${DOTFILES}/tmp/jdk-8u45-macosx-x64.dmg"
       # just pick up x64 arch
@@ -37,7 +37,7 @@ install_ios_devenv(){
 
   if xcodebuild -version &> dev/null; then
     log --warn "XCode not installed. Make sure to install XCode. Otherwise you will not be able to build iOS apps"
-    confirm "OK, got it"
+    _confirm "OK, got it"
   fi
 
   npm install -g ios-sim ios-deploy

@@ -17,7 +17,6 @@ git-blame
 git-history
 highlight-line
 javascript-snippets
-last-cursor-position
 linter
 linter-csslint
 linter-htmlhint

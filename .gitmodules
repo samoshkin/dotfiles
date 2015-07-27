@@ -1,3 +1,6 @@
 [submodule "vendor/nanorc"]
 	path = vendor/nanorc
 	url = https://github.com/samoshkin/nanorc.git
+[submodule "vendor/antigen"]
+	path = vendor/antigen
+	url = https://github.com/zsh-users/antigen.git

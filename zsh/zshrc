@@ -4,7 +4,7 @@
 zstyle ':prezto:module:git:log:oneline' format '%C(green)%h%C(reset) %C(red)%d%C(reset) %s %C(cyan)<%an>%C(reset) %C(blue)(%cD)%C(reset)'
 
 # antigen setup
-source "${HOME}/.antigen/antigen.zsh"
+source "${DOTFILES}/vendor/antigen/antigen.zsh"
 
 antigen use oh-my-zsh
 antigen use prezto

@@ -202,7 +202,18 @@ update-atom-packages(){
   apm upgrade
 }
 
+update-zsh-antigen(){
+  _log "Upgrade ZSH antigen itself and installed bundles"
+
+  if is_app_installed zsh; then
+    zsh -c "source \"${DOTFILES}/vendor/antigen/antigen.zsh\" && antigen update && antigen selfupdate"
+  else
+    _log --warn "ZSH is not installed"
+  fi
+}
+
 update-all(){
   update-brew
   update-atom-packages
+  update-zsh-antigen
 }

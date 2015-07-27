@@ -13,6 +13,7 @@
       "fonts"
       "emmet"
     ]
+    destroyEmptyPanes: true
   editor:
     fontFamily: "\"Inconsolata-dz\", \"Consolas\", \"Source Code Pro\", \"Droid Sans Mono\", \"Courier New\", monospace"
     lineHeight: 1.25
@@ -20,11 +21,11 @@
       eol: false
       cr: false
     zoomFontWhenCtrlScrolling: true
-    softWrap: true
     softTabs: false
     showInvisibles: true
     tabLength: 2
     fontSize: 11
+    softWrap: true
   whitespace:
     ensureSingleTrailingNewline: true
   "spell-check": {}
@@ -74,3 +75,9 @@
     lint: false
   "autocomplete-plus": {}
   "merge-conflicts": {}
+  "git-log": {}
+  docblockr: {}
+  Zen:
+    tabs: "multiple"
+  "symbols-tree-view":
+    scrollAnimation: false

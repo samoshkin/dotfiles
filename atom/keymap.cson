@@ -44,6 +44,9 @@
   'ctrl-alt-z': 'unset!'
   'cmd-alt-up': 'tern:markerCheckpointBack'
 
+'.platform-darwin atom-text-editor':
+  'ctrl-alt-o': 'symbols-tree-view:toggle'
+
 # NOTE: this is an ugly way to make sure specific command takes precedence
 # in case of conflicting bindings across several packages
 '.platform-darwin atom-workspace atom-text-editor':

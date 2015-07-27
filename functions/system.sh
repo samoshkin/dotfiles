@@ -7,7 +7,7 @@ installed-fonts() {
 
 save-config-atom-packages() {
   local apmPackagesPath="${DOTFILES}/atom/packages.txt";
-  apm list --installed --bare | sed 's/@.*//' > "$apmPackagesPath"
+  apm list --installed --bare | sed 's/@.*//' | tee "$apmPackagesPath"
 
   echo -e "Saved to $apmPackagesPath"
 }

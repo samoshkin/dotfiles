@@ -183,6 +183,10 @@ vpn() {
 	scutil --nc "$cmd" "$service"
 }
 
+openvpn(){
+  sudo /usr/local/Cellar/openvpn/*/sbin/openvpn "$@"
+}
+
 update-brew(){
   _log "Update list of brew packages"
   brew update

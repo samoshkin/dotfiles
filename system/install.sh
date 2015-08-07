@@ -124,6 +124,30 @@ configure-todotxt(){
   _ln "${DOTFILES}/system/todo.config" "$HOME/.todo/config"
 }
 
+# TODO: verify this routine
+install-openvpn(){
+  _log "Installing openvpn"
+
+  # install openvpn client
+  brew cask install tuntap && brew install openvpn && brew cask install tunnelblick
+
+  _log "Openvpn cannot be automatically symlinked to /Applications. Please run it from /opt/homebrew-cask/Caskroom/tunnelblick/*/Tunnelblick.app"
+
+  # brew will symlink 'Tunnelblick.app' to '/Applications/Tunnelblick.app' from '/opt/homebrew-cask/Caskroom/tunnelblick'
+  # however, Tunnelblick cannot run when not installed in /Applications
+  # https://github.com/caskroom/homebrew-cask/issues/4637
+  rm -f /Applications/Tunnelblick.app
+
+  # launch Tunnelblick from Caskroom, so it suggest to move itself to /Applications on first run
+  open -W /opt/homebrew-cask/Caskroom/tunnelblick/*/Tunnelblick.app
+
+  defaults write net.tunnelblick.tunnelblick updateCheckAutomatically -bool true
+  defaults write net.tunnelblick.tunnelblick keyboardShortcutIndex -int 0
+  defaults write net.tunnelblick.tunnelblick doNotShowSplashScreen -bool false
+  defaults write net.tunnelblick.tunnelblick updateSendProfileInfo -bool false
+  defaults write net.tunnelblick.tunnelblick notOKToCheckThatIPAddressDidNotChangeAfterConnection -bool true
+}
+
 _log "Installing fonts"
 brew cask install \
   font-droid-sans-mono \
@@ -158,6 +182,7 @@ brew cask install \
   vlc || true
 
 install-truecrypt
+install-openvpn
 
 configure-osx-defaults
 configure-slate

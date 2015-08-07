@@ -13,7 +13,7 @@ gwdt(){
 gltr(){
   local format="%C(blue)%cd%C(reset)%x09%s"
   local since=$(date -I -d "yesterday")
-  local author=$(git config user.name)
+  local author="$(git config user.name)"
 
   # parse arguments
   while [ "$1" != "" ]; do
@@ -26,6 +26,7 @@ gltr(){
     esac
     shift
   done
+
 
   git log --author="$author" --pretty=format:"$format" --date=short --since="$since"
 }

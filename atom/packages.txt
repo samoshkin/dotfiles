@@ -31,7 +31,6 @@ pretty-json
 project-manager
 save-session
 script
-seti-monokai
 seti-syntax
 seti-ui
 solarized-dark-ui
@@ -39,4 +38,3 @@ symbols-tree-view
 tabs-to-spaces
 todo-show
 zentabs
-

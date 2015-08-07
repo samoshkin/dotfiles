@@ -12,6 +12,7 @@
     disabledPackages: [
       "fonts"
       "emmet"
+      "atom-ternjs"
     ]
     destroyEmptyPanes: true
   editor:
@@ -81,3 +82,4 @@
     tabs: "multiple"
   "symbols-tree-view":
     scrollAnimation: false
+  "linter-htmlhint": {}

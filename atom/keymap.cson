@@ -52,6 +52,9 @@
 '.platform-darwin atom-workspace atom-text-editor':
   'ctrl-shift-M': 'markdown-preview:toggle'
 
+'.platform-darwin atom-text-editor':
+  'ctrl-alt-d': 'git-difftool:diff-file'
+
 'atom-text-editor':
   'ctrl-alt-cmd-/': 'unset!'
   'ctrl-?': 'unset!'

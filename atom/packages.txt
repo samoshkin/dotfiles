@@ -14,9 +14,12 @@ emmet
 enhanced-tabs
 file-icons
 git-blame
+git-diff-details
+git-difftool
 git-history
 highlight-line
 javascript-snippets
+last-cursor-position
 linter
 linter-csslint
 linter-htmlhint
@@ -29,6 +32,7 @@ monokai
 pigments
 pretty-json
 project-manager
+react
 save-session
 script
 seti-syntax
@@ -38,3 +42,4 @@ symbols-tree-view
 tabs-to-spaces
 todo-show
 zentabs
+

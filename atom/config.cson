@@ -83,3 +83,4 @@
   "symbols-tree-view":
     scrollAnimation: false
   "linter-htmlhint": {}
+  react: {}

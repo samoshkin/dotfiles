@@ -402,13 +402,13 @@ function createDevLayout(screenConf){
 
       'iTerm': {
         operations: [
-          leftThird.dup({ screen: screenConf.mainScreen })
+          leftHalf.dup({ screen: screenConf.mainScreen })
         ],
         repeat: true,
         'ignore-fail': true
       },
       'Atom': {
-        operations: [rightTwoThirds.dup({ screen: screenConf.mainScreen })],
+        operations: [fullScreen.dup({ screen: screenConf.mainScreen })],
         repeat: true,
         'ignore-fail': true
       }
@@ -422,7 +422,7 @@ function createDevLayout(screenConf){
 
       'iTerm': {
         operations: [
-          leftThird.dup({ screen: screenConf.mainScreen })
+          leftHalf.dup({ screen: screenConf.mainScreen })
         ],
         repeat: true,
         'ignore-fail': true
@@ -433,7 +433,7 @@ function createDevLayout(screenConf){
         'ignore-fail': true
       },
       'Atom': {
-        operations: [rightTwoThirds.dup({ screen : screenConf.mainScreen })],
+        operations: [fullScreen.dup({ screen : screenConf.mainScreen })],
         repeat: true,
         'ignore-fail': true
       }

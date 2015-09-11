@@ -7,6 +7,7 @@ org.videolan.vlc public.avi viewer
 org.videolan.vlc public.mpeg viewer
 org.videolan.vlc public.mpeg-4 viewer
 
-com.github.atom public.source-code all
+com.github.atom public.source-code editor
+com.github.atom .jsx editor
 
 # bundle id    URL scheme

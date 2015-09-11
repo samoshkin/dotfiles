@@ -22,10 +22,12 @@ javascript-snippets
 last-cursor-position
 linter
 linter-csslint
+linter-eslint
 linter-htmlhint
 linter-jscs
 linter-jshint
 linter-shellcheck
+linter-stylelint
 markdown-scroll-sync
 merge-conflicts
 monokai

@@ -13,6 +13,7 @@
       "fonts"
       "emmet"
       "atom-ternjs"
+      "linter-csslint"
     ]
     destroyEmptyPanes: true
   editor:
@@ -27,25 +28,28 @@
     tabLength: 2
     fontSize: 11
     softWrap: true
+    showIndentGuide: true
   whitespace:
     ensureSingleTrailingNewline: true
   "spell-check": {}
   "linter-shellcheck":
     shellcheckExecutablePath: "/usr/local/bin/shellcheck"
   linter:
-    showErrorInline: false
     statusBar: "Show error of the selected line"
     subtleLinterErrors: [
       "shellcheck"
     ]
+    lintOnFly: false
+    showErrorInline: false
   emmet: {}
   "linter-jshint":
     disableWhenNoJshintrcFileInPath: true
   "atom-beautify":
     analytics: false
-    beautifyEntireFileOnSave: false
     js_indent_with_tabs: false
     css_preserve_newlines: true
+    js_keep_array_indentation: true
+    beautifyEntireFileOnSave: false
   "file-icons":
     onChanges: true
     coloured: false
@@ -84,3 +88,7 @@
     scrollAnimation: false
   "linter-htmlhint": {}
   react: {}
+  "linter-eslint":
+    disableWhenNoEslintrcFileInPath: true
+  "linter-stylelint":
+    usePreset: false

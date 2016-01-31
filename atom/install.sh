@@ -7,6 +7,9 @@ brew cask install atom || true
 log "Installing shellcheck package"
 brew install shellcheck
 
+log "Installing ctags package"
+brew install ctags
+
 log "Installing atom packages"
 
 # install all packages

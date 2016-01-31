@@ -24,17 +24,6 @@
 # If you are unfamiliar with CSON, you can read more about it here:
 # https://github.com/bevry/cson#what-is-cson
 
-'atom-text-editor:not([mini])':
-  'shift-cmd-delete': 'editor:delete-line'
-  'shift-ctrl-delete': 'editor:delete-line'
-
-'atom-text-editor':
-  'shift-cmd-U': 'unset!'
-  'alt-shift-cmd-U': 'unset!'
-  'shift-cmd-H': 'unset!'
-  'alt-shift-cmd-H': 'unset!'
-  'ctrl-alt-o': 'unset!'
-
 # remap atom-ternjs keybnidings to match symbols-view bindings
 '.platform-darwin atom-text-editor':
   'ctrl-shift-r': 'unset!'
@@ -44,28 +33,26 @@
   'ctrl-alt-z': 'unset!'
   'cmd-alt-up': 'tern:markerCheckpointBack'
 
+# Toggle block comment and unset default bindings
 '.platform-darwin atom-text-editor':
-  'ctrl-alt-o': 'symbols-tree-view:toggle'
-
-# NOTE: this is an ugly way to make sure specific command takes precedence
-# in case of conflicting bindings across several packages
-'.platform-darwin atom-workspace atom-text-editor':
-  'ctrl-shift-M': 'markdown-preview:toggle'
-
-'.platform-darwin atom-text-editor':
-  'ctrl-alt-d': 'git-difftool:diff-file'
-
-'atom-text-editor':
+  'cmd-shift-/': 'block-comment:toggle'
   'ctrl-alt-cmd-/': 'unset!'
   'ctrl-?': 'unset!'
 
-'atom-text-editor':
-  'cmd-shift-/': 'block-comment:toggle'
+# Toggle linter results
+'.platform-darwin atom-text-editor':
   'alt-cmd-l': 'linter:toggle'
 
-'.platform-darwin':
+# Save all, Save as shortcuts
+'.platform-darwin atom-workspace':
   'cmd-shift-s': 'window:save-all'
   'cmd-alt-s': 'core:save-as'
 
-'.tree-view':
+# Tree View additional shortcuts
+'.platform-darwin .tree-view':
   'r': 'tree-view:rename'
+
+# Override difftool bindings to add more specifity
+'.platform-darwin atom-workspace, .platform-darwin atom-text-editor':
+  'ctrl-shift-D': 'git-difftool:diff-project'
+  'ctrl-alt-d': 'git-difftool:diff-file'

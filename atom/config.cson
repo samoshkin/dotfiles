@@ -1,94 +1,120 @@
 "*":
-  "exception-reporting":
-    userId: "c7458fb7-0174-7f62-8882-56e7a6d0a548"
-  welcome:
-    showOnStartup: false
+  Zen:
+    tabs: "multiple"
+  "atom-beautify":
+    analytics: false
+    beautifyEntireFileOnSave: false
+    css_preserve_newlines: true
+    js_indent_with_tabs: false
+    js_keep_array_indentation: true
+  "atom-ctags":
+    cmdArgs: "--exclude=.git --exclude=node_modules"
+  "atom-html-preview":
+    triggerOnSave: true
+  "atom-ternjs":
+    lint: false
+  "auto-update-packages":
+    intervalMinutes: 1440
+  "autoclose-html": {}
+  "autocomplete-plus": {}
+  "color-picker":
+    preferredFormat: "HEX"
   core:
+    audioBeep: false
+    destroyEmptyPanes: true
+    disabledPackages: [
+      "fonts"
+      "emmet"
+      "linter-csslint"
+      "symbols-view"
+      "atom-ternjs"
+      "atom-ctags"
+    ]
+    excludeVcsIgnoredPaths: true
+    packagesWithKeymapsDisabled: [
+      "git-projects"
+      "todo-show"
+      "term3"
+    ]
     themes: [
       "atom-dark-ui"
       "monokai"
     ]
-    excludeVcsIgnoredPaths: true
-    disabledPackages: [
-      "fonts"
-      "emmet"
-      "atom-ternjs"
-      "linter-csslint"
-    ]
-    destroyEmptyPanes: true
+  docblockr:
+    align_tags: "shallow"
   editor:
-    fontFamily: "\"Inconsolata-dz\", \"Consolas\", \"Source Code Pro\", \"Droid Sans Mono\", \"Courier New\", monospace"
-    lineHeight: 1.25
+    fontFamily: "\"Inconsolata-dz\", \"Input Mono\", \"Consolas\", \"Source Code Pro\", \"Droid Sans Mono\", \"Courier New\", monospace"
+    fontSize: 15
     invisibles:
-      eol: false
       cr: false
-    zoomFontWhenCtrlScrolling: true
-    softTabs: false
-    showInvisibles: true
-    tabLength: 2
-    fontSize: 11
-    softWrap: true
+      eol: false
+    lineHeight: 1.25
+    scrollPastEnd: true
     showIndentGuide: true
-  whitespace:
-    ensureSingleTrailingNewline: true
-  "spell-check": {}
-  "linter-shellcheck":
-    shellcheckExecutablePath: "/usr/local/bin/shellcheck"
+    showInvisibles: true
+    softTabs: false
+    softWrap: true
+    tabLength: 2
+    zoomFontWhenCtrlScrolling: true
+  emmet: {}
+  "exception-reporting":
+    userId: "c7458fb7-0174-7f62-8882-56e7a6d0a548"
+  "file-icons":
+    coloured: false
+    onChanges: true
+  "git-blame": {}
+  "git-history":
+    showDiff: false
+  "git-log": {}
+  "git-projects":
+    rootPath: "~/projects"
+  "highlight-line":
+    hideHighlightOnSelect: true
+  "highlight-selected":
+    hideHighlightOnSelectedWord: true
+    highlightBackground: true
+  "language-babel": {}
   linter:
+    lintOnFly: false
+    showErrorInline: false
     statusBar: "Show error of the selected line"
     subtleLinterErrors: [
       "shellcheck"
     ]
-    lintOnFly: false
-    showErrorInline: false
-  emmet: {}
-  "linter-jshint":
-    disableWhenNoJshintrcFileInPath: true
-  "atom-beautify":
-    analytics: false
-    js_indent_with_tabs: false
-    css_preserve_newlines: true
-    js_keep_array_indentation: true
-    beautifyEntireFileOnSave: false
-  "file-icons":
-    onChanges: true
-    coloured: false
-  pigments: {}
-  "highlight-line":
-    hideHighlightOnSelect: true
-  "todo-show": {}
-  "save-session":
-    dataSaveFolder: "/Users/asamoshkin/.atom/packages/save-session/projects"
-  zentabs:
-    maximumOpenedTabs: 8
-    neverCloseUnsaved: true
-  "markdown-preview": {}
-  "tree-view": {}
-  "git-blame": {}
-  "git-history":
-    showDiff: false
+  "linter-csslint": {}
+  "linter-eslint":
+    disableWhenNoEslintrcFileInPath: true
+  "linter-htmlhint": {}
   "linter-jscs":
     harmony: true
     messageType: "warning"
     onlyConfig: true
     verbose: true
-  "linter-csslint": {}
-  "atom-html-preview":
-    triggerOnSave: true
-  "autoclose-html": {}
-  "atom-ternjs":
-    lint: false
-  "autocomplete-plus": {}
-  "merge-conflicts": {}
-  "git-log": {}
-  docblockr: {}
-  Zen:
-    tabs: "multiple"
-  "symbols-tree-view":
-    scrollAnimation: false
-  "linter-htmlhint": {}
-  react: {}
-  "linter-eslint":
-    disableWhenNoEslintrcFileInPath: true
+  "linter-jshint":
+    disableWhenNoJshintrcFileInPath: true
+  "linter-shellcheck":
+    shellcheckExecutablePath: "/usr/local/bin/shellcheck"
   "linter-stylelint":
     usePreset: false
+  "markdown-preview": {}
+  "merge-conflicts": {}
+  pigments: {}
+  react: {}
+  "save-session":
+    dataSaveFolder: "/Users/asamoshkin/.atom/packages/save-session/projects"
+  "source-preview": {}
+  "spell-check": {}
+  "symbols-tree-view":
+    scrollAnimation: false
+  term3:
+    cursorBlink: false
+    fontSize: "14"
+  "todo-show": {}
+  "tree-view": {}
+  welcome:
+    showOnStartup: false
+  whitespace:
+    ensureSingleTrailingNewline: true
+  zentabs:
+    maximumOpenedTabs: 8
+    neverCloseUnsaved: true

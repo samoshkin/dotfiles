@@ -5,7 +5,11 @@ brew install mc || true
 
 log "Link configs to ~/.config/mc"
 
+
 mkdir -p ~/.config/mc
 
 # symlink config files to ~/.config/mc
-_ln -t ~/.config/mc "${DOTFILES}/mc/ini"
+_ln -t ~/.config/mc \
+  "${DOTFILES}/mc/ini" \
+  "${DOTFILES}/mc/mc.ext" \
+  "${DOTFILES}/mc/menu"

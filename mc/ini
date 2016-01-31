@@ -83,6 +83,8 @@ ignore_ftp_chattr_errors=true
 skin=modarin256root-defbg
 filepos_max_saved_entries=1024
 
+editor_state_full_filename=0
+
 [Layout]
 message_visible=1
 keybar_visible=1
@@ -93,7 +95,7 @@ menubar_visible=1
 free_space=1
 horizontal_split=0
 vertical_equal=1
-left_panel_size=42
+left_panel_size=89
 horizontal_equal=1
 top_panel_size=25
 
@@ -126,7 +128,7 @@ show_dot_files=true
 fast_reload=false
 fast_reload_msg_shown=true
 mark_moves_down=true
-reverse_files_only=true
+reverse_files_only=false
 auto_save_setup_panels=true
 navigate_with_arrows=true
 panel_scroll_pages=true
@@ -135,10 +137,10 @@ filetype_mode=true
 permission_mode=true
 torben_fj_mode=false
 quick_search_mode=0
-select_flags=6
+select_flags=4
 
 [FindFile]
-file_case_sens=true
+file_case_sens=false
 file_shell_pattern=true
 file_find_recurs=true
 file_skip_hidden=false
@@ -147,7 +149,7 @@ content_use=true
 content_case_sens=true
 content_regexp=false
 content_first_hit=false
-content_whole_words=false
+content_whole_words=true
 content_all_charsets=false
 ignore_dirs_enable=true
 ignore_dirs=

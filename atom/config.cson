@@ -52,7 +52,6 @@
     scrollPastEnd: true
     showIndentGuide: true
     showInvisibles: true
-    softTabs: false
     softWrap: true
     tabLength: 2
     zoomFontWhenCtrlScrolling: true

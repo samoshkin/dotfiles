@@ -10,3 +10,4 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 export SAVEHIST=10000
 export HISTSIZE=10000
 export HISTFILE="${HOME}/.zsh_history"
+export HISTCONTROL=ignoredups

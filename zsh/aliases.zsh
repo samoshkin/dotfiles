@@ -1,9 +1,8 @@
 # safe rm by default
 alias rm="rm -i"
 
+alias ls='ls --time-style=long-iso --color=auto'
 alias l='ls -lAFh'
-alias la='ls -lahF'
-alias ld='l | grep --color=never "^d"'
 
 # easier navigation
 alias ..="cd .."
@@ -37,3 +36,4 @@ man() {
 
 alias karabiner="/Applications/Karabiner.app/Contents/Library/bin/karabiner"
 alias seil="/Applications/Seil.app/Contents/Library/bin/seil"
+alias plistbuddy="/usr/libexec/PlistBuddy"

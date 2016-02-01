@@ -28,5 +28,5 @@ gltr(){
   done
 
 
-  git log --author="$author" --pretty=format:"$format" --date=short --since="$since"
+  git log --all --author="$author" --pretty=format:"$format" --date=short --since="$since"
 }

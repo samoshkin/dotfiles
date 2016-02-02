@@ -75,10 +75,11 @@ main-menu(){
   local _mc="mc (Install & configure midnight commander)"
   local _dev="dev (Prepare development environments: JS, PhoneGap)"
   local _iterm="iterm (Install iterm2 as a replacement to default Terminal.app)"
+  local _zim="zim (Install Zim Desktop Wiki to manage your notes)"
   local _update="update (Update various packages and software)"
   local _quit="quit (Do nothing and exit)"
 
-  local allActions="$_git;$_system;$_iterm;$_zsh;$_nano;$_mc;$_atom;$_dev;$_update;$_quit"
+  local allActions="$_git;$_system;$_iterm;$_zsh;$_nano;$_mc;$_atom;$_dev;$_zim;$_update;$_quit"
   local nextAction
 
   printf '\n'
@@ -92,6 +93,7 @@ main-menu(){
     mc* ) install-submodule mc;;
     atom* ) install-submodule atom;;
     dev* ) install-submodule dev;;
+    zim* ) install-submodule zim;;
     update* ) update-all;;
     quit* )
       return 1
@@ -112,7 +114,8 @@ mkdir -p "${HOME}/bin"
 
 # if tmp exists, remove all contents
 if [ -d "${DOTFILES}" ]; then
-  rm -rf "${DOTFILES}/tmp/*"
+  _log "Clean up ${DOTFILES}/tmp directory"
+  rm -rf ${DOTFILES}/tmp/*
 fi
 
 # install homebrew

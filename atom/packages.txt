@@ -1,6 +1,5 @@
 atom-beautify
 atom-ctags
-atom-html-preview
 atom-monokai
 atom-ternjs
 auto-detect-indentation
@@ -40,7 +39,6 @@ pretty-json
 project-manager
 react
 script
-seti-monokai
 seti-syntax
 seti-ui
 source-preview
@@ -49,3 +47,4 @@ term3
 todo-show
 trailing-spaces
 zentabs
+

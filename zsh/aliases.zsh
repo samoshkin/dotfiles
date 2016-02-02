@@ -34,6 +34,9 @@ man() {
 		man "$@"
 }
 
+# remap or add new git aliases
+alias giA='git add -A'
+
 alias karabiner="/Applications/Karabiner.app/Contents/Library/bin/karabiner"
 alias seil="/Applications/Seil.app/Contents/Library/bin/seil"
 alias plistbuddy="/usr/libexec/PlistBuddy"

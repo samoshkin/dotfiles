@@ -52,10 +52,6 @@ install_homebrew(){
 
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
-	# install brew cask
-	log "Installing brew-cask"
-	brew install caskroom/cask/brew-cask || true
-
   # add different brew taps
   brew tap homebrew/dupes
   brew tap caskroom/fonts

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 log "Installing git, tig, gibo"
-
 brew install git gibo tig || true
 
 log "Installing diffmerge and kdiff3"
@@ -33,3 +32,12 @@ _ln "${DOTFILES}/git/external_mergetool_diffmerge.sh" ~/bin/external_mergetool.s
 log "Configure tig with ~/.tigrc"
 # symlink .tigrc file
 _ln -t ~ "${DOTFILES}/git/.tigrc"
+
+
+# Install Atlassian source tree
+brew cask install sourcetree
+
+defaults write com.torusknot.SourceTreeNotMAS SUScheduledCheckInterval -int 604800
+defaults write com.torusknot.SourceTreeNotMAS SUEnableAutomaticChecks -bool true
+defaults write com.torusknot.SourceTreeNotMAS gitRebaseTrackingBranches -bool true
+defaults write com.torusknot.SourceTreeNotMAS gitGlobalIgnoreFile -string "$(realpath ~/.gitignore)"

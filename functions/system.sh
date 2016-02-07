@@ -221,3 +221,11 @@ update-all(){
   update-atom-packages
   update-zsh-antigen
 }
+
+take-screenshot-android(){
+  # takes the screenshot from attached device
+  # Random Stuff: Grab Android screenshot to computer via ADB - http://blog.shvetsov.com/2013/02/grab-android-screenshot-to-computer-via.html
+  local fileName="scn-$(date +"%Y%m%d-%H%M%S").png"``
+  adb shell screencap -p | perl -pe 's/\x0D\x0A/\x0A/g' > $fileName
+  open $fileName
+}

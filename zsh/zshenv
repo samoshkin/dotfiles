@@ -16,3 +16,6 @@ if [ -z "$SSH_AUTH_SOCK" ] ; then
   # do this once during system install
   # ssh-add -K $KEYFILES
 fi
+
+# load nvm if available
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"

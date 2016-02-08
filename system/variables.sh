@@ -1,9 +1,8 @@
 #!/bin/sh
 
 # paths
-export PATH="${HOME}/bin:${HOME}/.npm/bin:$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${HOME}/.npm/share/man:$MANPATH"
-export NODE_PATH="${HOME}/.npm/lib/node_modules:$NODE_PATH"
+export PATH="${HOME}/bin:$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
 export EDITOR=$(which nano)
 
@@ -19,3 +18,5 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export JAVA_HOME="$(/usr/libexec/java_home 2> /dev/null)"
 
 export ANDROID_HOME=/usr/local/opt/android-sdk
+
+export NVM_DIR="$HOME/.nvm"

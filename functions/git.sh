@@ -30,3 +30,7 @@ gltr(){
 
   git log --all --author="$author" --pretty=format:"$format" --date=short --since="$since"
 }
+
+git-latest-tag(){
+  git describe --abbrev=0 --tags
+}

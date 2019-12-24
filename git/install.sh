@@ -3,8 +3,11 @@
 log "Installing git, tig, gibo"
 brew install git gibo tig || true
 
-log "Installing diffmerge and kdiff3"
-brew cask install diffmerge kdiff3 || true
+log "Installing diffmerge"
+brew cask install diffmerge || true
+
+log "Installing icdiff"
+brew install icdiff
 
 defaults write com.sourcegear.DiffMerge NSUserKeyEquivalents '{
   "Next Conflict"="$@\Uf701";
@@ -24,15 +27,9 @@ log "Prepare global ~/.gitignore"
 _backup ~/.gitignore
 gibo OSX > ~/.gitignore
 
-log "Configure diffmerge to be external merge and diff tool"
-# symlink external merge and diff tool scripts to "~/bin", so they are in PATH
-_ln "${DOTFILES}/git/external_difftool_diffmerge.sh" ~/bin/external_difftool.sh
-_ln "${DOTFILES}/git/external_mergetool_diffmerge.sh" ~/bin/external_mergetool.sh
-
 log "Configure tig with ~/.tigrc"
 # symlink .tigrc file
 _ln -t ~ "${DOTFILES}/git/.tigrc"
-
 
 # Install Atlassian source tree
 brew cask install sourcetree

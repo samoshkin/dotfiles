@@ -3,10 +3,10 @@
 set -e
 
 # TODO: deprecated, use _log() function from "functions/common.sh"
-log () {
+log() {
   local GREEN='\033[0;32m'
   local RED='\033[0;31m'
-	local YELLOW='\033[0;33m'
+  local YELLOW='\033[0;33m'
   local CYAN='\033[0;36m'
   local RESET='\033[0m'
 
@@ -18,7 +18,7 @@ log () {
     TEXT=$2
   fi
 
-	if [ "$1" == "--warn" ]; then
+  if [ "$1" == "--warn" ]; then
     COLOR=$YELLOW
     TEXT=$2
   fi
@@ -43,21 +43,21 @@ _backup() {
   fi
 }
 
-install_homebrew(){
-	# Check for Homebrew
-	if ! is_app_installed brew; then
-	  echo "Homebrew is not found. Installing one..."
-	  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-	fi
+install_homebrew() {
+  # Check for Homebrew
+  if ! is_app_installed brew; then
+    echo "Homebrew is not found. Installing one..."
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  fi
 
-	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+  export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
   # add different brew taps
   brew tap homebrew/dupes
   brew tap caskroom/fonts
 }
 
-install-submodule(){
+install-submodule() {
   local submodule=$1
   if [ -f "${DOTFILES}/$submodule/install.sh" ]; then
     source "${DOTFILES}/$submodule/install.sh"
@@ -66,7 +66,7 @@ install-submodule(){
   fi
 }
 
-main-menu(){
+main-menu() {
   local _atom="atom (Install atom and atom packages)"
   local _system="system (Setup osx and install system-wide packages)"
   local _zsh="zsh (Install zsh and change to be a default shell)"
@@ -85,17 +85,17 @@ main-menu(){
   printf '\n'
   ask-question --question "What should I do next?" --choice "$allActions" nextAction
   case "$nextAction" in
-    git* ) install-submodule git;;
-    system* ) install-submodule system;;
-    iterm* ) install-submodule iterm;;
-    zsh* ) install-submodule zsh;;
-    nano* ) install-submodule nano;;
-    mc* ) install-submodule mc;;
-    atom* ) install-submodule atom;;
-    dev* ) install-submodule dev;;
-    zim* ) install-submodule zim;;
-    update* ) update-all;;
-    quit* )
+    git*) install-submodule git ;;
+    system*) install-submodule system ;;
+    iterm*) install-submodule iterm ;;
+    zsh*) install-submodule zsh ;;
+    nano*) install-submodule nano ;;
+    mc*) install-submodule mc ;;
+    atom*) install-submodule atom ;;
+    dev*) install-submodule dev ;;
+    zim*) install-submodule zim ;;
+    update*) update-all ;;
+    quit*)
       return 1
       ;;
   esac
@@ -121,8 +121,23 @@ fi
 # install homebrew
 install_homebrew
 
-log "Installing coreutils and git"
-brew install coreutils git || true
+log "Installing GNU utils"
+brew install coreutils || true
+brew install findutils --with-default-names || true
+
+brew install gnu-indent --with-default-names || true
+brew install gnu-sed --with-default-names || true
+brew install gnu-tar --with-default-names || true
+brew install grep --with-default-names || true
+brew install gnu-which --with-default-names || true
+brew install gawk || true
+brew install gzip || true
+brew install screen || true
+brew install watch || true
+brew install wget || true
+
+log "Installing git"
+brew install git || true
 
 # evaluate variables
 # do this after installing homebrew, because we add brew coreutils dir to path
@@ -132,7 +147,7 @@ source "system/private.variables.sh"
 # open main menu
 while true; do
   if ! main-menu; then
-    break;
+    break
   fi
 done
 

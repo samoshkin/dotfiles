@@ -1,4 +1,8 @@
-#!/bin/zsh
+#!/bin/sh
+
+# FIXME:
+source "${DOTFILES}/system/variables.sh"
+source "${DOTFILES}/system/private.variables.sh"
 
 # override styles before running antigen
 zstyle ':prezto:module:git:log:oneline' format '%C(green)%h%C(reset) %C(red)%d%C(reset) %s %C(cyan)<%an>%C(reset) %C(blue)(%cD)%C(reset)'
@@ -14,16 +18,14 @@ antigen bundles <<EOBUNDLES
   zsh-users/zsh-syntax-highlighting
   zsh-users/zsh-history-substring-search
   sorin-ionescu/prezto modules/git
-  brew
   osx
   sudo
-	# colored-man
   walesmd/caniuse.plugin.zsh
   supercrabtree/k
   Tarrasch/zsh-bd
+  mafredri/zsh-async
+  sindresorhus/pure
 EOBUNDLES
-
-antigen theme pure
 
 antigen apply
 
@@ -39,10 +41,33 @@ setopt nobeep
 unsetopt equals
 
 # TODO: define bindkey configuration manually, not through iTerm
+# Fix home and end keys when inside tmux
+bindkey "\e[1~" beginning-of-line
+bindkey "\e[4~" end-of-line
+
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# for fzf '**' shell completions.
+# - The first argument to the function ($1) is the base path to start traversal
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude .git --exclude node_modules . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  echo "$1"
+  fd --type d --hidden --follow --exclude .git --exclude node_modules . "$1"
+}
+
+# Enable fuzzy search key bindings and auto completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Disable XON/XOFF flow control to free up <C-s> and <C-q> shortcuts in terminal
+# Do this only for interactive shell
+[[ $- == *i* ]] && stty -ixon
 
 # TODO: split between zshenv and zshrc, or move to zshenv completely
 source ${DOTFILES}/zsh/config.zsh
 source ${DOTFILES}/zsh/aliases.zsh
 for file in $(find ${DOTFILES}/functions -iname "*.zsh" -o -iname "*.sh"); do
-	source $file
+  source $file
 done

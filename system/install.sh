@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-configure-keyboard-remaps(){
+configure-keyboard-remaps() {
 
   _log "Configuring keyboard remaps"
 
@@ -44,7 +44,7 @@ configure-keyboard-remaps(){
   fi
 }
 
-configure-slate(){
+configure-slate() {
 
   # TODO: need to enable Slate in "System Preferences" -> "Security & Privacy" -> "Accessibility"
   _log "Configuring slate"
@@ -57,7 +57,7 @@ configure-slate(){
   ln -sf "/Applications/Google Chrome.app" "/Applications/Google_Chrome.app"
 }
 
-install-truecrypt(){
+install-truecrypt() {
   _log "Installing truecrypt@7.1a"
 
   # check if already installed
@@ -70,7 +70,7 @@ install-truecrypt(){
   curl -o "$DOTFILES/tmp/truecrypt.dmg" "https://www.grc.com/misc/truecrypt/TrueCrypt%207.1a%20Mac%20OS%20X.dmg"
 
   # mount and automatically accept EULA
-  yes | hdiutil attach "$DOTFILES/tmp/truecrypt.dmg" > /dev/null
+  yes | hdiutil attach "$DOTFILES/tmp/truecrypt.dmg" >/dev/null
 
   # TrueCrypt 7.1a incorrectly detect OSX verison, and thinks 10.10 < 10.4
   # see Install TrueCrypt On Mac OS X Yosemite 10.10 — Lazy Mind -  https://lazymind.me/2014/10/install-truecrypt-on-mac-osx-yosemite-10-10/
@@ -86,7 +86,7 @@ install-truecrypt(){
 
     sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg/Contents/Packages/TrueCrypt.pkg" -target /
 
-  # on Mavericks and below, just run the installer for main pgg
+    # on Mavericks and below, just run the installer for main pgg
   else
     sudo installer -pkg "/Volumes/TrueCrypt 7.1a/TrueCrypt 7.1a.mpkg" -target /
   fi
@@ -95,12 +95,12 @@ install-truecrypt(){
   hdiutil detach "/Volumes/TrueCrypt 7.1a"
 }
 
-configure-osx-defaults(){
+configure-osx-defaults() {
   _log "Changing OSX system defaults and behavior"
   source "${DOTFILES}/system/osx.sh"
 }
 
-configure-macpass(){
+configure-macpass() {
   defaults write com.hicknhacksoftware.MacPass ShowInspector -bool false
   defaults write com.hicknhacksoftware.MacPass EnableGlobalAutotype -bool true
 
@@ -112,12 +112,12 @@ configure-macpass(){
 }'
 }
 
-configure-default-apps(){
+configure-default-apps() {
   _log "Configuring default application associations"
   duti "$DOTFILES/system/default-apps.duti"
 }
 
-configure-todotxt(){
+configure-todotxt() {
   _log "Configuring todotxt"
 
   mkdir -p "$HOME/.todo"
@@ -125,7 +125,7 @@ configure-todotxt(){
 }
 
 # TODO: verify this routine
-install-openvpn(){
+install-openvpn() {
   _log "Installing openvpn"
 
   # install openvpn client
@@ -157,6 +157,8 @@ brew cask install \
 
 _log "Installing packages"
 brew install \
+  rsync \
+  openssh \
   shellcheck \
   tree \
   duti \

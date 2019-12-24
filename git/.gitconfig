@@ -2,14 +2,23 @@
 	excludesfiles = ~/.gitignore
 	attributesfile = ~/.gitattributes
 	autocrlf = input
-	editor = nano
+	editor = code --wait -n
 	trustctime = false
+  whitespace=fix,space-before-tab,-indent-with-non-tab,trailing-space,cr-at-eol
 
 [status]
 	submodulesummary = 1
 
+  # Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
+  # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
+  showUntrackedFiles = all
+
 [apply]
 	whitespace = fix
+
+[branch]
+	autosetuprebase = always
+  autosetupmerge = true
 
 [color]
 	ui = auto
@@ -24,7 +33,7 @@
 	frag = magenta # line info
 	old = red # deletions
 	new = green # additions
-# whitespace = red reverse
+	whitespace = red reverse
 
 [color "status"]
 	added = yellow
@@ -34,26 +43,45 @@
 [push]
 	default = upstream
 
+  # Because I get sick of telling git to do it manually
+  # https://git-scm.com/docs/git-config#git-config-pushfollowTags
+  followTags = true
+
+# TODO: GUI client: source tree
 [diff]
-	tool = external
+	tool = icdiff
+  guitool = diffmerge
+  submodule = log
+
+[diff "bin"]
+  textconv = hexdump -v -C
 
 [difftool]
-	prompt = false
+	prompt = true
 
-[difftool "external"]
-	cmd = "external_difftool.sh \"$LOCAL\" \"$REMOTE\" \"$MERGED\" \"$BASE\""
+[difftool "diffmerge"]
+	cmd = "/usr/local/bin/diffmerge --nosplash \"$LOCAL\" \"$REMOTE\""
+
+[difftool "icdiff"]
+  cmd = icdiff --line-numbers -L \"$BASE\" -L \"$REMOTE\" \"$LOCAL\" \"$REMOTE\" | less
 
 [merge]
-	tool = external
+	tool = diffmerge
+
+  # Standard diff is two sets of final changes. This introduces the original text before each side's changes.
+  # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
+  conflictstyle = diff3
 
 [mergetool]
 	trustExitCode = false
 	keepBackup = false
 	prompt = false
 
-[mergetool "external"]
-	trustExitCode = false
-	cmd = "external_mergetool.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\""
+[mergetool "diffmerge"]
+  cmd = "/usr/local/bin/diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\""
 
 [help]
 	autocorrect = 1
+
+[credential]
+	helper = osxkeychain

@@ -5,10 +5,6 @@ cdgr(){
   [ ! -z $(git rev-parse --show-cdup) ] && cd $(git rev-parse --show-cdup || pwd)
 }
 
-gwdt(){
-  git difftool
-}
-
 # git log tailored for "Time Report" format
 gltr(){
   local format="%C(blue)%cd%C(reset)%x09%s"

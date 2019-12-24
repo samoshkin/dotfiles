@@ -80,24 +80,24 @@ editor_filesize_threshold=64M
 editor_stop_format_chars=-+*\\,.;:&>
 mcview_eof=
 ignore_ftp_chattr_errors=true
-skin=modarin256root-defbg
+skin=modarin256-defbg
 filepos_max_saved_entries=1024
 
 editor_state_full_filename=0
 
 [Layout]
-message_visible=1
+message_visible=0
 keybar_visible=1
 xterm_title=1
 output_lines=0
 command_prompt=0
-menubar_visible=1
+menubar_visible=0
 free_space=1
 horizontal_split=0
-vertical_equal=1
+vertical_equal=0
 left_panel_size=89
 horizontal_equal=1
-top_panel_size=25
+top_panel_size=23
 
 [Misc]
 timeformat_recent=%b %e %H:%M
@@ -105,7 +105,7 @@ timeformat_old=%b %e  %Y
 ftp_proxy_host=gate
 ftpfs_password=anonymous@
 display_codepage=UTF-8
-source_codepage=Other_8_bit
+source_codepage=UTF-8
 autodetect_codeset=
 clipboard_store=
 clipboard_paste=
@@ -114,6 +114,8 @@ clipboard_paste=
 base_color=
 xterm-256color=
 color_terminals=
+
+screen-256color=
 
 [HotlistConfig]
 expanded_view_of_groups=0
@@ -125,7 +127,7 @@ kilobyte_si=false
 mix_all_files=false
 show_backups=true
 show_dot_files=true
-fast_reload=false
+fast_reload=true
 fast_reload_msg_shown=true
 mark_moves_down=true
 reverse_files_only=false
@@ -145,11 +147,11 @@ file_shell_pattern=true
 file_find_recurs=true
 file_skip_hidden=false
 file_all_charsets=false
-content_use=true
+content_use=false
 content_case_sens=true
 content_regexp=false
 content_first_hit=false
-content_whole_words=true
+content_whole_words=false
 content_all_charsets=false
 ignore_dirs_enable=true
 ignore_dirs=

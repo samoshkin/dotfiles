@@ -30,54 +30,10 @@ S.cfga({
 });
 var resizeDelta = '5%';
 var moveDelta = '5%';
-var currentScreenConf = null;
-
-// mbp 15 retina
-var thisLaptopScreenRes = {
-  width: 1440,
-  height: 900
-};
 
 // ==================
 // Functions
 // ==================
-
-
-// screen configuration declaration, used for crafting different layouts
-// assumes at most 2 monitors
-function ScreenConf(name){
-  this.name = name;
-
-  // assumes orderScreensLeftToRight = false
-  // laptop - 0
-  // external mon - 1
-  this.mainScreen = '0';
-  this.secondaryScreen = '1';
-
-  this.isLaptopOnly = function() {
-    return this.name === 'laptop';
-  };
-
-  this.getScreenCount = function() {
-    return this.name === 'laptop' || this.name === 'monitor' ? 1 : 2;
-  };
-}
-
-ScreenConf.laptopOnly = function() {
-  return new ScreenConf('laptop');
-};
-
-ScreenConf.laptopAndMonitor = function() {
-  return new ScreenConf('laptop+monitor');
-};
-
-ScreenConf.monitorOnly = function() {
-  return new ScreenConf('monitor');
-};
-
-ScreenConf.twoMonitors = function() {
-  return new ScreenConf('monitorx2');
-};
 
 // iterate through screens
 function getNextScreen(win){
@@ -161,135 +117,6 @@ function getResizeWindowAction(op){
   };
 }
 
-// toggle current
-// when window is restored back, focus it
-function getToggleAction(){
-  var lastHiddenApp;
-
-  return function(win){
-    if (!lastHiddenApp) {
-      lastHiddenApp = win.app().name();
-      S.op('hide', { app: 'current' }).run();
-    }
-    else {
-      showAndFocusApp(lastHiddenApp);
-      lastHiddenApp = null;
-    }
-  };
-}
-
-function isAppOpened(appName){
-  return !!getApp(appName);
-}
-
-function getApp(appName){
-  var result = null;
-
-  S.eachApp(function(app){
-    if(app.name() === appName){
-      result = app;
-    }
-  });
-
-  return result;
-}
-
-function showAndFocusApp(appName){
-  S.op('sequence', {
-    operations: [
-      S.op('show', { app: appName }),
-      S.op('focus', { app: appName })
-    ]
-  }).run();
-}
-
-// open iTerm if not opened
-// focus iTerm, if already opened
-// if Iterm is current window, hide it
-function getOpenOrFocusITermAction() {
-
-  return function(win) {
-    var appName = win.app().name();
-
-    if (appName === 'iTerm') {
-      S.op('hide', { app: 'current' }).run();
-    }
-    else {
-      if (isAppOpened('iTerm')) {
-        showAndFocusApp('iTerm');
-      }
-      else{
-        S.op('layout', { name: 'terminal' }).run();
-      }
-    }
-  };
-}
-
-// S.layout() decorator, which focus the last app at the end
-// this is workaround to buggy 'layoutFocusOnActivate' global config settings
-S.layoutWithFocus = function(name, description){
-  var apps = Object.keys(description);
-
-  // focus the last app
-  // NOTE: this is temp solution, it depends on how engine manages key ordering, this might be fragile
-  var focusOps = [];
-  focusOps.push(S.op('focus', { app: apps[apps.length - 1] }));
-
-  // run each focus op on next event loop
-  // NOTE: runnig focus ops in the same loop leads to unpredictable results
-  // some apps are focused, while other are skipped
-  description['_after_'] = {
-    operations: [ function(){
-      var i = 0;
-
-      function nextFocus(){
-        window.setTimeout(function(){
-          focusOps[i++].run();
-          if(i < focusOps.length) nextFocus();
-        }, 0);
-      }
-
-      nextFocus();
-    }]
-  };
-
-  return S.layout(name, description);
-};
-
-function openAppOp(appPath) {
-  return S.op('shell', {
-    command: '/usr/bin/open ' + appPath + '',
-    wait: true
-  });
-}
-
-// TODO: consider evaluateing all operations with setTimeout for proper focus ordering
-function ensureOpenedApps() {
-  var ops = [];
-  for(var i = 0; i < arguments.length; i++) {
-    ops.push(openAppOp(arguments[i]));
-  }
-  return { operations: ops };
-}
-
-function delayOp(delay) {
-  return S.op('shell', {
-    command: '/bin/sleep ' + delay,
-    wait: true
-  });
-}
-
-function workspaceOp(name) {
-  return function(){
-    S.log('activate layout' + name + '@' + currentScreenConf.name);
-    S.op('layout', { name: name + '@' + currentScreenConf.name }).run();
-  };
-}
-
-function hasLaptopNow() {
-  var rect = S.screenForRef(thisLaptopScreenRes.width + 'x' + thisLaptopScreenRes.height).rect();
-  return rect.width === thisLaptopScreenRes.width && rect.height === thisLaptopScreenRes.height;
-}
 
 // ==================
 // Common operations
@@ -348,163 +175,25 @@ var fullScreen = S.op('move', {
 
 
 // ==================
-// Layouts
-// ==================
-
-function createBrowsingLayout(screenConf) {
-
-  return S.layoutWithFocus('browsing@' + screenConf.name, {
-    '_before_': ensureOpenedApps(
-      '/Applications/Google_Chrome.app'),
-
-    'Google Chrome': {
-
-      operations: [fullScreen.dup({ screen: screenConf.mainScreen })],
-      repeat: true,
-      'ignore-fail': true
-    }
-  });
-}
-
-function createChatLayout(screenConf){
-
-  return S.layoutWithFocus('chat@' + screenConf.name, {
-    '_before_': ensureOpenedApps(
-      '/Applications/Skype.app',
-      '/Applications/Slack.app'),
-
-    'Skype': {
-      operations: [screenConf.isLaptopOnly()
-        ? rightHalf.dup({ x: 768, width: 'screenSizeX-768', screen: screenConf.secondaryScreen })
-        : rightHalf.dup({ screen : screenConf.secondaryScreen })],
-      repeat: true,
-      'ignore-fail': true
-    },
-    'Slack': {
-
-      // Slack cannot be resized smaller than 768px
-      // 768px < 1400px/2, so make this constraint explicit here
-      operations: [screenConf.isLaptopOnly()
-        ? leftHalf.dup({ width: 768, screen: screenConf.secondaryScreen })
-        : leftHalf.dup({ screen: screenConf.secondaryScreen })],
-      repeat: true,
-      'ignore-fail': true
-    }
-  });
-}
-function createDevLayout(screenConf){
-
-  if(screenConf.getScreenCount() === 1) {
-    return S.layoutWithFocus('dev@' + screenConf.name, {
-      '_before_': ensureOpenedApps(
-        '/Applications/iTerm.app',
-        '/Applications/Atom.app'),
-
-      'iTerm': {
-        operations: [
-          leftHalf.dup({ screen: screenConf.mainScreen })
-        ],
-        repeat: true,
-        'ignore-fail': true
-      },
-      'Atom': {
-        operations: [fullScreen.dup({ screen: screenConf.mainScreen })],
-        repeat: true,
-        'ignore-fail': true
-      }
-    });
-  } else {
-    return S.layoutWithFocus('dev@' + screenConf.name, {
-      '_before_': ensureOpenedApps(
-        '/Applications/iTerm.app',
-        '/Applications/Google_Chrome.app',
-        '/Applications/Atom.app'),
-
-      'iTerm': {
-        operations: [
-          leftHalf.dup({ screen: screenConf.mainScreen })
-        ],
-        repeat: true,
-        'ignore-fail': true
-      },
-      'Google Chrome': {
-        operations: [fullScreen.dup({ screen: screenConf.secondaryScreen })],
-        repeat: true,
-        'ignore-fail': true
-      },
-      'Atom': {
-        operations: [fullScreen.dup({ screen : screenConf.mainScreen })],
-        repeat: true,
-        'ignore-fail': true
-      }
-    });
-  }
-}
-
-S.layoutWithFocus('terminal', {
-  '_before_': {
-    operations: [
-      openAppOp('/Applications/iTerm.app'),
-      delayOp(0.2)
-    ]
-  },
-  'iTerm': {
-    operations: [leftHalf, rightHalf],
-    repeat: true,
-    'ignore-fail': true
-  }
-});
-
-// create predefined layouts for each screen conf
-createBrowsingLayout(ScreenConf.laptopOnly());
-createBrowsingLayout(ScreenConf.laptopAndMonitor());
-createBrowsingLayout(ScreenConf.monitorOnly());
-createBrowsingLayout(ScreenConf.twoMonitors());
-
-createChatLayout(ScreenConf.laptopOnly());
-createChatLayout(ScreenConf.laptopAndMonitor());
-createChatLayout(ScreenConf.monitorOnly());
-createChatLayout(ScreenConf.twoMonitors());
-
-createDevLayout(ScreenConf.laptopOnly());
-createDevLayout(ScreenConf.laptopAndMonitor());
-createDevLayout(ScreenConf.monitorOnly());
-createDevLayout(ScreenConf.twoMonitors());
-
-// detect current screen conf
-S.default(1, function() {
-  currentScreenConf = hasLaptopNow()
-    ? ScreenConf.laptopOnly()
-    : ScreenConf.monitorOnly();
-
-  S.log('detected screen configuration: ' + currentScreenConf.name);
-});
-S.default(2, function() {
-  currentScreenConf = hasLaptopNow()
-    ? ScreenConf.laptopAndMonitor()
-    : ScreenConf.twoMonitors();
-
-  S.log('detected screen configuration: ' + currentScreenConf.name);
-});
-
-// ==================
 // Keystroke bindings
 // ==================
 
 // macbook keyboard without numpad
 S.bnda({
 
-  // basic layout ops
+  // resize
   '1:cmd,f4' : bottomLeftCorner,
-  '2:cmd,f4' : bottomHalf,
+  '2:cmd,f4': bottomHalf,
+  'down:cmd,f4': bottomHalf,
   '3:cmd,f4' : bottomRightCorner,
-
-  '4:cmd,f4' : leftHalf,
+  '4:cmd,f4': leftHalf,
+  'left:cmd,f4': leftHalf,
   '5:cmd,f4' : centerScreen,
-  '6:cmd,f4' : rightHalf,
-
+  '6:cmd,f4': rightHalf,
+  'right:cmd,f4': rightHalf,
   '7:cmd,f4' : topLeftCorner,
-  '8:cmd,f4' : topHalf,
+  '8:cmd,f4': topHalf,
+  'up:cmd,f4': topHalf,
   '9:cmd,f4' : topRightCorner,
 
   // show grid
@@ -524,17 +213,6 @@ S.bnda({
     }
   }),
 
-  // move around
-  'up:cmd,f4:toggle': S.op('nudge', { x: '+0', y: '-' + moveDelta }),
-  'down:cmd,f4:toggle': S.op('nudge', { x: '+0', y: '+' + moveDelta }),
-  'left:cmd,f4:toggle': S.op('nudge', { x: '-' + moveDelta, y: '+0' }),
-  'right:cmd,f4:toggle': S.op('nudge', { x: '+' + moveDelta, y: '+0' }),
-
-  // task-based layouts, aka workspaces
-  '1:cmd,f3': workspaceOp('browsing'),
-  '2:cmd,f3': workspaceOp('chat'),
-  '3:cmd,f3': workspaceOp('dev'),
-
   // toggle fullscreen
   'return:ctrl': getToggleFullscreenAction(),
 
@@ -552,9 +230,7 @@ S.bnda({
   'down:cmd,alt,-:toggle' : S.op('resize', { 'width' : '+0', 'height' : '-' + resizeDelta, 'anchor' : 'bottom-right' }),
   '-:cmd,alt,-:toggle' : getResizeWindowAction('-'),
 
-  'h:cmd,shift' : getToggleAction(),
-
-  'f3:cmd,f3': S.op('throw', { 'screen' : getNextScreen }),
+  '`:cmd,`': S.op('throw', { 'screen' : getNextScreen }),
 
   // not clear why this switcher is better
     // 'e:cmd': S.op('switch'),
@@ -562,12 +238,7 @@ S.bnda({
   // Window Hints
   'esc:cmd' : S.op('hint', {
     "characters" : '1234567890QWERTYUIOP'
-  }),
-
-  // global shortcut to open/focus iTerm
-  // NOTE: make sure to disable global hotkey setting in iTerm
-  // in this way "ctrl,`" can also open iTerm if not opened yet
-  '`:ctrl': getOpenOrFocusITermAction()
+  })
 });
 
 // add some bindings for PC keyboard with numpad
@@ -601,20 +272,7 @@ S.bnda({
         "height" : 10
       }
     }
-  }),
-
-  // task-based layouts, aka workspaces
-  '1:cmd,`': workspaceOp('browsing'),
-  '2:cmd,`': workspaceOp('chat'),
-  '3:cmd,`': workspaceOp('dev'),
-
-  // move around
-  'up:cmd,padClear:toggle': S.op('nudge', { x: '+0', y: '-' + moveDelta }),
-  'down:cmd,padClear:toggle': S.op('nudge', { x: '+0', y: '+' + moveDelta }),
-  'left:cmd,padClear:toggle': S.op('nudge', { x: '-' + moveDelta, y: '+0' }),
-  'right:cmd,padClear:toggle': S.op('nudge', { x: '+' + moveDelta, y: '+0' }),
-
-  '`:cmd,`': S.op('throw', { 'screen' : getNextScreen })
+  })
 });
 
 S.log('[SLATE]: done loading config');

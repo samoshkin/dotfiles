@@ -2,7 +2,6 @@ atom-beautify
 atom-ctags
 atom-monokai
 atom-ternjs
-auto-detect-indentation
 auto-update-packages
 autoclose-html
 autocomplete-modules
@@ -47,4 +46,3 @@ term3
 todo-show
 trailing-spaces
 zentabs
-

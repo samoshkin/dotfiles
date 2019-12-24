@@ -16,6 +16,8 @@
   "auto-update-packages":
     intervalMinutes: 1440
   "autoclose-html": {}
+  "autocomplete-haskell":
+    useBackend: "haskell-ghc-mod"
   "autocomplete-plus": {}
   "color-picker":
     preferredFormat: "HEX"
@@ -27,8 +29,9 @@
       "emmet"
       "linter-csslint"
       "symbols-view"
+      "linter-jscs"
       "atom-ternjs"
-      "atom-ctags"
+      "docblockr"
     ]
     excludeVcsIgnoredPaths: true
     packagesWithKeymapsDisabled: [
@@ -36,9 +39,10 @@
       "todo-show"
       "term3"
     ]
+    telemetryConsent: "no"
     themes: [
       "atom-dark-ui"
-      "monokai"
+      "oceanic-next"
     ]
   docblockr:
     align_tags: "shallow"
@@ -67,11 +71,23 @@
   "git-log": {}
   "git-projects":
     rootPath: "~/projects"
+  "haskell-ghc-mod":
+    additionalPathDirectories: [
+      "/usr/local/bin"
+      "/Users/asamoshkin/Library/Haskell/bin"
+    ]
   "highlight-line":
     hideHighlightOnSelect: true
   "highlight-selected":
     hideHighlightOnSelectedWord: true
     highlightBackground: true
+  "ide-haskell":
+    onSavePrettify: true
+  "ide-haskell-cabal":
+    cabal:
+      activeGhcVersion: "8.0"
+  "ide-haskell-repl":
+    autoReloadRepeat: true
   "language-babel": {}
   linter:
     lintOnFly: false
@@ -81,6 +97,7 @@
       "shellcheck"
     ]
   "linter-csslint": {}
+  "linter-docker": {}
   "linter-eslint":
     disableWhenNoEslintrcFileInPath: true
   "linter-htmlhint": {}
@@ -94,9 +111,13 @@
   "linter-shellcheck":
     shellcheckExecutablePath: "/usr/local/bin/shellcheck"
   "linter-stylelint":
+    disableWhenNoConfig: true
     usePreset: false
   "markdown-preview": {}
   "merge-conflicts": {}
+  "node-debugger":
+    nodePath: "node"
+    scriptMain: "node_modules/.bin/gulp"
   pigments: {}
   react: {}
   "save-session":
@@ -108,7 +129,9 @@
   term3:
     cursorBlink: false
     fontSize: "14"
-  "todo-show": {}
+  "todo-show":
+    sortAscending: false
+    sortBy: "Type"
   "tree-view": {}
   welcome:
     showOnStartup: false

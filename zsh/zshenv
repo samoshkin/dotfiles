@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 # override to match your dotfiles dir location
 export DOTFILES="${HOME}/.dotfiles"
@@ -7,15 +7,16 @@ source "${DOTFILES}/system/variables.sh"
 source "${DOTFILES}/system/private.variables.sh"
 
 # launch ssh-agent is not running yet
-if [ -z "$SSH_AUTH_SOCK" ] ; then
-  echo "ssh-agent seems to be stopped, launch one"
-  eval $(ssh-agent -s)
+# if [ -z "$SSH_AUTH_SOCK" ] ; then
+#  echo "ssh-agent seems to be stopped, launch one"
+#  eval $(ssh-agent -s)
 
   # OSX only
   # store passphrase in keychain, so that key password is unlocked by local user password
   # do this once during system install
   # ssh-add -K $KEYFILES
-fi
+# fi
 
 # load nvm if available
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+

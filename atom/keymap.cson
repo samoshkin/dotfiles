@@ -25,17 +25,17 @@
 # https://github.com/bevry/cson#what-is-cson
 
 # remap atom-ternjs keybnidings to match symbols-view bindings
-'.platform-darwin atom-text-editor':
+'.platform-darwin atom-workspace':
   'ctrl-shift-r': 'unset!'
   'cmd-shift-R': 'tern:references'
   'ctrl-alt-d': 'unset!'
-  'cmd-alt-down': 'tern:definition'
+  'alt-cmd-down': 'tern:definition'
   'ctrl-alt-z': 'unset!'
-  'cmd-alt-up': 'tern:markerCheckpointBack'
+  'alt-cmd-up': 'tern:markerCheckpointBack'
 
 # Toggle block comment and unset default bindings
 '.platform-darwin atom-text-editor':
-  'cmd-shift-/': 'block-comment:toggle'
+  'cmd-?': 'block-comment:toggle'
   'ctrl-alt-cmd-/': 'unset!'
   'ctrl-?': 'unset!'
 
@@ -54,5 +54,4 @@
 
 # Override difftool bindings to add more specifity
 '.platform-darwin atom-workspace, .platform-darwin atom-text-editor':
-  'ctrl-shift-D': 'git-difftool:diff-project'
-  'ctrl-alt-d': 'git-difftool:diff-file'
+  'ctrl-shift-D': 'git-difftool:diff-file'

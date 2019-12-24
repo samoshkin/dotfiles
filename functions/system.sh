@@ -229,3 +229,16 @@ take-screenshot-android(){
   adb shell screencap -p | perl -pe 's/\x0D\x0A/\x0A/g' > $fileName
   open $fileName
 }
+
+convert2gif(){
+  src="$1"
+  dst="$2"
+  width="${3:-1080}"
+  fps="${4:-10}"
+
+  palette="/tmp/palette.png"
+  filters="fps=$fps,scale=$width:-1:flags=lanczos"
+
+  ffmpeg -i "$src" -vf "$filters,palettegen" -y $palette
+  ffmpeg -i "$src" -i "$palette" -lavfi "$filters [x]; [x][1:v] paletteuse" -y "$dst"
+}

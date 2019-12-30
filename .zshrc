@@ -48,6 +48,11 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
+# Git functions
+git_commit_show_files(){
+  git show --pretty="" --name-only $1 | xargs -n 1 -p -i sh -c "git show $1:{} | bat"
+}
+
 
 # =================
 # ALIASES
@@ -61,12 +66,11 @@ alias ls='ls --time-style=long-iso --color=auto'
 
 # Git aliases
 alias giA='git add -A'
-
 alias gwdt='git difftool'
 alias gwdtg='git --gui difftool'
 alias gidt='git difftool --cached'
 alias gidtg='git difftool --gui --cached'
-alias gdi='git ls-files -i --exclude-standard'
+alias gcsf="git_commit_show_files"
 
 # Aliases to programs
 alias plistbuddy="/usr/libexec/PlistBuddy"

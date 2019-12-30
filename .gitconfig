@@ -1,0 +1,155 @@
+[core]
+  attributesfile = ~/.gitattributes
+  autocrlf = input
+  editor = code --wait -n
+  trustctime = false
+	excludesfile = /Users/oleksii.samoshkin/.gitignore
+
+# [init]
+#  templatedir = ~/.dotfiles/git/gitdir_template
+
+[credential]
+	helper = osxkeychain
+
+[help]
+	autocorrect = 1
+
+[alias]
+  ctags = !.git/hooks/ctags force
+
+  # Aliases for code review
+  # Borrowed from https://blog.jez.io/cli-code-review/
+  files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
+  stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
+  review = !vim -p $(git files) -c \"tabdo Gdiff $REVIEW_BASE\" -c \"let g:gitgutter_diff_base = '$REVIEW_BASE'\"
+  reviewone = !vim -p -c \"tabdo Gdiff $REVIEW_BASE\" -c \"let g:gitgutter_diff_base = '$REVIEW_BASE'\"
+
+[status]
+	submodulesummary = 1
+
+  # Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
+  # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
+  showUntrackedFiles = all
+
+[commit]
+  verbose = true
+	template = /Users/oleksii.samoshkin/.stCommitMsg
+	#template = /Users/asamoshkin/.stCommitMsg
+
+[apply]
+	whitespace = fix
+
+[branch]
+	autosetuprebase = always
+
+[color]
+	ui = auto
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow
+	frag = magenta # line info
+	old = red # deletions
+	new = green # additions
+	whitespace = red reverse
+
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+
+[push]
+	default = simple
+
+  # Because I get sick of telling git to do it manually
+  # https://git-scm.com/docs/git-config#git-config-pushfollowTags
+  followTags = true
+
+[diff]
+	tool = code
+  guitool = diffmerge
+	submodule = log
+  algorithm = patience
+  indentHeuristic = true
+
+[difftool]
+	prompt = true
+
+[diff "bin"]
+  textconv = hexdump -v -C
+
+[difftool "vim"]
+  # by default, Git runs vimdiff in read only mode. Make it run in read-write mode
+  cmd = "vim -f -d -c \"wincmd l\" -c 'cd \"$GIT_PREFIX\"' \"$LOCAL\" \"$REMOTE\""
+
+[difftool "diffmerge"]
+	cmd = "/usr/local/bin/diffmerge --nosplash \"$LOCAL\" \"$REMOTE\""
+
+[difftool "icdiff"]
+  cmd = icdiff --line-numbers -L \"$BASE\" -L \"$REMOTE\" \"$LOCAL\" \"$REMOTE\" | less
+
+[difftool "vscode"]
+  cmd = "code -n -w -d \"$LOCAL\" \"$REMOTE\""
+
+[difftool "p4merge"]
+  cmd = "p4merge \"$LOCAL\" \"$REMOTE\""
+
+[difftool "kdiff3"]
+  cmd = "kdiff3 \"$LOCAL\" \"$REMOTE\""
+
+[merge]
+	# tool = vim_mergetool
+  tool = diffmerge
+  guitool = diffmerge
+
+  # Standard conflict markers include only ours and theirs side
+  # Use "diff3" to include base ancestor version as well
+  # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
+  conflictStyle = diff3
+
+[mergetool]
+	keepBackup = false
+	prompt = false
+
+# Uses vim + samoshkin/vim-mergetool plugin
+[mergetool "vim_mergetool"]
+  cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
+  trustExitCode = true
+
+[mergetool "diffmerge"]
+  cmd = "/usr/local/bin/diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\""
+  trustExitCode = true
+
+[mergetool "vscode"]
+  cmd = "code -n --wait \"$MERGED\""
+
+[mergetool "p4merge"]
+  cmd = "p4merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\""
+
+[mergetool "kdiff3"]
+  cmd = "kdiff3 \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\""
+
+[user]
+	name = Alexey Samoshkin
+	email = al.samoshkin@gmail.com
+
+[github]
+  user = samoshkin
+
+# [difftool "sourcetree"]
+# 	cmd = /usr/local/Caskroom/kdiff3/0.9.98/kdiff3.app/Contents/MacOS/kdiff3 \"$LOCAL\" \"$REMOTE\"
+# 	path =
+
+# [mergetool "sourcetree"]
+# 	cmd = /usr/local/Caskroom/kdiff3/0.9.98/kdiff3.app/Contents/MacOS/kdiff3 \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
+# 	trustExitCode = true
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

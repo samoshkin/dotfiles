@@ -66,18 +66,19 @@
 	default = simple
 
   # Because I get sick of telling git to do it manually
+  # automatically push all tags, reachable from the branches you're pushing
   # https://git-scm.com/docs/git-config#git-config-pushfollowTags
   followTags = true
 
 [diff]
-	tool = code
+	tool = vscode
   guitool = diffmerge
 	submodule = log
   algorithm = patience
   indentHeuristic = true
 
 [difftool]
-	prompt = true
+	prompt = false
 
 [diff "bin"]
   textconv = hexdump -v -C
@@ -140,16 +141,10 @@
 [github]
   user = samoshkin
 
-# [difftool "sourcetree"]
-# 	cmd = /usr/local/Caskroom/kdiff3/0.9.98/kdiff3.app/Contents/MacOS/kdiff3 \"$LOCAL\" \"$REMOTE\"
-# 	path =
-
-# [mergetool "sourcetree"]
-# 	cmd = /usr/local/Caskroom/kdiff3/0.9.98/kdiff3.app/Contents/MacOS/kdiff3 \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
-# 	trustExitCode = true
+# Added automatically by SourceTree
 [difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --nosplash \"$LOCAL\" \"$REMOTE\"
 	path = 
 [mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 	trustExitCode = true

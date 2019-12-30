@@ -1,0 +1,7 @@
+# for Xterm
+"\eOH": beginning-of-line
+"\eOF": end-of-line
+
+# for linux console
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line

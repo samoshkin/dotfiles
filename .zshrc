@@ -64,6 +64,9 @@ alias k='k -Ah'
 
 alias ls='ls --time-style=long-iso --color=auto'
 
+# To change directory on exiting MC
+alias mc='. /usr/local/Cellar/midnight-commander/*/libexec/mc/mc-wrapper.sh'
+
 # Git aliases
 alias giA='git add -A'
 alias gwdt='git difftool'

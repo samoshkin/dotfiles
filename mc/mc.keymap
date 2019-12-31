@@ -1,0 +1,7 @@
+# See default mc.keymap at "/usr/local/etc//mc/mc.keymap"
+[panel]
+Sort=alt-@
+SortNext=alt-#
+SortReverse=alt-$
+History=alt-backslash
+

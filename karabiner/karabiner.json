@@ -16,7 +16,7 @@
                 },
                 "rules": [
                     {
-                        "description": "Command-Shift-Command to open System Preferences",
+                        "description": "Command-Shift-Comma to open System Preferences",
                         "manipulators": [
                             {
                                 "from": {

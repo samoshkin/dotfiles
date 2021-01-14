@@ -1,28 +1,29 @@
 [core]
   attributesfile = ~/.gitattributes
   autocrlf = input
-  editor = code --wait -n
+  editor = vim
   trustctime = false
 	excludesfile = /Users/oleksii.samoshkin/.gitignore
+  pager = delta
 
 # [init]
 #  templatedir = ~/.dotfiles/git/gitdir_template
 
+[pager]
+  branch = false
+
+[interactive]
+  diffFilter = delta --color-only
+
 [credential]
 	helper = osxkeychain
+  useHttpPath = false
 
 [help]
 	autocorrect = 1
 
 [alias]
   ctags = !.git/hooks/ctags force
-
-  # Aliases for code review
-  # Borrowed from https://blog.jez.io/cli-code-review/
-  files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
-  stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
-  review = !vim -p $(git files) -c \"tabdo Gdiff $REVIEW_BASE\" -c \"let g:gitgutter_diff_base = '$REVIEW_BASE'\"
-  reviewone = !vim -p -c \"tabdo Gdiff $REVIEW_BASE\" -c \"let g:gitgutter_diff_base = '$REVIEW_BASE'\"
 
 [status]
 	submodulesummary = 1
@@ -62,6 +63,26 @@
 	changed = green
 	untracked = cyan
 
+[delta]
+  features = line-numbers
+  syntax-theme = TwoDark
+
+[delta "line-numbers"]
+  line-numbers = true
+  ; line-numbers-minus-style = "#444444"
+  line-numbers-zero-style = "#444444"
+  ; line-numbers-plus-style = "#444444"
+  hunk-header-decoration-style = "#444444 ul"
+  commit-style = 214 ; brightblue
+  commit-decoration-style = bold
+  file-style = 109 ul ; yellow ul
+  file-decoration-style = none
+  line-numbers-left-format = "{nm:>4}┊"
+  line-numbers-right-format = "{np:>4}│"
+  line-numbers-left-style = "#444444"
+  line-numbers-right-style = "#444444"
+
+
 [push]
 	default = simple
 
@@ -71,11 +92,12 @@
   followTags = true
 
 [diff]
-	tool = vscode
+	tool = vim
   guitool = diffmerge
 	submodule = log
   algorithm = patience
   indentHeuristic = true
+  colorMoved = default
 
 [difftool]
 	prompt = false
@@ -89,9 +111,6 @@
 
 [difftool "diffmerge"]
 	cmd = "/usr/local/bin/diffmerge --nosplash \"$LOCAL\" \"$REMOTE\""
-
-[difftool "icdiff"]
-  cmd = icdiff --line-numbers -L \"$BASE\" -L \"$REMOTE\" \"$LOCAL\" \"$REMOTE\" | less
 
 [difftool "vscode"]
   cmd = "code -n -w -d \"$LOCAL\" \"$REMOTE\""

@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+# Description: Show exa tree-view output in $PAGER
+
+# Use selected directory of file's directory
+if [ -d "$1" ]; then
+    dir="$1";
+else
+    dir="$(dirname "$1")"
+fi
+
+exists() {
+    which "$1" >/dev/null 2>&1
+}
+
+if exists exa; then
+    PAGER="${PAGER:-less -R}"
+    exa -la --time-style long-iso --color-scale --group-directories-first --colour=always --tree --level 2 "$dir" 2>/dev/null | $PAGER -
+fi

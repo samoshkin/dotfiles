@@ -3,11 +3,18 @@
 web:*.{html,css,js}*
 
 # Using glob patterns to include/exclude files or folders
---glob=!git/*
+#--glob=!.git/*
+#--glob=!node_modules/*
 
 --smart-case
 
 --hidden
 --follow
 
+# use 142 instead of yellow for better integration with Vim (Gruvbox theme)
+ --colors
+ line:fg:142
 
+ # use 214 instead of yellow for better integration with Vim (Gruvbox theme)
+ --colors
+ path:fg:109

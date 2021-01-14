@@ -88,17 +88,17 @@ editor_state_full_filename=false
 safe_overwrite=false
 
 [Layout]
-message_visible=0
-keybar_visible=1
-xterm_title=1
+message_visible=false
+keybar_visible=true
+xterm_title=true
 output_lines=0
-command_prompt=0
-menubar_visible=0
-free_space=1
-horizontal_split=0
-vertical_equal=1
-left_panel_size=104
-horizontal_equal=1
+command_prompt=false
+menubar_visible=false
+free_space=true
+horizontal_split=false
+vertical_equal=true
+left_panel_size=92
+horizontal_equal=true
 top_panel_size=23
 
 [Misc]

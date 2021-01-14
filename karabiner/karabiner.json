@@ -16,6 +16,53 @@
                 },
                 "rules": [
                     {
+                        "description": "cmus play/pause/prev/next",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "c",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "fn"
+                                        ]
+                                    }
+                                },
+                                "to": {
+                                    "shell_command": "/usr/local/bin/cmus-remote -u"
+                                },
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "z",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "fn"
+                                        ]
+                                    }
+                                },
+                                "to": {
+                                    "shell_command": "/usr/local/bin/cmus-remote -r"
+                                },
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "b",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "fn"
+                                        ]
+                                    }
+                                },
+                                "to": {
+                                    "shell_command": "/usr/local/bin/cmus-remote -n"
+                                },
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "description": "Command-Shift-Comma to open System Preferences",
                         "manipulators": [
                             {
@@ -23,8 +70,8 @@
                                     "key_code": "comma",
                                     "modifiers": {
                                         "mandatory": [
-                                            "left_shift",
-                                            "left_command"
+                                            "command",
+                                            "shift"
                                         ]
                                     }
                                 },
@@ -936,7 +983,21 @@
                     }
                 ]
             },
-            "devices": [],
+            "devices": [
+                {
+                    "disable_built_in_keyboard_if_exists": false,
+                    "fn_function_keys": [],
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": false,
+                        "product_id": 34304,
+                        "vendor_id": 1452
+                    },
+                    "ignore": false,
+                    "manipulate_caps_lock_led": true,
+                    "simple_modifications": []
+                }
+            ],
             "fn_function_keys": [
                 {
                     "from": {

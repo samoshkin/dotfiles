@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+
+# Description: Run fzf and go to the directory of the file selected
+#
+# Shell: POSIX compliant
+# Author: Anna Arad
+
+. "$(dirname "$0")"/.nnn-plugin-helper
+
+if [ "$(cmd_exists fzf)" -eq "0" ]; then
+    sel=$(cd $HOME && fd $FD_OPTIONS . | fzf +m)
+else
+	exit 1
+fi
+
+if [ -n "$sel" ]; then
+    sel="$HOME/$sel"
+
+    # when user selects file rather than directory
+	if ! [ -d "$sel" ]; then
+		sel=$(dirname "$sel")
+	fi
+
+    # Check if selected path returned
+    # by fzf command is absolute
+    case $sel in
+    /*) nnn_cd "$sel" ;;
+    *)  
+        # Remove "./" prefix if it exists
+        sel="${sel#./}"
+        
+        nnn_cd "$sel"
+    esac    
+fi

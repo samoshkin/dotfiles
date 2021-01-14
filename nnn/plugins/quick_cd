@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+. "$(dirname "$0")"/.nnn-plugin-helper
+
+# Read user input
+printf "cd to:\n"
+read -r dir
+
+# Expand user's input and ensure path exists
+dir="${dir/#\~/$HOME}"
+dir="$(realpath -e -s "$dir")"
+
+# Ensure it's directory
+if [ ! -d "$dir" ]; then
+    dir="$(dirname "$dir")"
+fi
+
+# Jump into the dir
+nnn_cd "$dir" 0

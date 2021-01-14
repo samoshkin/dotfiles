@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+# Description: cd to any dir in the z database using an fzf pane
+#
+# Shell: POSIX compliant
+# Author: Nick Waywood
+
+# Load 'rupa/z' into current environment
+. "/usr/local/etc/profile.d/z.sh"
+
+. "$(dirname "$0")"/.nnn-plugin-helper
+
+# Check if fzf is present
+if ! which fzf >/dev/null 2>&1; then
+    exit 1
+fi
+
+sel=$(_z -l 2>&1 | fzf +s --tac --reverse | sed 's/^[0-9,.]* *//' | awk '{$1=$1};1')
+printf "%s" "0c$sel" > "$NNN_PIPE"

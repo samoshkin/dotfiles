@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+
+# Description: Fuzzy find a file in directory subtree
+#              Opens in $VISUAL or $EDITOR if text
+#              Opens other type of files with xdg-open
+#
+# Dependencies: fd/find, fzf/skim, xdg-open
+#
+# Shell: POSIX compliant
+# Author: Arun Prakash Jana
+
+selection=${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection}
+  
+printf "(s)election/(c)urrent/(p)ick? [default=p] "
+read -r resp
+
+IFS=$'\n'
+if [ "$resp" = "s" ]; then
+    # selection files does not exist when no selection made
+    files=($(cat $selection 2>/dev/null | tr '\0' '\n'))
+elif [ "$resp" = "c" ]; then
+    files=("$1")    
+else
+    # Use 'fzf' to pick file to open
+    if ! which fzf >/dev/null 2>&1; then
+        exit 1;
+    fi
+
+    # Allow opening multiple files
+    files=($(eval "$FZF_DEFAULT_COMMAND" | fzf -m --delimiter / --nth=-1 --tiebreak=begin --info=hidden))
+fi
+
+# Check if we have non empty file list
+if [[ ${#files[@]} -gt 0 ]]; then
+    rifle "${files[@]}"
+fi
+
+# To show only the file name
+# entry=$(find . -type f 2>/dev/null | fzf --delimiter / --with-nth=-1 --tiebreak=begin --info=hidden)
+
+# case "$(file -biL "$entry")" in
+#     *text*)
+#         "${VISUAL:-$EDITOR}" "$entry" ;;
+#     *)
+#         if uname | grep -q "Darwin"; then
+#             open "$entry" >/dev/null 2>&1
+#         else
+#             xdg-open "$entry" >/dev/null 2>&1
+#         fi
+#         ;;
+# esac

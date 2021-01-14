@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+# Opens $EDITOR in terminal split pane using 'open_in_split_pane' utility
+
+# Strip "--" 1st argument away
+# e.g. "$ nano -- /path/to/file"
+if [ "$1" == "--" ]; then
+  shift;
+fi
+
+open_in_split_pane "$EDITOR" "$@"

@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+SPLIT="$SPLIT"  # you can set a permanent split here
+TERMINAL="$TERMINAL"  # same goes for the terminal
+
+# Detect current terminal emulator
+if [ -e "${TMUX%%,*}" ] && tmux -V | grep -q '[ -][3456789]\.'; then
+    TERMINAL=tmux
+else
+    TERMINAL="${TERMINAL:-xterm}"
+fi
+
+# Choose horizontal vs vertical split
+if [ -z "$SPLIT" ] && [ $(($(tput lines) * 2)) -gt "$(tput cols)" ]; then
+    SPLIT='h'
+elif [ "$SPLIT" != 'h' ]; then
+    SPLIT='v'
+fi
+
+if [ "$TERMINAL" = "tmux" ]; then
+    # tmux splits are inverted
+    if [ "$SPLIT" = "v" ]; then SPLIT="h"; else SPLIT="v"; fi
+
+    # Open original command in tmux split pane
+    tmux split-window -e "SPLIT=1" -"$SPLIT" "$@"
+
+else
+    # Otherwise run command as is
+    SPLIT=1 "$@"
+fi
+

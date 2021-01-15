@@ -20,7 +20,7 @@ export LESS="-MR+Gg"
 # by PATHs set in "/etc/paths"
 # NOTE: first, make sure to remove this logic from "/etc/zprofile".
 if [ -x /usr/libexec/path_helper ]; then
-	eval `/usr/libexec/path_helper -s`
+  eval `/usr/libexec/path_helper -s`
 fi
 
 # launch ssh-agent is not running yet
@@ -171,7 +171,6 @@ export NNN_PLUG="$NNN_PLUG_1;$NNN_PLUG_2"
 # default: bzip2, (g)zip, tar. Other formats are supported through 'atool'
 export NNN_ARCHIVE="\\.(7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|rar|rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)$"
 
-# TODO: NNN, live preview same to fzf
 # Special shortcut reference to the config file that contains selection
 # Use this to refer selected files when entering shell(!) or command prompt (])
 export NSEL=${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection
@@ -192,6 +191,23 @@ export GF_GREP_COLOR='38;5;234;48;5;214'
 # make the "git fuzzy diff" preview 60% wide
 export GF_HORIZONTAL_PREVIEW_PERCENT_CALCULATION='60'
 
-# redefine all mappings since it does not work in uppercase
-export GIT_FUZZY_STATUS_ADD_KEY="alt-w"
+# 'git fuzzy'
+# NOTE: have to redefine all these mappings since it does not work out of the box
+# when shorcut is defined in uppercase, like "Alt-W"
+export GIT_FUZZY_BRANCH_WORKING_COPY_KEY="ctrl-p"
+export GIT_FUZZY_BRANCH_MERGE_BASE_KEY="alt-p"
+export GIT_FUZZY_BRANCH_COMMIT_LOG_KEY="alt-l"
+export GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY="alt-f"
+export GIT_FUZZY_BRANCH_CHECKOUT_KEY="alt-b"
+export GIT_FUZZY_BRANCH_DELETE_BRANCH_KEY="alt-d"
+
+export GIT_FUZZY_LOG_WORKING_COPY_KEY="ctrl-p"
+export GIT_FUZZY_MERGE_BASE_KEY="alt-p"
+export GIT_FUZZY_LOG_COMMIT_KEY="alt-d"
+
+export GIT_FUZZY_STATUS_ADD_KEY="alt-s"
+export GIT_FUZZY_STATUS_EDIT_KEY="alt-e"
+export GIT_FUZZY_STATUS_COMMIT_KEY="alt-c"
+export GIT_FUZZY_STATUS_RESET_KEY="alt-r"
+export GIT_FUZZY_STATUS_DISCARD_KEY="alt-u"
 

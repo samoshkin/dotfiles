@@ -112,6 +112,8 @@ alias gce="git commit --amend --reuse-message HEAD"
 
 # git checkout
 
+alias gfb="git fuzzy branch"
+
 # Without arguments, shows all branch to choose from in fzf, with "git log" preview
 # With arguments, acts as a bare "git checkout"
 function gco() {

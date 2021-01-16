@@ -2,7 +2,7 @@
 
 # Open rg search results in a Vim quickfix list
 rgq() {
-  vim -q <(rg --column --no-heading $*)
+  vim -q <(rg --vimgrep $*)
 }
 
 # Search with ripgrep and open results in fzf

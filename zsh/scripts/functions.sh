@@ -30,6 +30,11 @@ function bookmarks() {
   cd $(readlink -f "$bookmark")
 }
 
+# Search for TODO|FIXME|BUG markers in a directory and open results in a Vim quickfix window
+function todos() {
+  vim -q <(rg --vimgrep -w -e 'TODO' -e 'FIXME' -e 'BUG' $* .)
+}
+
 # function ewrap(){
 #   if ! { [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; } then
 #     # Remove option --tab for new window
@@ -39,9 +44,3 @@ function bookmarks() {
 #     tmux split-window -h "$EDITOR \"$*\""
 #   fi
 # }
-
-function todos() {
-  # TODO:
-  # alias tasks='grep --exclude-dir=.git -rEI "TODO|FIXME" . 2>/dev/null'
-}
-

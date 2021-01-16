@@ -6,20 +6,18 @@
 bip() {
   local out packages key
 
-  IFS='\n'
-  out=("$(brew search | fzf -m --expect=ctrl-h)")
+  IFS=$'\n'
+  out=("$(brew search | fzf +m --expect=ctrl-h)")
   key=$(head -1 <<< "$out")
-  packages=($(tail -n +2 <<< "$out"))
+  package=$(head -2 <<< "$out" | tail -1)
 
-  if [[ -n "$packages" ]]; then
+  if [[ -n "$package" ]]; then
     # Open package homepage when Ctrl-H is pressed
     if [ "$key" = ctrl-h ]; then
-      for i in "${packages[@]}"
-      do brew home "$i"; done
-    # Otherwise install packages
-  else
-        for i in "${packages[@]}"
-        do brew install "$i"; done
+      brew home "$package"
+      # Otherwise install packages
+    else
+      brew install "$package"
     fi
   fi
 }
@@ -31,7 +29,7 @@ bup() {
 
   if [[ $upd ]]; then
     for prog in $(echo $upd);
-    do; brew upgrade $prog; done;
+    do brew upgrade $prog; done;
   fi
 }
 
@@ -42,7 +40,7 @@ brp() {
 
   if [[ $uninst ]]; then
     for prog in $(echo $uninst);
-    do; brew uninstall $prog; done;
+    do brew uninstall $prog; done;
   fi
 }
 
@@ -52,19 +50,17 @@ blp() {
   local out packages key
 
   IFS=$'\n'
-  out=("$({ brew leaves; brew list --cask -1 } | fzf -m --expect=ctrl-h)")
+  out=("$({ brew leaves; brew list --cask -1 } | fzf +m --expect=ctrl-h)")
   key=$(head -1 <<< "$out")
-  packages=($(tail -n +2 <<< "$out"))
+  package=$(head -2 <<< "$out" | tail -1)
 
-  if [[ -n "$packages" ]]; then
+  if [[ -n "$package" ]]; then
     # Open package homepage when Ctrl-H is pressed
-    if [ "$key" = ctrl-h ]; then
-      for i in "${packages[@]}"
-      do brew home "$i"; done
     # Otherwise echo packages to STDOUT
-  else
-        for i in "${packages[@]}"
-        do echo "$i"; done
+    if [ "$key" = ctrl-h ]; then
+      brew home "$package"
+    else
+      echo "$package"
     fi
   fi
 }

@@ -167,3 +167,8 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 	trustExitCode = true
+
+# Per-project configs
+# NOTE: symlink "~/projects" does not automatically resolve, have to put full path
+[includeIf "gitdir:/Volumes/DATA/projects/casafari/"]
+  path = ~/projects/casafari/.gitconfig

@@ -35,6 +35,16 @@ function todos() {
   vim -q <(rg --vimgrep -w -e 'TODO' -e 'FIXME' -e 'BUG' $* .)
 }
 
+# Trim trailing and leading whitespaces from a given string
+function trim() {
+  local var="$*"
+  # remove leading whitespace characters
+  var="${var#"${var%%[![:space:]]*}"}"
+  # remove trailing whitespace characters
+  var="${var%"${var##*[![:space:]]}"}"   
+  printf '%s' "$var"
+}
+
 # function ewrap(){
 #   if ! { [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; } then
 #     # Remove option --tab for new window

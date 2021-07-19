@@ -86,6 +86,10 @@ export HISTCONTROL=ignorespace:ignoredups
 # Use oh-my-zsh as a default lib
 export ANTIGEN_DEFAULT_REPO_URL="https://github.com/robbyrussell/oh-my-zsh.git"
 
+# Change default command line prompt symbol
+# see https://github.com/sindresorhus/pure
+export PURE_PROMPT_SYMBOL="$"
+
 # Locale
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8

@@ -185,7 +185,7 @@ export BOOKMARKS_DIR="$HOME/.bookmarks"
 # ==================================================
 # Git configuration
 # ==================================================
-export _git_log_oneline_format="%C(yellow)%h%C(reset) -%C(red)%d%C(reset) %s %C(magenta)(%cr)%C(reset) %C(243)<%an>%C(reset)"
+export _git_log_oneline_format="%C(yellow)%h%C(reset) -%C(cyan)%d%C(reset) %s %C(magenta)(%cr)%C(reset) %C(243)<%an>%C(reset)"
 
 # for `git fuzzy log`
 export GF_LOG_MENU_PARAMS="--pretty=\"$_git_log_oneline_format\" --topo-order"

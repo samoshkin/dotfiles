@@ -8,15 +8,16 @@ alias o='rifle'
 alias e="$EDITOR"
 alias E="editor_in_split_pane"
 
-# Default 'ls' argument
-# But you're better of using 'exa' instead of ls
+# Default 'ls' overrides
 alias ls='ls --time-style=long-iso --color=auto --dereference-command-line-symlink-to-dir'
 
 # Long listing like "ls -la"
-alias l='exa -la --group-directories-first --time-style long-iso --color-scale'
+alias l='exa -1a --group-directories-first --color-scale'
+alias ll='exa -la --group-directories-first --time-style long-iso --color-scale'
 
 # Tree-like listing with 2-level depth
-alias lt="l -T -L 2"
+alias lt="exa -a --group-directories-first --color-scale -T -L 2"
+alias llt="exa -la --group-directories-first --time-style long-iso --color-scale -T -L 2"
 
 # To change directory on exiting MC
 alias mc='. /usr/local/Cellar/midnight-commander/*/libexec/mc/mc-wrapper.sh'

@@ -1,3 +1,4 @@
 *.zwc
 tmux/tpm
+vendor/
 shell/zsh/plugins/antigen.zsh

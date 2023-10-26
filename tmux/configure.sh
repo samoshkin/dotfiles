@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TMUX_PLUGIN_MANAGER_PATH="$DOTFILES/tmux/tpm"
+TMUX_PLUGIN_MANAGER_PATH="$DOTFILES/vendor/tpm"
 
 ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 # git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_MANAGER_PATH"

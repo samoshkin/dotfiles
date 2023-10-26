@@ -1,6 +1,8 @@
-# Plug oh-my-zsh plugin library
+# Specify libraries
+antigen use prezto
 antigen use oh-my-zsh
 
+# Additional completion definitions for Zsh. https://github.com/zsh-users/zsh-completions
 antigen bundle zsh-users/zsh-completions src
 
 # Highlights commands as you type
@@ -9,7 +11,7 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 # As you type commands, you will see a completion offered after the cursor in a muted gray color.
 antigen bundle zsh-users/zsh-autosuggestions
 
-# Type in any part of any command from history and then press chosen keys, such as the UP and DOWN arrows, to cycle through matches.
+# Type in any part of any command from history and then pres UP and DOWN arrows, to cycle through matches.
 antigen bundle zsh-users/zsh-history-substring-search
 
 # Integration between shell and Finder
@@ -23,6 +25,12 @@ antigen bundle osx
 # Add "sudo" with double ESC
 # Easily prefix your current or previous commands with sudo by pressing esc twice
 antigen bundle sudo
+
+# Adds aliases for searching with Google, Wiki, Bing, YouTube and other popular services.
+# google "bla" (further shortened to 'ggl')
+# stackoverflow "bla"
+# github "bla"
+antigen bundle web-search
 
 # Shell completions
 antigen bundle redis-cli
@@ -38,20 +46,32 @@ antigen bundle httpie
 # - decode64	d64	Decodes given data from base64
 antigen bundle encode64
 
+
+
 # URL encode
 # - urlencode	URL-encodes the given string
 # - urldecode	URL-decodes the given string
 antigen bundle urltools
 
-# Colorize man pages
+# Colorize man pagesб
 # Or color other man pages with "colored git help clone"
 antigen bundle colored-man-pages
 
-# you can run multiple asynchronous jobs
+# GIT aliases from "prezto/modules" (glg, gia, etc.)
+# antigen bundle sorin-ionescu/prezto modules/helper
+# antigen bundle sorin-ionescu/prezto modules/git
+
+# small library for running asynchronous tasks in zsh without requiring any external tools
+# used by "sindresorhus/pure"
 antigen bundle mafredri/zsh-async
 
 # Pure ZSH prompt theme
 antigen bundle sindresorhus/pure
+
+# Utility tool for using git interactively
+# REMOVE MAYBE
+# use https://github.com/bigH/git-fuzzy instead
+# antigen bundle wfxr/forgit
 
 # clears previous command output every time before new command executed in shell.
 # Use "almostontop off|on|toggle" command to control behavior

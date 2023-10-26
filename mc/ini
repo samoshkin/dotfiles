@@ -87,6 +87,8 @@ editor_state_full_filename=false
 
 safe_overwrite=false
 
+shadows=true
+
 [Layout]
 message_visible=false
 keybar_visible=true
@@ -97,7 +99,7 @@ menubar_visible=false
 free_space=true
 horizontal_split=false
 vertical_equal=true
-left_panel_size=92
+left_panel_size=106
 horizontal_equal=true
 top_panel_size=23
 

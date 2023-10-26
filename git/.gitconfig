@@ -1,0 +1,178 @@
+[core]
+  attributesfile = ~/.gitattributes
+  autocrlf = input
+  editor = vim
+  trustctime = false
+	excludesfile = /Users/oleksii.samoshkin/.gitignore
+
+# [init]
+#  templatedir = ~/.dotfiles/git/gitdir_template
+
+[pager]
+  branch = false
+  diff = delta -s
+  show = delta -s
+  log = delta
+  reflog = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[credential]
+	helper = osxkeychain
+  useHttpPath = false
+
+[help]
+	autocorrect = 1
+
+[alias]
+  ctags = !.git/hooks/ctags force
+
+[status]
+	submodulesummary = 1
+
+  # Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
+  # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
+  showUntrackedFiles = all
+
+[commit]
+  verbose = true
+	template = /Users/oleksii.samoshkin/.stCommitMsg
+	#template = /Users/asamoshkin/.stCommitMsg
+
+[apply]
+	whitespace = fix
+
+[branch]
+	autosetuprebase = always
+
+[color]
+	ui = auto
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow
+	frag = magenta # line info
+	old = red # deletions
+	new = green # additions
+	whitespace = red reverse
+
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+
+[delta]
+  features = line-numbers
+  syntax-theme = TwoDark
+  wrap-max-lines = unlimited
+
+[delta "line-numbers"]
+  line-numbers = true
+  ; line-numbers-minus-style = "#444444"
+  line-numbers-zero-style = "#444444"
+  ; line-numbers-plus-style = "#444444"
+  hunk-header-decoration-style = "#444444 ul"
+  commit-style = 214 ; brightblue
+  commit-decoration-style = bold
+  file-style = 109 ul ; yellow ul
+  file-decoration-style = none
+  line-numbers-left-format = "{nm:>4}┊"
+  line-numbers-right-format = "{np:>4}│"
+  line-numbers-left-style = "#444444"
+  line-numbers-right-style = "#444444"
+
+
+[push]
+	default = simple
+
+  # Because I get sick of telling git to do it manually
+  # automatically push all tags, reachable from the branches you're pushing
+  # https://git-scm.com/docs/git-config#git-config-pushfollowTags
+  followTags = true
+
+[diff]
+	tool = vim
+  guitool = diffmerge
+	submodule = log
+  algorithm = patience
+  indentHeuristic = true
+  colorMoved = default
+
+[difftool]
+	prompt = false
+
+[diff "bin"]
+  textconv = hexdump -v -C
+
+[difftool "vim"]
+  # by default, Git runs vimdiff in read only mode. Make it run in read-write mode
+  cmd = "vim -f -d -c \"wincmd l\" -c 'cd \"$GIT_PREFIX\"' \"$LOCAL\" \"$REMOTE\""
+
+[difftool "diffmerge"]
+	cmd = "/usr/local/bin/diffmerge --nosplash \"$LOCAL\" \"$REMOTE\""
+
+[difftool "vscode"]
+  cmd = "code -n -w -d \"$LOCAL\" \"$REMOTE\""
+
+[difftool "p4merge"]
+  cmd = "p4merge \"$LOCAL\" \"$REMOTE\""
+
+[difftool "kdiff3"]
+  cmd = "kdiff3 \"$LOCAL\" \"$REMOTE\""
+
+[merge]
+	# tool = vim_mergetool
+  tool = diffmerge
+  guitool = diffmerge
+
+  # Standard conflict markers include only ours and theirs side
+  # Use "diff3" to include base ancestor version as well
+  # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
+  conflictStyle = diff3
+
+[mergetool]
+	keepBackup = false
+	prompt = false
+
+# Uses vim + samoshkin/vim-mergetool plugin
+[mergetool "vim_mergetool"]
+  cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
+  trustExitCode = true
+
+[mergetool "diffmerge"]
+  cmd = "/usr/local/bin/diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\""
+  trustExitCode = true
+
+[mergetool "vscode"]
+  cmd = "code -n --wait \"$MERGED\""
+
+[mergetool "p4merge"]
+  cmd = "p4merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\""
+
+[mergetool "kdiff3"]
+  cmd = "kdiff3 \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\""
+
+[user]
+	name = Alexey Samoshkin
+	email = al.samoshkin@gmail.com
+
+[github]
+  user = samoshkin
+
+# Added automatically by SourceTree
+[difftool "sourcetree"]
+	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --nosplash \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+	trustExitCode = true
+
+# Per-project configs
+# NOTE: symlink "~/projects" does not automatically resolve, have to put full path
+[includeIf "gitdir:/Volumes/DATA/projects/casafari/"]
+  path = ~/projects/casafari/.gitconfig

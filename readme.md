@@ -5,13 +5,6 @@ System settings, configuration files and apps for MacOS.
 
 Sorry, but there's no fully automated installation script that could be run on a fresh MacOS installation and procude a full-blown setup in a one shot. I tried to implement it in a past, but it turns to be overcomplicated. It's better to copy and run a piece of code and validate the outcome.
 
-Basically, this repo contains set of config files that are symlinked or copied somewhere in a `$HOME` directory. See [install.sh](./install.sh) file as a primer.
-
-[macos.sh](./macos.sh) file sets up various system-level MacOS settings which are managed through the `defaults` CLI. It takes care about such aspects as a keyboard, mouse and trackpad, dock and dashbard, power management, Finder app, and others.
-
-[brew.sh](./brew.sh) file enumerates installed CLI and GUI apps that are managed through the `brew` package manager.
-
-
 ## Terminal and shell
 
 - [tmux](https://github.com/tmux/tmux) running inside [iTerm2](https://iterm2.com/)

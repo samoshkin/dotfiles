@@ -1,0 +1,7 @@
+Key mappings:
+- Command-Shift-Comma, open system preferences
+- Fn-Tilde/Tab/Space to Control+Tilde/Tab/Space, open terminal using Ctrl+Tilda or Fn+Tilda.
+- Change Fn + h/j/k/l to Arrows
+- Change fn + letter to left_control + letter
+- Map ctrl + [ to escape
+- Use Return as Open in Finder

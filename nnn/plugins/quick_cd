@@ -3,7 +3,8 @@
 . "$(dirname "$0")"/.nnn-plugin-helper
 
 # Read user input
-printf "cd to:\n"
+clear
+printf "cd to: "
 read -r dir
 
 # Expand user's input and ensure path exists

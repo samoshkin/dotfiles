@@ -1,0 +1,26 @@
+antigen use oh-my-zsh
+
+antigen bundles <<EOBUNDLES
+    zsh-users/zsh-completions src
+    zsh-users/zsh-autosuggestions
+    zsh-users/zsh-history-substring-search
+
+    sudo
+    colored-man-pages
+    --loc=plugins/docker/completions
+    httpie
+    command-not-found
+    docker-compose
+
+    mafredri/zsh-async@v1.8.6
+    sindresorhus/pure@v1.22.0
+    Valiev/almostontop
+
+    Tarrasch/zsh-bd
+    zshzoo/cd-ls@main
+    marlonrichert/zsh-autocomplete@main
+
+    zsh-users/zsh-syntax-highlighting
+EOBUNDLES
+
+antigen apply

@@ -1,0 +1,28 @@
+Host *
+  # use only identifies provided by ssh_config. Don't use identities provided by ssh-agent
+  IdentitiesOnly yes
+
+  # disconnect after 5 minute of inactivity
+  ServerAliveInterval 60
+  ServerAliveCountMax 5
+
+  IgnoreUnknown UseKeychain
+  PermitLocalCommand yes
+
+  # reduce the default connect timeout to 5s
+  ConnectTimeout 5
+
+  # OSX specific
+  # Use passwords stored in Keychain
+  # plus, automatically add keys to ssh-agent when private key is used for the first time
+  AddKeysToAgent yes
+  UseKeychain yes
+
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/samoshkin_at_github
+
+Host bitbucket.org
+  HostName bitbucket.org
+  IdentityFile ~/.ssh/alexey.samoshkin_at_bitbucket.org.key

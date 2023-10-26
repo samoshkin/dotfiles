@@ -60,14 +60,23 @@ for util in "${gnu_utils[@]}"; do
 done
 
 export PATH="$DOTFILES/bin:$PATH"
+export PATH="/usr/local/google-cloud-sdk/bin:$PATH"
+export PATH="/usr/local/opt/mysql-client/bin/:$PATH"
 
 
 # enable LS colored output
 export CLICOLOR=1
+
 # export LSCOLORS=exfxcxdxbxegedabagacxx
 # setup LS_COLORS using 'dircolors' helper utility
 # Configuring LS_COLORS http://www.bigsoft.co.uk/blog/2008/04/11/configuring-ls_colors
-eval $(dircolors -b "$DOTFILES/zsh/.dircolors")
+# eval $(dircolors -b "$DOTFILES/zsh/.dircolors")
+
+# using sharkdp/vivid: A themeable LS_COLORS generator with a rich filetype datebase https://github.com/sharkdp/vivid
+# export LS_COLORS="$(vivid generate lava)";
+# export LS_COLORS="$(vivid generate iceberg-dark)";
+# export LS_COLORS="$(vivid generate jellybeans)";
+export LS_COLORS="$(vivid generate gruvbox-dark)";
 
 # tell "exa" to use LS_COLORS via 'reset' command and specify exa specific extra coloring
 GREY_COLOR="38;5;248"
@@ -96,6 +105,9 @@ export LC_CTYPE=en_US.UTF-8
 
 # location for homebrew cask packages
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+# Run 'brew install' without auto updating it
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 # "ps" process list default output
 export PS_FORMAT="pid,ppid,user,pri,ni,vsz,rss,pcpu,pmem,tty,stat,args"
@@ -151,12 +163,13 @@ export NNN_FCOLORS='c1e20b02006005f7c6d6abc4'
 # -r, show cp, mv progress
 # -u, use selection if available, don't prompt to choose between selection and hovered entry
 # -U, show user and group names in status bar
-# -o,  open files only on Enter key
+# -o, open files only on Enter key
 # -x, copy path to system clipboard on select
 # -E, use $EDITOR for internal undetached edits
 # -e, open text files in $VISUAL (else $EDITOR, fallback vi) [preferably CLI]
 # -S, persistent session
-export NNN_OPTS="QruUoxES"
+# -H, show hidden files
+export NNN_OPTS="QruUoxESH"
 
 # Use "rifle" (ranger's file opener) program to open files
 export NNN_OPENER=rifle
@@ -166,10 +179,10 @@ export NNN_OPENER=rifle
 export NNN_FIFO='/tmp/nnn.fifo'
 
 # plugins key map
-# export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview'
-NNN_PLUG_1='/:finder;c:fzcd;C:fzcd_from_home_dir;z:fzz;h:hexview;b:bookmarks;n:bulknew;o:open;p:preview-tui;t:treeview;y:.cbcp;~:quick_cd'
-NNN_PLUG_2='P:-_less -iR $nnn*;k:-_fkill'
-export NNN_PLUG="$NNN_PLUG_1;$NNN_PLUG_2"
+NNN_PLUG_1='/:finder;c:fzcd;C:fzcd_with_ignored;z:fzz;j:symlinkcd;.:gitroot;>:quick_cd'
+NNN_PLUG_2='o:open;O:open_with;v:preview-tui;t:treeview;l:bat'
+NNN_PLUG_3='!:openshell;d:!cp -rv "$nnn" "$nnn".cp;'
+export NNN_PLUG="$NNN_PLUG_1;$NNN_PLUG_2;$NNN_PLUG_3"
 
 # List of supported archives in 'nnn'
 # default: bzip2, (g)zip, tar. Other formats are supported through 'atool'
@@ -180,7 +193,7 @@ export NNN_ARCHIVE="\\.(7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|l
 export NSEL=${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection
 
 # Specify directory with symlinks per each bookmark
-export BOOKMARKS_DIR="$HOME/.bookmarks"
+export BOOKMARKS_DIR="$HOME/.config/nnn/bookmarks"
 
 # ==================================================
 # Git configuration
@@ -215,3 +228,8 @@ export GIT_FUZZY_STATUS_COMMIT_KEY="alt-c"
 export GIT_FUZZY_STATUS_RESET_KEY="alt-r"
 export GIT_FUZZY_STATUS_DISCARD_KEY="alt-u"
 
+export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
+
+# increase "docker" client  and "docker-compose" client timeouts from 60s to 120s
+export DOCKER_CLIENT_TIMEOUT=120
+export COMPOSE_HTTP_TIMEOUT=120

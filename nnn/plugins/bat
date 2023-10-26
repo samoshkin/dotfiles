@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+bat --decorations=always --color=always "$1"

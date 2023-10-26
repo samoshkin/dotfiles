@@ -29,6 +29,8 @@ unsetopt equals
 # NOTE: do this only for interactive shell
 [[ $- == *i* ]] && stty -ixon
 
+# TODO: report non-zero exit status in terminal somehow
+
 # Hook direnv - https://direnv.net/
 # direnv is an extension for your shell, source local .envrc when entering directory
 # Used to load project-specific environment variables
@@ -57,6 +59,10 @@ fi
 # "z" tracks you most used directories based on frequency and lets you jump around
 source "/usr/local/etc/profile.d/z.sh"
 
+# ZSH completions for kubectl
+# TODO: install through antigen
+source <(kubectl completion zsh)
+
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # for fzf '**' shell completions.
 # - The first argument to the function ($1) is the base path to start traversal
@@ -76,3 +82,6 @@ _fzf_compgen_dir() {
 for script in $DOTFILES/zsh/scripts/*; do
   source $script
 done
+
+# shell command completion for gcloud.
+if [ -f '/usr/local/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/google-cloud-sdk/completion.zsh.inc'; fi

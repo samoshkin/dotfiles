@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+open_in_split_pane "$SHELL"

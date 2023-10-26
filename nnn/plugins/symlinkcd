@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# Change directory to the location of a link using helper script with specific context (current)
+
+. $(dirname $0)/.nnn-plugin-helper
+
+nnn_cd "$(dirname "$(readlink -fn $1)")" 0

@@ -15,5 +15,5 @@ exists() {
 
 if exists exa; then
     PAGER="${PAGER:-less -R}"
-    exa -la --time-style long-iso --color-scale --group-directories-first --colour=always --tree --level 2 "$dir" 2>/dev/null | $PAGER -
+    exa -a --group-directories-first --colour=always --tree --level 2 "$dir" 2>/dev/null | $PAGER -
 fi

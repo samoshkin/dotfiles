@@ -1,37 +1,41 @@
 #!/usr/bin/env sh
 
-# Description: Run fzf and go to the directory of the file selected
-#
-# Shell: POSIX compliant
-# Author: Anna Arad
-
+# shellcheck disable=SC1090,SC1091
 . "$(dirname "$0")"/.nnn-plugin-helper
 
-if [ "$(cmd_exists fzf)" -eq "0" ]; then
-	sel=$(fd $FD_OPTIONS . | fzf +m)
-else
-	exit 1
+CTX=+
+NO_IGNORE="${NO_IGNORE:-0}"
+
+if ! type fzf >/dev/null 2>&1; then
+    printf "fzf missing"
+    read -r _
+    exit 1
 fi
 
-if [ -n "$sel" ]; then
-	if ! [ -d "$sel" ]; then
-		sel=$(dirname "$sel")
-    elif [ "$sel" = "." ]; then
-        exit 0
-	fi
+if [ "$NO_IGNORE" -eq 1 ]; then
+    search_command="fd --hidden -I --type d ."
+else
+    search_command="fd $FD_OPTIONS --type d ."
+fi
 
-    # Check if selected path returned
-    # by fzf command is absolute
+sel="$($search_command | fzf --preview "exa -a --group-directories-first --color-scale -T -L 2 --color always {}")"
+
+if [ -n "$sel" ]; then
+    if [ "$sel" = "." ] || { ! [ -d "$sel" ] && ! [ -f "$sel" ]; }; then
+        exit 0
+    fi
+
+    # Check if the selected path returned by fzf command is absolute
     case $sel in
-    /*) nnn_cd "$sel" ;;
+    /*) nnn_cd "$sel" "$CTX" ;;
     *)
         # Remove "./" prefix if it exists
         sel="${sel#./}"
 
         if [ "$PWD" = "/" ]; then
-            nnn_cd "/$sel"
+            nnn_cd "/$sel" "$CTX"
         else
-            nnn_cd "$PWD/$sel"
+            nnn_cd "$PWD/$sel" "$CTX"
         fi;;
     esac
 fi

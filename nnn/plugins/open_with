@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+selection=${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection}
+
+clear
+
+printf "(s)election/(c)urrent/(p)ick? [default=c] "
+read -r resp
+resp=${resp:-c}
+
+IFS=$'\n'
+if [ "$resp" = "s" ]; then
+    # selection files does not exist when no selection made
+    files=($(cat $selection 2>/dev/null | tr '\0' '\n'))
+elif [ "$resp" = "c" ]; then
+    files=("$1")
+else
+    # Use 'fzf' to pick file to open
+    if ! which fzf >/dev/null 2>&1; then
+        exit 1;
+    fi
+
+    # Allow opening multiple files
+    files=($(eval "$FZF_DEFAULT_COMMAND" | fzf -m --delimiter / --nth=-1 --tiebreak=begin --info=hidden))
+fi
+
+get_selected_app() {
+    if which fzf >/dev/null 2>&1; then
+        # MacOS GUI apps are used to live inside /Applications directory
+        fd . /Applications --type d -d 1 -x echo {/} | sort | fzf +m
+    else
+        exit 1
+    fi
+}
+
+# Read user input
+printf "open with: "
+read -r app
+
+if [ -z "$app" ]; then
+    if app=$( get_selected_app ); then
+        open -a "$app" "${files[@]}" 2>/dev/null 1>/dev/null &
+    fi
+else
+    $app "${files[@]}" &
+fi;
+
+
+# # Check if we have non empty file list
+# if [[ ${#files[@]} -gt 0 ]]; then
+#     rifle "${files[@]}"
+# fi

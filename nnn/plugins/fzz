@@ -15,5 +15,5 @@ if ! which fzf >/dev/null 2>&1; then
     exit 1
 fi
 
-sel=$(_z -l 2>&1 | fzf +s --tac --reverse | sed 's/^[0-9,.]* *//' | awk '{$1=$1};1')
+sel=$(_z -l 2>&1 | fzf +s --tac --reverse --preview-window='hidden' | sed 's/^[0-9,.]* *//' | awk '{$1=$1};1')
 printf "%s" "0c$sel" > "$NNN_PIPE"

@@ -1,0 +1,18 @@
+{
+    "\UF729"  = moveToBeginningOfLine:; // home
+    "\UF72B"  = moveToEndOfLine:; // end
+    "$\UF729" = moveToBeginningOfLineAndModifySelection:; // shift-home
+    "$\UF72B" = moveToEndOfLineAndModifySelection:; // shift-end
+    "@\UF702" = moveToBeginningOfParagraph:; // cmd-left
+    "@\UF703" = moveToEndOfParagraph:;       // cmd-right
+    "@^\UF702" = noop:; // cmd-ctrl-left, noop so it does not beep
+    "@^\UF703" = noop:; // cmd-ctrl-right, noop so it does not beep
+    "@^\UF701" = noop:; // cmd-ctrl-down, noop so it does not beep
+    "@^\UF700" = noop:; // cmd-ctrl-up, noop so it does not beep
+    "@$\UF702" = moveToBeginningOfParagraphAndModifySelection:; // cmd-shift-left
+    "@$\UF703" = moveToEndOfParagraphAndModifySelection:; // cmd-shift-right
+    "@\UF700" = moveToBeginningOfDocument:;  // cmd-up
+    "@\UF701" = moveToEndOfDocument:;        // cmd-down
+    "@$\UF700" = moveToBeginningOfDocumentAndModifySelection:; // cmd-shift-up
+    "@$\UF701" = moveToEndOfDocumentAndModifySelection:;   // cmd-shift-down
+}

@@ -1,3 +1,6 @@
+# Git aliases are inspired by
+# https://github.com/sorin-ionescu/prezto/blob/master/modules/git/alias.zsh
+
 # ==================================================
 # Preparing a commit
 # ==================================================

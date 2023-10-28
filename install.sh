@@ -3,18 +3,47 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# install the optional Command Line Tools subsection of the Xcode IDE
-# command-line tools for Xcode
-xcode-select --install
-
+# =========================
+# XCode command line tools
+# =========================
+sudo xcode-select --install
 
 # ==================
-# Zsh and Antigen
+# Rozetta2
 # ==================
+sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license
 
-brew install zsh
-curl -sSL git.io/antigen > vendor/antigen.zsh
+# =====================
+# Brew
+# =====================
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+
+# =====================
+# git
+# =====================
+brew install git
+
+# ==================
+# ZSH
+# ==================
+brew install zsh antigen
+
+# make just installed "zsh" binary a default shell
+echo "$(which zsh)" | sudo tee -a /etc/shells
+chsh -s "$(which zsh)"
+
+# ======================
+#  Fonts
+# ======================
+
+brew tap homebrew/cask-fonts
+brew install font-droid-sans-mono font-droid-sans-mono-nerd-font
+
+# With file icons support
+# brew cask install font-dejavu-sans      # font-dejavusansmono-nerd-font-mono
+# brew cask install font-source-code-pro
+# brew cask install font-inconsolata-dz-for-powerline  # font-inconsolata-nerd-font-mono
 
 # =============================
 # GNU utils instead of MacOS equivalents
@@ -60,10 +89,8 @@ pip3 install ranger-fm
 ranger --copy-config=rifle
 
 # =====================
-# Git and friends
+# git friends
 # =====================
-
-brew install git gibo
 
 # Diff tools
 brew cask install diffmerge
@@ -80,20 +107,6 @@ pushd "/usr/local/share"
 git clone https://github.com/bigH/git-fuzzy
 ln -sf "/usr/local/share/git-fuzzy/bin/git-fuzzy" "/usr/local/bin/git-fuzzy"
 popd
-
-# ======================
-#  Fonts
-# ======================
-
-brew tap homebrew/cask-fonts
-
-brew cask install font-droid-sans-mono
-# With file icons support
-brew cask install font-droid-sans-mono-nerd-font
-brew cask install font-dejavu-sans      # font-dejavusansmono-nerd-font-mono
-brew cask install font-source-code-pro
-brew cask install font-inconsolata-dz-for-powerline  # font-inconsolata-nerd-font-mono
-
 
 # ======================
 # Node, NVM and npm libs

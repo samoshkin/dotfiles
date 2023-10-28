@@ -66,11 +66,6 @@ unsetopt equals
 
 # TODO: report non-zero exit status in terminal somehow
 
-# Hook direnv - https://direnv.net/
-# direnv is an extension for your shell, source local .envrc when entering directory
-# Used to load project-specific environment variables
-eval "$(direnv hook zsh)"
-
 # Define how zsh handles escape sequences produced by terminal emulator
 bindkey "\e[1~" beginning-of-line
 bindkey "\e[4~" end-of-line

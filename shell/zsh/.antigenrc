@@ -11,6 +11,7 @@ antigen bundles <<EOBUNDLES
     httpie
     command-not-found
     docker-compose
+    direnv
 
     mafredri/zsh-async@v1.8.6
     sindresorhus/pure@v1.22.0

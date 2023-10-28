@@ -11,6 +11,5 @@ EOF
 fi
 
 mkdir -p "$SHELLENVDIR" "$SHELLRCDIR"
-ln -sf -t "$ZDOTDIR" "$DOTFILES/shell/zsh/.zshenv" "$DOTFILES/shell/zsh/.zshrc"
-
-ln -sf -t "$HOME" "$DOTFILES/.inputrc"
+ln -sf "$DOTFILES/shell/zsh/.zshenv" "$DOTFILES/shell/zsh/.zshrc" "$ZDOTDIR"
+ln -sf "$DOTFILES/shell/.inputrc" "$HOME"

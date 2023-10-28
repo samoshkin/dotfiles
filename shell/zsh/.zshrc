@@ -30,7 +30,6 @@ export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
 
 # Setup antigen
 export ADOTDIR="$ZDOTDIR/.antigen"
-fpath+=("$(brew --prefix)/share/zsh/site-functions")
 
 zstyle ':autocomplete:tab:*' insert-unambiguous yes
 zstyle ':autocomplete:tab:*' widget-style menu-select
@@ -99,7 +98,7 @@ fi
 
 # ZSH completions for kubectl
 # TODO: install through antigen
-source <(kubectl completion zsh)
+# source <(kubectl completion zsh)
 
 # copy the active line from the command line buffer
 # onto the system clipboard

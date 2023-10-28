@@ -97,10 +97,6 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
-# Load 'rupa/z' - https://github.com/rupa/z
-# "z" tracks you most used directories based on frequency and lets you jump around
-source "/usr/local/etc/profile.d/z.sh"
-
 # ZSH completions for kubectl
 # TODO: install through antigen
 source <(kubectl completion zsh)

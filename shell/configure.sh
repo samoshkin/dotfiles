@@ -20,15 +20,13 @@ fi
 # any PATH modifications made in zshenv will be shifted to the end
 # by "/usr/libexec/path_helper" running in /etc/zprofile
 # the workaround is to move it back to /etc/zshenv
-# so this it runs the first one
+# so this it runs the first one (we're prepending to the file)
 # NOTE: first, make sure to remove this logic from "/etc/zprofile".
 # see https://stackoverflow.com/a/14101578
 if ! grep -q '/usr/libexec/path_helper' /etc/zshenv; then
-  sudo tee -a "/etc/zshenv" >/dev/null << EOF
-if [ -x /usr/libexec/path_helper ]; then
+  echo "if [ -x /usr/libexec/path_helper ]; then
   eval \$(/usr/libexec/path_helper -s)
-fi
-EOF
+fi" | cat - /etc/zshenv | sudo tee "/etc/zshenv" >/dev/null
 fi
 
 mkdir -p "$SHELLENVDIR" "$SHELLRCDIR"

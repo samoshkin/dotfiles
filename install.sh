@@ -59,6 +59,13 @@ brew install coreutils findutils diffutils \
 # Upgrade old tools on Mac
 brew install bash less nano curl make
 
+# sharkdp/vivid: A themeable LS_COLORS generator with a rich filetype datebase https://github.com/sharkdp/vivid
+# brew formula contains outdated version, installing it manually from GH releases
+wget --quiet https://github.com/sharkdp/vivid/releases/download/v0.9.0/vivid-v0.9.0-x86_64-apple-darwin.tar.gz -O /tmp/vivid.tar.gz
+tar xzf /tmp/vivid.tar.gz -C /tmp
+cp /tmp/vivid-v0.9.0-x86_64-apple-darwin/vivid /usr/local/bin/
+rm -rf /tmp/vivid /tmp/vivid.tar.gz
+
 # =====================
 #  Python
 # =====================
@@ -217,10 +224,6 @@ brew install atool
 
 # wagoodman/dive: A tool for exploring each layer in a docker image https://github.com/wagoodman/dive
 brew install dive
-
-# sharkdp/vivid: A themeable LS_COLORS generator with a rich filetype datebase https://github.com/sharkdp/vivid
-# TODO: brew formula contains outdated version, install manually from GH releases
-brew install vivid
 
 # Compile nnn manually rather than downloading from brew
 # TODO: v3.5 is broken on MacOS. Switch to 3.6 when released.

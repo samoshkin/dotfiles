@@ -18,7 +18,7 @@ sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license
 # =====================
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 sudo tee -a "/etc/zshenv" >/dev/null << EOF
-eval "$(opt/homebrew/bin/brew shellenv)"
+eval "\$(/opt/homebrew/bin/brew shellenv)"
 EOF
 
 

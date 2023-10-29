@@ -1,24 +1,30 @@
-# Add GNU utils to PATH and MANPATH
+# Replace standard BSD utils with GNU utils
+# see Using GNU command line tools in macOS instead of FreeBSD tools https://gist.github.com/skyzyx/3438280b18e4f7c490db8a2a2ca0b9da
+
 declare -a gnu_utils=(
-    "gnu-sed"
-    "gnu-tar"
-    "gnu-indent"
-    "grep"
-    "gnu_which"
-    "findutils"
-    "ed"
-    "curl"
-    "make"
+  "coreutils"
+  "findutils"
+  "gnu-indent"
+  "gnu-sed"
+  "ed"
+  "gnu-tar"
+  "grep"
+  "gnu-which"
+  "gawk"
+  "make"
 )
 
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="/usr/local/opt/curl/bin:$PATH"
-export PATH="/usr/local/opt/unzip/bin:$PATH"
-
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH-/‌​usr/share/man}"
-export MANPATH="/usr/local/opt/unzip/share/man:$MANPATH"
-
 for util in "${gnu_utils[@]}"; do
-    export PATH="/usr/local/opt/$util/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/$util/share/man:$MANPATH"
+  export PATH="$HOMEBREW_PREFIX/opt/$util/libexec/gnubin:$PATH"
+  export MANPATH="$HOMEBREW_PREFIX/opt/$util/libexec/gnuman:$MANPATH"
+done
+
+declare -a keg_only_utils=(
+  "curl"
+  "make"
+)
+
+for util in "${keg_only_utils[@]}"; do
+  export PATH="$HOMEBREW_PREFIX/opt/$util/bin:$PATH"
+  export MANPATH="$HOMEBREW_PREFIX/opt/$util/share/man:$MANPATH"
 done

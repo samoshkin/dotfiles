@@ -48,32 +48,16 @@ brew install font-droid-sans-mono font-droid-sans-mono-nerd-font
 # brew cask install font-source-code-pro
 # brew cask install font-inconsolata-dz-for-powerline  # font-inconsolata-nerd-font-mono
 
-# =============================
+# =======================================
 # GNU utils instead of MacOS equivalents
-# =============================
+# =======================================
 
-brew install coreutils
-brew install findutils
-brew install diffutils
-brew install gnu-indent
-brew install gnu-sed
-brew install ed
-brew install gnu-tar
-brew install grep
-brew install gnu-which
-brew install gawk
-brew install gzip
-brew install watch
-brew install gnutls
-brew install wget
-brew install curl
-brew install make
+brew install coreutils findutils diffutils \
+  gnu-indent gnu-sed ed gnu-tar gnutls grep \
+  gnu-which gawk gzip watch wget
 
 # Upgrade old tools on Mac
-brew install bash
-brew install less
-brew install nano
-
+brew install bash less nano curl make
 
 # =====================
 #  Python

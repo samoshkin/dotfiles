@@ -6,17 +6,6 @@ alias o='rifle'
 alias e="$EDITOR"
 alias E="editor_in_split_pane"
 
-# Default 'ls' overrides
-alias ls='ls --time-style=long-iso --color=auto --dereference-command-line-symlink-to-dir'
-
-# Long listing like "ls -la"
-alias l='exa -1a --group-directories-first --color-scale'
-alias ll='exa -la --group-directories-first --time-style long-iso --color-scale'
-
-# Tree-like listing with 2-level depth
-alias lt="exa -a --group-directories-first --color-scale -T -L 2"
-alias llt="exa -la --group-directories-first --time-style long-iso --color-scale -T -L 2"
-
 # To change directory on exiting MC
 alias mc='. /usr/local/Cellar/midnight-commander/*/libexec/mc/mc-wrapper.sh'
 
@@ -28,12 +17,6 @@ function httpless {
 }
 
 alias chrome="open -a 'Google Chrome'"
-
-# alias fd='fd --hidden --follow --ignore-file "$DOTFILES/.ignore"'
-alias fd="fd $FD_OPTIONS"
-
-# Use bat in place of cat
-alias cat="bat"
 
 # Extract any archive with "x" alias using "atool"
 alias x="atool -x"

@@ -1,8 +1,10 @@
-# location for homebrew cask packages
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-
-# Run 'brew install' without auto updating it
-export HOMEBREW_NO_AUTO_UPDATE=1
+# for old version of brew
+# manually source env variables
+# in newer versions of brew, it's enough to put
+# brew.env file at $(brew --prefix)/etc/homebrew/brew.env
+if [ "$(brew --prefix)" = "/usr/local" ]; then
+  source "$DOTFILES/brew/brew.env"
+fi
 
 # Install (one or multiple) selected application(s)
 # using "brew search" as source input

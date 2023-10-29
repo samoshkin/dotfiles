@@ -36,7 +36,7 @@ zstyle ':autocomplete:tab:*' widget-style menu-select
 zstyle ':autocomplete:*' recent-dirs z.sh
 
 # load antigen (installed via brew) and init plugins
-source "/usr/local/share/antigen/antigen.zsh"
+source "$(brew --prefix)/share/antigen/antigen.zsh"
 antigen init "${DOTFILES}/shell/zsh/.antigenrc"
 
 # fast man page access with <esc-h>
@@ -107,9 +107,6 @@ bindkey "^O" copycmdline
 # shell command completion for gcloud.
 export PATH="$PATH:/usr/local/google-cloud-sdk/bin"
 if [ -f '/usr/local/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/google-cloud-sdk/completion.zsh.inc'; fi
-
-source "$DOTFILES/shell/functions.sh"
-source "$DOTFILES/shell/alias.sh"
 
 # source all extra rc files
 export SHELLRCDIR="$ZDOTDIR/.rc"

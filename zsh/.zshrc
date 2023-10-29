@@ -42,6 +42,11 @@ bindkey "\e[4~" end-of-line
 bindkey "\eOH" beginning-of-line
 bindkey "\eOF" end-of-line
 
+# integration with terminal, map keys like ⌘Z, ⌘⇧Z, ⌘Delete, ⌘Backspace
+# see https://stackoverflow.com/questions/6205157/how-to-set-keyboard-shortcuts-to-jump-to-beginning-end-of-line/29403520#29403520
+bindkey "^X\x7f" backward-kill-line
+bindkey "^X^_" redo
+
 # Hook up zsh-users/zsh-history-substring-search
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down

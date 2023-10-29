@@ -15,7 +15,6 @@ antigen bundles <<EOBUNDLES
 
     mafredri/zsh-async@v1.8.6
     sindresorhus/pure@v1.22.0
-    Valiev/almostontop
 
     Tarrasch/zsh-bd
     zshzoo/cd-ls@main
@@ -25,4 +24,5 @@ EOBUNDLES
 
 antigen apply
 
+# Valiev/almostontop
 # marlonrichert/zsh-autocomplete@main

@@ -104,6 +104,14 @@ copycmdline () {
 zle -N copycmdline
 bindkey "^O" copycmdline
 
+# borrowed from https://github.com/Valiev/almostontop/blob/master/almostontop.plugin.zsh
+# Valiev/almostontop uses "zle redisplay", but it resets the whole scrollback buffer
+function _accept_line_almostontop {
+  zle clear-screen
+  zle .accept-line
+}
+zle -N accept-line _accept_line_almostontop
+
 # shell command completion for gcloud.
 export PATH="$PATH:/usr/local/google-cloud-sdk/bin"
 if [ -f '/usr/local/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/google-cloud-sdk/completion.zsh.inc'; fi

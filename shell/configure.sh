@@ -36,3 +36,7 @@ ln -sf "$DOTFILES/shell/.inputrc" "$HOME"
 # disable "Last Login" prompt when terminal starts new login shell
 # macos - Remove "Last login" message for new tabs in terminal - Stack Overflow https://stackoverflow.com/questions/15769615/remove-last-login-message-for-new-tabs-in-terminal
 touch "$HOME/.hushlogin"
+
+# symlink executable scripts that should be on PATH to $HOME/bin
+mkdir "$HOME/bin"
+ln -sf "$DOTFILES/shell/bin/"* "$HOME/bin"

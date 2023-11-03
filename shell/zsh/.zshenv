@@ -6,7 +6,7 @@ export EDITOR="vim"
 # primarily used by 'nnn' file manager, it relies on $VISUAL to open files on <CR>
 export VISUAL="editor_in_split_pane"
 
-export PATH="$PATH:$DOTFILES/shell/bin"
+export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:/usr/local/opt/mysql-client/bin"
 
 # Locale

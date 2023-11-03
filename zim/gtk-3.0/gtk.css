@@ -1,0 +1,22 @@
+#zim-pageview text {
+  /* background-color: rgb(235, 235, 235); */
+  background-color: #fefbea;
+}
+
+#zim-pageindex {
+  background: #e7e8f1;
+  /* background-color: rgb(240, 240, 240); */
+  font-size: 14px;
+}
+
+#zim-pathbar {
+  font-size: 14px;
+}
+
+#zim-pathbar button {
+  padding: 2px 6px 1px;
+}
+
+#zim-pageindex:selected {
+  background-color: #315bef;
+}

@@ -1,0 +1,68 @@
+#!/usr/bin/env sh
+
+#
+# for this to work you must configure sudo such that
+# it will be able to run the command without password
+#
+# see this wiki page for information
+#  - https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)#configure-scripting-addition
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+
+# global settings
+yabai -m config                                 \
+    mouse_follows_focus          off            \
+    focus_follows_mouse          autofocus      \
+    window_origin_display        default        \
+    window_placement             second_child   \
+    window_zoom_persist          on             \
+    window_shadow                on             \
+    window_animation_duration    0.0            \
+    window_animation_frame_rate  120            \
+    window_opacity_duration      0.0            \
+    active_window_opacity        1.0            \
+    normal_window_opacity        0.90           \
+    window_opacity               off            \
+    insert_feedback_color        0xffd75f5f     \
+    split_ratio                  0.50           \
+    split_type                   auto           \
+    auto_balance                 off            \
+    top_padding                  06             \
+    bottom_padding               06             \
+    left_padding                 06             \
+    right_padding                06             \
+    window_gap                   06             \
+    layout                       bsp            \
+    mouse_modifier               fn             \
+    mouse_action1                move           \
+    mouse_action2                resize         \
+    mouse_drop_action            swap           \
+    debug_output                 on
+
+# Apps to always kept unmanaged (floated)
+yabai -m rule --add app="System Preferences" manage=off
+yabai -m rule --add app="MacPass" manage=off grid=5:5:1:1:3:3
+yabai -m rule --add app="Numi" manage=off grid=6:6:4:0:2:3 opacity=0.95
+
+# Set default location and presense for Sticky terminal window
+yabai -m signal --add event=window_created app="iTerm2" title="^sticky" action="yabai -m window \$YABAI_WINDOW_ID --toggle float --grid 2:2:1:0:1:2 --layer normal"
+
+# Automatically float non-resizable windows, such as palettes, system settings etc
+yabai -m signal --add event=window_created action="yabai_auto_float_non_resizable_window.sh"
+
+# Refresh menubar Yabai indicator (https://github.com/xiamaz/YabaiIndicator) on various events
+yabai -m signal --add event=mission_control_exit action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=display_added action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=display_removed action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_created action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_destroyed action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_focused action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_moved action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_resized action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_minimized action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_deminimized action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=space_created action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=space_destroyed action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+
+echo "yabai configuration loaded.."

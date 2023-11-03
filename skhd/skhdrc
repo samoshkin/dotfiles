@@ -1,0 +1,352 @@
+#  NOTE(koekeishiya): A list of all built-in modifier and literal keywords can
+#                     be found at https://github.com/koekeishiya/skhd/issues/1
+#
+#                     A hotkey is written according to the following rules:
+#
+#                       hotkey       = <mode> '<' <action> | <action>
+#
+#                       mode         = 'name of mode' | <mode> ',' <mode>
+#
+#                       action       = <keysym> '[' <proc_map_lst> ']' | <keysym> '->' '[' <proc_map_lst> ']'
+#                                      <keysym> ':' <command>          | <keysym> '->' ':' <command>
+#                                      <keysym> ';' <mode>             | <keysym> '->' ';' <mode>
+#
+#                       keysym       = <mod> '-' <key> | <key>
+#
+#                       mod          = 'modifier keyword' | <mod> '+' <mod>
+#
+#                       key          = <literal> | <keycode>
+#
+#                       literal      = 'single letter or built-in keyword'
+#
+#                       keycode      = 'apple keyboard kVK_<Key> values (0x3C)'
+#
+#                       proc_map_lst = * <proc_map>
+#
+#                       proc_map     = <string> ':' <command> | <string>     '~' |
+#                                      '*'      ':' <command> | '*'          '~'
+#
+#                       string       = '"' 'sequence of characters' '"'
+#
+#                       command      = command is executed through '$SHELL -c' and
+#                                      follows valid shell syntax. if the $SHELL environment
+#                                      variable is not set, it will default to '/bin/bash'.
+#                                      when bash is used, the ';' delimeter can be specified
+#                                      to chain commands.
+#
+#                                      to allow a command to extend into multiple lines,
+#                                      prepend '\' at the end of the previous line.
+
+#                                      an EOL character signifies the end of the bind.
+#
+#                       ->           = keypress is not consumed by skhd
+#
+#                       *            = matches every application not specified in <proc_map_lst>
+#
+#                       ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
+#
+#  NOTE(koekeishiya): A mode is declared according to the following rules:
+#
+#                       mode_decl = '::' <name> '@' ':' <command> | '::' <name> ':' <command> |
+#                                   '::' <name> '@'               | '::' <name>
+#
+#                       name      = desired name for this mode,
+#
+#                       @         = capture keypresses regardless of being bound to an action
+#
+#                       command   = command is executed through '$SHELL -c' and
+#                                   follows valid shell syntax. if the $SHELL environment
+#                                   variable is not set, it will default to '/bin/bash'.
+#                                   when bash is used, the ';' delimeter can be specified
+#                                   to chain commands.
+#
+#                                   to allow a command to extend into multiple lines,
+#                                   prepend '\' at the end of the previous line.
+#
+#                                   an EOL character signifies the end of the bind.
+
+
+# Whene entering window management mode and returning back to default, toggle "focus_follows_mouse" setting
+:: default : yabai -m config focus_follows_mouse autofocus
+:: win @ : yabai -m config focus_follows_mouse off
+
+# Escape or Ctrl-C to exit
+cmd - m ; win
+win < escape; default
+win < ctrl - c; default
+
+# Bypass Cmd+M, so Cmd+M,Cmd+M will trigger default MacOS behavior (minimize window)
+win < cmd - m ->; default
+
+# ================================
+# Focus windows
+# ================================
+cmd + alt - right [
+  "Safari" ~
+  *: yabai -m window --focus east || yabai -m display --focus east
+]
+cmd + alt - left [
+  "Safari" ~
+  *: yabai -m window --focus west || yabai -m display --focus west
+]
+cmd + alt - up: yabai -m window --focus north
+cmd + alt - down: yabai -m window --focus south
+# cmd + alt + \, toggle focus to recent window
+cmd + alt - 0x2A: yabai -m window --focus recent
+
+# ================================
+# Focus spaces
+# ================================
+
+# preserve standard MacOS shortcuts to navigate beetween spaces
+# yabai's benefit: no animation
+default < ctrl + alt + cmd - right: yabai_focus_next_space.sh
+default < ctrl + alt + cmd - left: yabai_focus_prev_space.sh
+
+# ctrl + alt + cmd + \, focus recent space
+default < ctrl + alt + cmd - 0x2A: yabai -m space --focus recent
+
+# focus space by number, alt-9 to focus last space
+default < alt - 1: yabai -m space --focus 1
+default < alt - 2: yabai -m space --focus 2
+default < alt - 3: yabai -m space --focus 3
+default < alt - 4: yabai -m space --focus 4
+default < alt - 5: yabai -m space --focus 5
+default < alt - 6: yabai -m space --focus 6
+default < alt - 7: yabai -m space --focus 7
+default < alt - 8: yabai -m space --focus 8
+default < alt - 9: yabai -m space --focus last
+
+
+# ================================
+# Focus display
+# ================================
+# alt - tab, to switch focus between displays
+# since I have only 2 monitors, it works fine
+default < alt - 0x30: yabai -m display --focus recent
+
+# ================================
+# Move windows within a space
+#
+# if window is floating, move it 50 pixels in given direction
+# if window is managed, swap it with adjacent window in given direction
+# ================================
+win < right: is_floating=$(yabai -m query --windows --window | jq .\"is-floating\"); \
+  [ "$is_floating" = "true" ] && yabai -m window --move rel:50:0;\
+  [ "$is_floating" = "false" ] && yabai -m window --swap east;
+
+win < left: is_floating=$(yabai -m query --windows --window | jq .\"is-floating\"); \
+  [ "$is_floating" = "true" ] && yabai -m window --move rel:-50:0;\
+  [ "$is_floating" = "false" ] && yabai -m window --swap west;
+
+win < up: is_floating=$(yabai -m query --windows --window | jq .\"is-floating\"); \
+  [ "$is_floating" = "true" ] && yabai -m window --move rel:0:-50;\
+  [ "$is_floating" = "false" ] && yabai -m window --swap north;
+
+win < down: is_floating=$(yabai -m query --windows --window | jq .\"is-floating\"); \
+  [ "$is_floating" = "true" ] && yabai -m window --move rel:0:50;\
+  [ "$is_floating" = "false" ] && yabai -m window --swap south;
+
+
+# ================================
+# Resize windows
+# ================================
+
+# alt - arrow, increase size on particular side
+win < alt - right: yabai -m window --resize right:20:0
+win < alt - left: yabai -m window --resize left:-20:0
+win < alt - up: yabai -m window --resize top:0:-20
+win < alt - down: yabai -m window --resize bottom:0:20
+
+# shift + alt - arrow, decrease size on particular side
+win < shift + alt - right: yabai -m window --resize left:20:0
+win < shift + alt - left: yabai -m window --resize right:-20:0
+win < shift + alt - up: yabai -m window --resize bottom:0:-20
+win < shift + alt - down: yabai -m window --resize top:0:20
+
+# increase/decrease on all sides
+# +, increase
+# -, decrease
+win < shift - 0x18: yabai -m window --resize top_left:-20:-20; yabai -m window --resize bottom_right:20:20
+win < 0x1B: yabai -m window --resize top_left:20:20; yabai -m window --resize bottom_right:-20:-20
+
+# =, rebalance size of all windows
+win < 0x18: yabai -m space --balance
+
+# =========================================
+# Window size presets for floating windows
+# =========================================
+
+# take the whole screen
+win < 1: yabai -m window --grid 1:1:0:0:1:1
+
+# take 1/2 of a screen, then choose the direction with an arrow
+# 2; left => take the left half of the screen
+# 2; bottom => take the bottom half of the screen
+:: p2 @
+win < 2; p2
+p2 < left: yabai -m window --grid 2:2:0:0:1:2; skhd -k "escape"
+p2 < right: yabai -m window --grid 2:2:1:0:1:2; skhd -k "escape"
+p2 < down: yabai -m window --grid 2:2:0:1:2:1; skhd -k "escape"
+p2 < up: yabai -m window --grid 2:2:0:0:2:1; skhd -k "escape"
+p2 < escape; win
+p2 < ctrl - c; default
+
+# take 1/3 of a screen, then choose the direction with an arrow
+:: p3 @
+win < 3; p3
+p3 < left: yabai -m window --grid 3:3:0:0:1:3; skhd -k "escape"
+p3 < right: yabai -m window --grid 3:3:2:0:1:3; skhd -k "escape"
+p3 < down: yabai -m window --grid 3:3:0:2:3:1; skhd -k "escape"
+p3 < up: yabai -m window --grid 3:3:0:0:3:1; skhd -k "escape"
+p3 < escape; win
+p3 < ctrl - c; default
+
+# take 1/4 of a screen, then choose the corner with an arrow
+:: p4 @
+win < 4; p4
+p4 < left: yabai -m window --grid 2:2:0:0:1:1; skhd -k "escape"
+p4 < right: yabai -m window --grid 2:2:1:1:1:1; skhd -k "escape"
+p4 < down: yabai -m window --grid 2:2:0:1:1:1; skhd -k "escape"
+p4 < up: yabai -m window --grid 2:2:1:0:1:1; skhd -k "escape"
+p4 < escape; win
+p4 < ctrl - c; default
+
+# take 1/2 of a screen and center
+win < 5: yabai -m window --grid 6:6:1:1:4:4
+
+# =================================
+# Move window to another space
+# =================================
+
+# m, enter "move window" mode, then choose what to do next
+:: movewindow @
+win < m; movewindow
+movewindow < escape; win
+movewindow < ctrl - c; default
+
+# move to a space by number
+movewindow < 1: yabai -m window --space 1 && yabai -m space --focus 1; skhd -k "ctrl-c"
+movewindow < 2: yabai -m window --space 2 && yabai -m space --focus 2; skhd -k "ctrl-c"
+movewindow < 3: yabai -m window --space 3 && yabai -m space --focus 3; skhd -k "ctrl-c"
+movewindow < 4: yabai -m window --space 4 && yabai -m space --focus 4; skhd -k "ctrl-c"
+movewindow < 5: yabai -m window --space 5 && yabai -m space --focus 5; skhd -k "ctrl-c"
+movewindow < 6: yabai -m window --space 6 && yabai -m space --focus 6; skhd -k "ctrl-c"
+movewindow < 7: yabai -m window --space 7 && yabai -m space --focus 7; skhd -k "ctrl-c"
+movewindow < 8: yabai -m window --space 8 && yabai -m space --focus 8; skhd -k "ctrl-c"
+movewindow < 9: yabai -m window --space last && yabai -m space --focus last; skhd -k "ctrl-c"
+
+# ~, move window to previous space
+# <Tab>, move window to recent space
+movewindow < 0x32: yabai -m window --space prev && yabai -m space --focus prev; skhd -k "ctrl-c"
+movewindow < 0x30: yabai -m window --space recent && yabai -m space --focus recent; skhd -k "ctrl-c"
+
+# move window to another display
+movewindow < d: yabai_move_window_to_another_display.sh; skhd -k "ctrl-c"
+
+
+# ====================================================
+# Merge space (and all its windows) with another space
+# ====================================================
+
+# shift-m, enter "merge space" mode, then choose what to do next
+:: mergespace @
+win < shift - m; mergespace
+mergespace < escape; win
+mergespace < ctrl - c; default
+
+
+# merge current space with a space by number
+mergespace < 1: yabai_merge_spaces.sh 1; skhd -k "ctrl-c"
+mergespace < 2: yabai_merge_spaces.sh 2; skhd -k "ctrl-c"
+mergespace < 3: yabai_merge_spaces.sh 3; skhd -k "ctrl-c"
+mergespace < 4: yabai_merge_spaces.sh 4; skhd -k "ctrl-c"
+mergespace < 5: yabai_merge_spaces.sh 5; skhd -k "ctrl-c"
+mergespace < 6: yabai_merge_spaces.sh 6; skhd -k "ctrl-c"
+mergespace < 7: yabai_merge_spaces.sh 7; skhd -k "ctrl-c"
+mergespace < 8: yabai_merge_spaces.sh 8; skhd -k "ctrl-c"
+mergespace < 9: yabai_merge_spaces.sh last; skhd -k "ctrl-c"
+
+# ~, merge with previous space
+# <Tab>, merge with recent space
+mergespace < 0x32: yabai_merge_spaces.sh prev; skhd -k "ctrl-c"
+mergespace < 0x30: yabai_merge_spaces.sh recent; skhd -k "ctrl-c"
+
+
+# ====================================================
+# Other actions
+# ====================================================
+
+# (z)oom, toggle current window to zoom and occupy it's parent space
+win < z: yabai -m window --toggle zoom-parent; skhd -k "escape"
+
+# cmd+shift-return: toggle fullscreen mode for current window
+# (Z)oom: toggle fullscreen mode for current window
+default < cmd + shift - return: yabai -m window --toggle zoom-fullscreen
+win < cmd - z: yabai -m window --toggle zoom-fullscreen; skhd -k "escape"
+
+# _: mirror windows against X
+# |: mirror windows against X
+win < shift - 0x1B: yabai -m space --mirror x-axis
+win < shift - 0x2A: yabai -m space --mirror y-axis
+
+# (f)loat: Toggle floating mode for current window
+win < f: yabai -m window --toggle float --grid 4:4:1:1:2:2
+
+# (s)plit: Change horizontal vs vertical split orientation for current window
+win < s: yabai -m window --toggle split
+
+# (r)otate: Rotate the window tree clockwise
+win < r: yabai -m space --rotate 270
+
+# c: Cycle by swapping window with the next one
+win < c: yabai -m window --swap next || yabai -m window --swap first
+
+# C: Cycle by re-inserting window at the position of the next window
+win < shift - c: yabai -m window --warp next || yabai -m window --warp first
+
+# x: close window
+win < x: yabai -m window --close
+
+# X: destroy the current space
+win < shift - x: yabai_close_space.sh; skhd -k "escape"
+
+# (O)nly: close all other windows in a current space except the current one
+win < shift - o: yabai_close_other_windows.sh; skhd -k "escape"
+
+# (n)ew: create new space
+win < n: yabai_create_space.sh; skhd -k "escape"
+
+# (E)xtract: take current window and move it to a new space
+win < shift - e: yabai_extract_window_to_new_space.sh; skhd -k "escape"
+
+
+# ====================================================
+# Applications
+# ====================================================
+
+# cltr - `, fn - `: Open terminal, if it's already running, it just focuses the window
+default < ctrl - 0x32: open -a "/Applications/ITerm.app"
+default < fn - 0x32: skhd -k "ctrl - 0x32"
+# default < ctrl + shift - 0x32: open_or_focus_terminal.sh
+
+# ctrl + shift - `, open special always-on-top terminal window on the right side of a screen
+default < ctrl + shift - 0x32: open_side_terminal.sh
+
+# cmd + shift - ,: Open system preferences
+default < cmd + shift - 0x2B: open -na "System preferences"
+
+# Use Enter to open file/directory in Finder
+# default < return [
+# "finder": skhd -k "cmd - o"
+# * ~
+# ]
+
+
+# prevent skhd from monitoring events for specific applications.
+#
+# .blacklist [
+#    "kitty"
+#    "terminal"
+#    "qutebrowser"
+# ]

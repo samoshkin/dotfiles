@@ -38,5 +38,9 @@ ln -sf "$DOTFILES/shell/.inputrc" "$HOME"
 touch "$HOME/.hushlogin"
 
 # symlink executable scripts that should be on PATH to $HOME/bin
-mkdir "$HOME/bin"
+mkdir -p "$HOME/bin"
 ln -sf "$DOTFILES/shell/bin/"* "$HOME/bin"
+
+# symlink alias and functions to be sourced at shell startup
+ln -sf "$DOTFILES/shell/alias.sh" "$SHELLRCDIR/shell-alias.rc.sh"
+ln -sf "$DOTFILES/shell/functions.sh" "$SHELLRCDIR/shell-functions.rc.sh"

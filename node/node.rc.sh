@@ -1,6 +1,8 @@
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
+export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/.npmrc"
+
 # Will call "nvm use" in a directory with a .nvmrc file automatically on chdir action
 autoload -U add-zsh-hook
 

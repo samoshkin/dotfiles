@@ -34,3 +34,7 @@ alias chromium="/Applications/Chromium.app/Contents/MacOS/Chromium"
 
 # Kubernetes
 alias k=kubectl
+
+# eg. fd <search> | tree --fromfile
+# same as fd <search> | as-tree
+alias as-tree='tree --fromfile'

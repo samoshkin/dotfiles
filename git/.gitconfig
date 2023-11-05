@@ -3,7 +3,7 @@
   autocrlf = input
   editor = vim
   trustctime = false
-	excludesfile = /Users/oleksii.samoshkin/.gitignore
+  excludesfile = /Users/oleksii.samoshkin/.gitignore
 
 # [init]
 #  templatedir = ~/.dotfiles/git/gitdir_template
@@ -19,17 +19,14 @@
   diffFilter = delta --color-only
 
 [credential]
-	helper = osxkeychain
+  helper = osxkeychain
   useHttpPath = false
 
 [help]
-	autocorrect = 1
-
-[alias]
-  ctags = !.git/hooks/ctags force
+  autocorrect = 1
 
 [status]
-	submodulesummary = 1
+  submodulesummary = 1
 
   # Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
   # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
@@ -37,34 +34,34 @@
 
 [commit]
   verbose = true
-	template = /Users/oleksii.samoshkin/.stCommitMsg
-	#template = /Users/asamoshkin/.stCommitMsg
+  template = /Users/oleksii.samoshkin/.stCommitMsg
+  #template = /Users/asamoshkin/.stCommitMsg
 
 [apply]
-	whitespace = fix
+  whitespace = fix
 
 [branch]
-	autosetuprebase = always
+  autosetuprebase = always
 
 [color]
-	ui = auto
+  ui = auto
 
 [color "branch"]
-	current = yellow reverse
-	local = yellow
-	remote = green
+  current = yellow reverse
+  local = yellow
+  remote = green
 
 [color "diff"]
-	meta = yellow
-	frag = magenta # line info
-	old = red # deletions
-	new = green # additions
-	whitespace = red reverse
+  meta = yellow
+  frag = magenta # line info
+  old = red # deletions
+  new = green # additions
+  whitespace = red reverse
 
 [color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
+  added = yellow
+  changed = green
+  untracked = cyan
 
 [delta]
   features = line-numbers
@@ -88,7 +85,7 @@
 
 
 [push]
-	default = simple
+  default = simple
 
   # Because I get sick of telling git to do it manually
   # automatically push all tags, reachable from the branches you're pushing
@@ -96,15 +93,15 @@
   followTags = true
 
 [diff]
-	tool = vim
+  tool = vim
   guitool = diffmerge
-	submodule = log
+  submodule = log
   algorithm = patience
   indentHeuristic = true
   colorMoved = default
 
 [difftool]
-	prompt = false
+  prompt = false
 
 [diff "bin"]
   textconv = hexdump -v -C
@@ -114,7 +111,7 @@
   cmd = "vim -f -d -c \"wincmd l\" -c 'cd \"$GIT_PREFIX\"' \"$LOCAL\" \"$REMOTE\""
 
 [difftool "diffmerge"]
-	cmd = "/usr/local/bin/diffmerge --nosplash \"$LOCAL\" \"$REMOTE\""
+  cmd = "/usr/local/bin/diffmerge --nosplash \"$LOCAL\" \"$REMOTE\""
 
 [difftool "vscode"]
   cmd = "code -n -w -d \"$LOCAL\" \"$REMOTE\""
@@ -126,7 +123,7 @@
   cmd = "kdiff3 \"$LOCAL\" \"$REMOTE\""
 
 [merge]
-	# tool = vim_mergetool
+  # tool = vim_mergetool
   tool = diffmerge
   guitool = diffmerge
 
@@ -136,8 +133,8 @@
   conflictStyle = diff3
 
 [mergetool]
-	keepBackup = false
-	prompt = false
+  keepBackup = false
+  prompt = false
 
 # Uses vim + samoshkin/vim-mergetool plugin
 [mergetool "vim_mergetool"]
@@ -158,19 +155,11 @@
   cmd = "kdiff3 \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\""
 
 [user]
-	name = Alexey Samoshkin
-	email = al.samoshkin@gmail.com
+  name = Alexey Samoshkin
+  email = al.samoshkin@gmail.com
 
 [github]
   user = samoshkin
-
-# Added automatically by SourceTree
-[difftool "sourcetree"]
-	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --nosplash \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
-	trustExitCode = true
 
 # Per-project configs
 # NOTE: symlink "~/projects" does not automatically resolve, have to put full path

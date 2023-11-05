@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo "win: $YABAI_WINDOW_ID"
-
 if ! yabai -m query --windows --window $YABAI_WINDOW_ID | jq -er '."can-resize" or ."is-floating"'; then
   window="$(yabai -m query --windows --window $YABAI_WINDOW_ID)"
   display="$(yabai -m query --displays --window $YABAI_WINDOW_ID)"

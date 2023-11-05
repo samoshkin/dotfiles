@@ -107,15 +107,15 @@ default < ctrl + alt + cmd - left: yabai_focus_prev_space.sh
 default < ctrl + alt + cmd - 0x2A: yabai -m space --focus recent
 
 # focus space by number, alt-9 to focus last space
-default < alt - 1: yabai -m space --focus 1
-default < alt - 2: yabai -m space --focus 2
-default < alt - 3: yabai -m space --focus 3
-default < alt - 4: yabai -m space --focus 4
-default < alt - 5: yabai -m space --focus 5
-default < alt - 6: yabai -m space --focus 6
-default < alt - 7: yabai -m space --focus 7
-default < alt - 8: yabai -m space --focus 8
-default < alt - 9: yabai -m space --focus last
+default < cmd - 1: yabai -m space --focus 1
+default < cmd - 2: yabai -m space --focus 2
+default < cmd - 3: yabai -m space --focus 3
+default < cmd - 4: yabai -m space --focus 4
+default < cmd - 5: yabai -m space --focus 5
+default < cmd - 6: yabai -m space --focus 6
+default < cmd - 7: yabai -m space --focus 7
+default < cmd - 8: yabai -m space --focus 8
+default < cmd - 9: yabai -m space --focus last
 
 
 # ================================
@@ -291,7 +291,7 @@ win < shift - 0x1B: yabai -m space --mirror x-axis
 win < shift - 0x2A: yabai -m space --mirror y-axis
 
 # (f)loat: Toggle floating mode for current window
-win < f: yabai -m window --toggle float --grid 4:4:1:1:2:2
+win < f: yabai -m window --toggle float --grid 4:4:1:1:2:2; skhd -k "escape"
 
 # (s)plit: Change horizontal vs vertical split orientation for current window
 win < s: yabai -m window --toggle split

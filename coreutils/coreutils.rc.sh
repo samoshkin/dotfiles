@@ -7,10 +7,12 @@ export BAT_STYLE="changes,numbers"
 export BAT_THEME="TwoDark"
 
 # LESS configuration:
-# - always show prompt with line number / total number of lines
-# - interpret ANSI escape sequences (e.g. colored output)
-# - read file to the end in order to enable the full metadata display in less status line
-export LESS="-MR+Gg"
+# -M, always show prompt with line number / total number of lines
+# -R, interpret ANSI escape sequences (e.g. colored output)
+# - read file to the end in order to enable the full metadata djisplay in less status line
+# -i, ignore case in searches that do not contain uppercase (smart case)
+# -S, disables line wrapping. Side-scroll to see long lines.
+export LESS="-iMRS+Gg"
 
 # enable LS colored output
 export CLICOLOR=1

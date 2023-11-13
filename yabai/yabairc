@@ -47,9 +47,8 @@ yabai -m rule --add app="Numi" manage=off grid=6:6:4:0:2:3 opacity=0.95
 yabai -m rule --add app="ColorSync Utility" manage=off grid=5:5:1:1:3:3
 yabai -m rule --add app="Sloth" manage=off grid=6:6:1:1:4:4
 yabai -m rule --add app="Stats" manage=off
-
-# Set default location and presense for Sticky terminal window
-yabai -m signal --add event=window_created app="iTerm2" title="^sticky" action="yabai -m window \$YABAI_WINDOW_ID --toggle float --grid 2:2:1:0:1:2 --layer normal"
+yabai -m rule --add app="Zim" title="New Page" manage=off
+yabai -m rule --add app="Zim" title="Move Page" manage=off
 
 # Automatically float non-resizable windows, such as palettes, system settings etc
 yabai -m signal --add event=window_created action="$HOME/bin/yabai_auto_float_non_resizable_window.sh"

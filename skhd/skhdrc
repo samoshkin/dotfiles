@@ -83,10 +83,12 @@ win < cmd - m ->; default
 # ================================
 cmd + alt - right [
   "Safari" ~
+  "Google Chrome" ~
   *: yabai -m window --focus east || yabai -m display --focus east
 ]
 cmd + alt - left [
   "Safari" ~
+  "Google Chrome" ~
   *: yabai -m window --focus west || yabai -m display --focus west
 ]
 cmd + alt - up: yabai -m window --focus north
@@ -328,10 +330,12 @@ win < shift - e: yabai_extract_window_to_new_space.sh; skhd -k "escape"
 # cltr - `, fn - `: Open terminal, if it's already running, it just focuses the window
 default < ctrl - 0x32: open -a "/Applications/ITerm.app"
 default < fn - 0x32: skhd -k "ctrl - 0x32"
-# default < ctrl + shift - 0x32: yabai_open_or_focus_terminal.sh
 
-# ctrl + shift - `, open special always-on-top terminal window on the right side of a screen
-default < ctrl + shift - 0x32: yabai_open_side_terminal.sh
+# focus terminal if it's opened in current space, otherwise open new instance in current space
+default < ctrl + shift - 0x32: yabai_open_or_focus_terminal.sh
+
+# alt - `, open special always-on-top terminal window on the top half of a screen
+default < alt - 0x32: yabai_open_side_terminal.sh
 
 # cmd + shift - ,: Open system preferences
 default < cmd + shift - 0x2B: open -na "System preferences"

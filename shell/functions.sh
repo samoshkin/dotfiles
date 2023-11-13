@@ -1,9 +1,3 @@
-# yank most recent command from a history
-# To avoid "yc" itself being stored in a history, prepend it with a space when running from a shell: " yc"
-function yc {
-  fc -ln -1 | awk '{$1=$1}1' | pbcopy
-}
-
 # Search for TODO|FIXME|BUG markers in a directory and open results in a Vim quickfix window
 function todos() {
   vim -q <(rg --vimgrep -w -e 'TODO' -e 'FIXME' -e 'BUG' $* .)
@@ -30,76 +24,7 @@ function filesize() {
 
 # prints macOS system report info
 function system_info(){
-  system_profiler -json -detailLevel mini SPHardwareDataType SPDisplaysDataType SPMemoryDataType SPNetworkDataType SPPowerDataType SPSoftwareDataType SPStartupItemDataType SPStorageDataType > system_report.json
-}
-
-# Pass selected files as arguments to the given command
-# Usage: f echo
-# Usage: f vim
-f() {
-  IFS=$'\n'
-  files=($(fd . --type f --type l "${@:2}" | fzf -0 -1 -m))
-  IFS=$' '
-  [[ -n "$files" ]] && $1 "${files[@]}"
-}
-
-# Pass selected directories as arguments to the given command
-# Usage: d ws
-d() {
-  IFS=$'\n'
-  dirs=($(fd . --type d "${@:2}" | fzf -0 -1 -m))
-  IFS=$' '
-  [[ -n "$dirs" ]] && $1 "${dirs[@]}"
-}
-
-# # Open the selected files with selected editor
-# #   - CTRL-O to open with `open` command
-# #   - CTRL-E to open with VSCode
-# #   - CTRL-W to open with WS
-# #   - Enter (default) to open with $EDITOR
-fe() {
-  local out files key
-  IFS=$'\n'
-  out=("$(fzf-tmux --query="$1" --multi --exit-0 --expect=ctrl-o,ctrl-e,ctrl-w)")
-  key=$(head -1 <<< "$out")
-  files=($(tail -n +2 <<< "$out"))
-  if [ -n "$files" ]; then
-    if [ "$key" = ctrl-o ]; then open "${files[@]}";
-    elif [ "$key" = ctrl-w ]; then ws "${files[@]}";
-    elif [ "$key" = ctrl-e ]; then code "${files[@]}";
-    else ${EDITOR} "${files[@]}";
-    fi
-  fi
-}
-
-# fcd - cd to selected directory
-# Similar to default ALT+C fzf key binding
-fcd() {
-  local dir
-  dir=$(fd --type d --follow . ${1:-.} | fzf +m) && cd "$dir"
-}
-
-# cd to selected parent dir
-cdp(){
-  local declare dirs=()
-  get_parent_dirs() {
-    if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
-    if [[ "${1}" == '/' ]]; then
-      for _dir in "${dirs[@]}"; do echo $_dir; done
-    else
-      get_parent_dirs $(dirname "$1")
-    fi
-  }
-  local DIR=$(get_parent_dirs $(dirname "$(realpath "$PWD")") | fzf-tmux)
-  cd "$DIR"
-}
-
-# # Integration with z
-# # like normal z when used with arguments, but displays an fzf prompt when used without.
-unalias z 2> /dev/null
-z() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+  system_profiler -json -detailLevel mini SPHardwareDataType SPDisplaysDataType SPMemoryDataType SPNetworkDataType SPPowerDataType SPSoftwareDataType SPStartupItemDataType SPStorageDataType
 }
 
 # Search with ripgrep

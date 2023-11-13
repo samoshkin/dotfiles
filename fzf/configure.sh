@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ln -sf -t "$SHELLRCDIR" "$DOTFILES/fzf/fzf.rc.sh"
+ln -sf "$DOTFILES/fzf/fzf.rc.sh" "$SHELLRCDIR"

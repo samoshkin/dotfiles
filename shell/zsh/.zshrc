@@ -46,10 +46,6 @@ autoload run-help
 setopt shwordsplit
 setopt nobeep
 
-# set Zsh autocompletion menu behavior
-setopt automenu
-unsetopt menucomplete
-
 # Automatically cd when command is unknown or can't be executed but recognized as a valid directory
 # Basically it means you can omit cd when doing "cd /some/dir"
 setopt auto_cd
@@ -76,20 +72,34 @@ bindkey "\eOF" end-of-line
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 
+# set Zsh autocompletion menu behavior
+# display the completion menu after two use of the TAB key.
+# don't select the first match given by the completion menu
+# automatically list choices on ambiguous completion.
+setopt AUTO_MENU
+unsetopt MENU_COMPLETE
+setopt AUTO_LIST
+
 # Enter completion menu with <Tab>, navigate around within a menu with <Tab>
-bindkey '\t' menu-select "$terminfo[kcbt]" menu-select
+# bindkey '\t' menu-select "$terminfo[kcbt]" menu-select
 bindkey -M menuselect '\t' menu-complete "$terminfo[kcbt]" reverse-menu-complete
+
+# search inside completion
+bindkey -M menuselect '/' history-incremental-search-forward
+bindkey -M menuselect '?' history-incremental-search-backward
 
 # close completion on ESC
 bindkey -M menuselect '^[' undo
 
-# use LS_COLORS colors in tab completion
+# use LS_COLORS colors in tab completion for files and directories
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
+zstyle ':completion:*' menu select
+
 # Load "pyenv" shell helper
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init -)"
+# fi
 
 # ZSH completions for kubectl
 # TODO: install through antigen
@@ -104,6 +114,7 @@ copycmdline () {
 zle -N copycmdline
 bindkey "^O" copycmdline
 
+# show every new command on the top of the screen
 # borrowed from https://github.com/Valiev/almostontop/blob/master/almostontop.plugin.zsh
 # Valiev/almostontop uses "zle redisplay", but it resets the whole scrollback buffer
 function _accept_line_almostontop {
@@ -113,8 +124,8 @@ function _accept_line_almostontop {
 zle -N accept-line _accept_line_almostontop
 
 # shell command completion for gcloud.
-export PATH="$PATH:/usr/local/google-cloud-sdk/bin"
-if [ -f '/usr/local/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/google-cloud-sdk/completion.zsh.inc'; fi
+# export PATH="$PATH:/usr/local/google-cloud-sdk/bin"
+# if [ -f '/usr/local/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/google-cloud-sdk/completion.zsh.inc'; fi
 
 # source all extra rc files
 export SHELLRCDIR="$ZDOTDIR/.rc"

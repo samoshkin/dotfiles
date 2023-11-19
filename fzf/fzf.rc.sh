@@ -47,7 +47,7 @@ export FZF_CTRL_R_OPTS="
 # export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
 cd() {
   if [ $# -gt 0 ]; then
-    builtin cd "$@" || exit 1;
+    builtin cd "$@" || return;
     return;
   fi
 
@@ -57,7 +57,7 @@ cd() {
     --preview 'tree -C -L 2 {}')
 
   if [ -n "$selected_dir" ]; then
-    cd "$selected_dir" || exit 1;
+    cd "$selected_dir" || return;
   fi
 }
 

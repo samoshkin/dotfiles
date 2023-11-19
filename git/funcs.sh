@@ -30,8 +30,8 @@ function gwsvim(){
 # Diff
 # ==================================================
 alias gdd="git diff --stat -p"            # diff with stat and patch (via git-delta viewer)
-alias gds="git --no-pager diff --stat"              # diff with stat only
-alias gdt='git difftool'                 # difftool in Vim
+alias gds="git --no-pager diff --stat"    # diff with stat only
+alias gdt='git difftool'                  # difftool in Vim
 alias gdtui='git difftool --gui'          # DiffMerge or whatever GUI diff tool
 
 # git fuzzy diff, plus opening selected files in "git difftool"

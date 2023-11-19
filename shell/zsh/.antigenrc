@@ -20,6 +20,8 @@ antigen bundles <<EOBUNDLES
     zshzoo/cd-ls@main
 
     zsh-users/zsh-syntax-highlighting
+
+    bigH/git-fuzzy --branch=main --loc=bin
 EOBUNDLES
 
 antigen apply

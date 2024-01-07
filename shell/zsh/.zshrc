@@ -101,10 +101,6 @@ zstyle ':completion:*' menu select
 #   eval "$(pyenv init -)"
 # fi
 
-# ZSH completions for kubectl
-# TODO: install through antigen
-# source <(kubectl completion zsh)
-
 # copy the active line from the command line buffer
 # onto the system clipboard
 # borrowed from https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/copybuffer/copybuffer.plugin.zsh

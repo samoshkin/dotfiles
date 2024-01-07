@@ -32,9 +32,8 @@ alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 alias chrome-canary="/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary"
 alias chromium="/Applications/Chromium.app/Contents/MacOS/Chromium"
 
-# Kubernetes
-alias k=kubectl
-
 # eg. fd <search> | tree --fromfile
 # same as fd <search> | as-tree
 alias as-tree='tree --fromfile'
+
+alias plm='pulumi'

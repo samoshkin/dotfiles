@@ -244,6 +244,36 @@ popd
 # Home · Universal Ctags https://ctags.io/
 brew install --HEAD --with-jansson universal-ctags/universal-ctags/universal-ctags
 
+# Kubernetes CLI
+brew install kubernetes-cli
+
+# Krew – kubectl plugin manager - (https://krew.sigs.k8s.io/)
+(
+  set -x; cd "$(mktemp -d)" &&
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
+)
+kubectl krew update
+kubectl krew install ctx explore fuzzy ice krew ktop lineage ns resource-capacity status stern view-allocations view-secret whoami
+
+# [kubefwd - Kubernetes Service Forwarding](https://kubefwd.com/)
+brew install txn2/tap/kubefwd
+
+# Telepresence - https://www.telepresence.io/
+curl -fL https://app.getambassador.io/download/tel2oss/releases/download/v2.17.1/telepresence-darwin-arm64 -o /usr/local/bin/telepresence
+chmod a+x /usr/local/bin/telepresence
+
+
+# AWS CLI
+brew install awscli
+
+# [Pulumi - Infrastructure as Code in Any Programming Language](https://www.pulumi.com/)
+brew install pulumi/tap/pulumi
+
 # ===============================
 #  GUI apps from 'brew cask'
 # ================================
@@ -258,6 +288,7 @@ brew cask install postman
 # Docker
 brew cask install virtualbox
 brew cask install docker
+brew install docker-credential-helper-ecr
 
 # OSXFuse and NTFS-3g
 brew cask install osxfuse
@@ -279,3 +310,9 @@ brew cask install vlc
 # such as shell scripts or Python, Perl, Ruby, Tcl, JavaScript and PHP programs.
 # This is done by wrapping the script in a macOS application bundle along with an app binary that runs the script.
 brew cask install platypus
+
+# [Arc from The Browser Company](https://arc.net/)
+brew install --cask arc
+
+# [Tunnelblick | Free open source OpenVPN VPN client server software for macOS](https://tunnelblick.net/)
+brew install --cask tunnelblick

@@ -84,11 +84,15 @@ win < cmd - m ->; default
 cmd + alt - right [
   "Safari" ~
   "Google Chrome" ~
+  "Arc" ~
+  "Code" ~
   *: yabai -m window --focus east || yabai -m display --focus east
 ]
 cmd + alt - left [
   "Safari" ~
   "Google Chrome" ~
+  "Arc" ~
+  "Code" ~
   *: yabai -m window --focus west || yabai -m display --focus west
 ]
 cmd + alt - up: yabai -m window --focus north
@@ -335,7 +339,7 @@ default < fn - 0x32: skhd -k "ctrl - 0x32"
 default < ctrl + shift - 0x32: yabai_open_or_focus_terminal.sh
 
 # alt - `, open special always-on-top terminal window on the top half of a screen
-default < alt - 0x32: yabai_open_side_terminal.sh
+# default < alt - 0x32: yabai_open_side_terminal.sh
 
 # cmd + shift - ,: Open system preferences
 default < cmd + shift - 0x2B: open -na "System preferences"

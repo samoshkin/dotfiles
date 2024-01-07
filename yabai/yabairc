@@ -49,6 +49,8 @@ yabai -m rule --add app="Sloth" manage=off grid=6:6:1:1:4:4
 yabai -m rule --add app="Stats" manage=off
 yabai -m rule --add app="Zim" title="New Page" manage=off
 yabai -m rule --add app="Zim" title="Move Page" manage=off
+yabai -m rule --add app="DBeaver" title!="^DBeaver" manage=off # any modal window from Dbeaver (except the main app window itself)
+yabai -m rule --add app="Arc" manage=off layer=below
 
 # Automatically float non-resizable windows, such as palettes, system settings etc
 yabai -m signal --add event=window_created action="$HOME/bin/yabai_auto_float_non_resizable_window.sh"

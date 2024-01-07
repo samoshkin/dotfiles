@@ -94,7 +94,7 @@
 
 [diff]
   tool = vim
-  guitool = diffmerge
+  guitool = vscode
   submodule = log
   algorithm = patience
   indentHeuristic = true
@@ -125,7 +125,7 @@
 [merge]
   # tool = vim_mergetool
   tool = diffmerge
-  guitool = diffmerge
+  guitool = vscode
 
   # Standard conflict markers include only ours and theirs side
   # Use "diff3" to include base ancestor version as well
@@ -146,7 +146,7 @@
   trustExitCode = true
 
 [mergetool "vscode"]
-  cmd = "code -n --wait \"$MERGED\""
+  cmd = "code --wait --merge \"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\""
 
 [mergetool "p4merge"]
   cmd = "p4merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\""
